@@ -1,28 +1,24 @@
 import os
 import logging
-from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from database import get_vector_store
+from config import Config
 
 # Configuração de Logs
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
-load_dotenv()
-
-# Variáveis de Ambiente
-PDF_PATH = os.getenv("PDF_PATH")
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-EMBEDDING_MODEL = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/text-embedding-004")
-
 def ingest_pdf(pdf_path: str = None):
-    # Fallback para variável de ambiente se não for passado parâmetro
-    target_pdf = pdf_path or PDF_PATH
+    # Validar configuração
+    Config.validate_config()
     
-    if not all([target_pdf, GOOGLE_API_KEY]):
-        raise ValueError("Configurações insuficientes. Verifique o arquivo .env (PDF_PATH e GOOGLE_API_KEY) ou passe o caminho do PDF.")
+    # Fallback para variável de ambiente se não for passado parâmetro
+    target_pdf = pdf_path or Config.PDF_PATH
+    
+    if not target_pdf:
+        raise ValueError("Caminho do PDF não especificado. Passe como parâmetro ou configure PDF_PATH no .env")
 
     # 1. Carregamento do PDF
     logger.info(f"Iniciando carregamento do PDF: {target_pdf}")
@@ -36,8 +32,8 @@ def ingest_pdf(pdf_path: str = None):
     # 2. Chunking do texto
     logger.info("Dividindo o texto em fragmentos (chunks)...")
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=150
+        chunk_size=Config.CHUNK_SIZE,
+        chunk_overlap=Config.CHUNK_OVERLAP
     )
     splits = text_splitter.split_documents(docs)
     
@@ -62,7 +58,7 @@ def ingest_pdf(pdf_path: str = None):
 
     # 5. Embeddings e Vetorização
     logger.info("Preparando inserção no banco de dados vetorial...")
-    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = GoogleGenerativeAIEmbeddings(model=Config.GOOGLE_EMBEDDING_MODEL)
 
     # Inicialização via camada de banco
     db = get_vector_store(embeddings)
