@@ -20,17 +20,13 @@ def check_database_status():
         int: Número de documentos no banco (0 se vazio ou erro)
     """
     try:
-        embeddings = get_embeddings()
-        vector_store = get_vector_store(embeddings)
+        from database import count_documents
+        count = count_documents()
         
-        # Tenta buscar 1 documento para verificar se há dados
-        # (não há método direto .count() no PGVector)
-        test_results = vector_store.similarity_search("test", k=1)
+        if count > 0:
+            logger.info(f"Banco contém {count} documentos")
         
-        if test_results:
-            logger.info(f"Banco contém documentos")
-            return len(test_results)  # Retorna pelo menos 1
-        return 0
+        return count
     except Exception as e:
         logger.warning(f"Não foi possível verificar o status do banco: {e}")
         return 0
