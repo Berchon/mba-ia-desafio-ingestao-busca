@@ -72,8 +72,8 @@
   - [x] Classe `Config` com todas variáveis de ambiente
   - [x] Método `validate_config()` para validação
   - [x] Testar → Commit: `feat: add centralized config module`
-- [ ] **A.1.2** Refatorar `database.py` para usar Config
-  - [ ] Remover variáveis locais, importar de Config
+- [/] **A.1.2** Refatorar `database.py` para usar Config
+  - [x] Remover variáveis locais, importar de Config
   - [ ] Testar → Commit: `refactor: use centralized config in database`
 - [ ] **A.1.3** Refatorar `ingest.py` para usar Config
   - [ ] Remover variáveis locais, importar de Config
