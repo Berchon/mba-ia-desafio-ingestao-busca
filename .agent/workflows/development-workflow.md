@@ -28,10 +28,15 @@ description: Workflow de desenvolvimento do projeto RAG
 
 #### Para CADA Grupo de Subtasks (ex: A.1):
 1. Concluir TODAS as subtasks do grupo (A.1.1, A.1.2, A.1.3, etc)
-2. **DEVOLVER CONTROLE** ao usuário para teste completo do grupo
-3. Usuário testa aplicação completa
-4. Se OK → Próximo grupo
-5. Se NOK → Ajustar subtask específica → Repetir ciclo
+2. **TESTE COMPLETO (Agente)**:
+   - Executar teste end-to-end da aplicação completa
+   - Validar que todas as funcionalidades principais funcionam
+   - Testar fluxo completo (ex: ingestão + busca + chat)
+   - Reportar resultados dos testes ao usuário
+3. **DEVOLVER CONTROLE** ao usuário para validação manual
+4. Usuário testa aplicação completa manualmente
+5. Se OK → Merge para main → Próximo grupo
+6. Se NOK → Ajustar subtask específica → Repetir ciclo
 
 #### Entre Tasks:
 - **SEMPRE PERGUNTAR**: "O que deseja fazer agora?"
@@ -41,6 +46,7 @@ description: Workflow de desenvolvimento do projeto RAG
 
 ### Comunicação com Usuário
 - **NUNCA** avançar sem autorização
+- **NUNCA** fazer merge sem teste completo (agente + usuário)
 - **SEMPRE** devolver controle antes de commits/merges
 - **SEMPRE** perguntar antes de próxima ação
 - **SEMPRE** permitir debate em cada etapa
@@ -50,10 +56,16 @@ description: Workflow de desenvolvimento do projeto RAG
   - Scripts de teste unitário criados especificamente para a subtask
   - Validação de sintaxe e imports
   - Não requer interação do usuário
-- **Testes Completos (Grupo)**: Devolver controle ao usuário
-  - Teste da aplicação completa end-to-end
-  - Validação de integração entre componentes
-  - Usuário valida comportamento real do sistema
+  
+- **Testes Completos (Grupo)**: Processo em duas etapas
+  1. **Teste Automático (Agente)**:
+     - Executar aplicação completa end-to-end
+     - Validar fluxo principal de funcionalidades
+     - Reportar resultados detalhados
+  2. **Validação Manual (Usuário)**:
+     - Devolver controle ao usuário
+     - Usuário testa comportamento real do sistema
+     - Usuário aprova ou solicita ajustes
 
 - Aplicação deve funcionar após cada commit
 
