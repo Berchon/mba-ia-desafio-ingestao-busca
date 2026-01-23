@@ -126,13 +126,13 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### A.4 Validação de API Key (CC5, CHAT18)
-- [ ] **A.4.1** Adicionar validação no `config.py`
-  - [ ] Método `validate_config()` completo
-  - [ ] Testar → Commit: `feat: add api key validation in config`
-- [ ] **A.4.2** Chamar validação no início de cada script
-  - [ ] chat.py, ingest.py main()
-  - [ ] Testar → Commit: `feat: validate config at startup`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **A.4.1** Adicionar validação no `config.py`
+  - [x] Método `validate_config()` completo
+  - [x] Testar → Commit: `feat: add api key validation in config`
+- [x] **A.4.2** Chamar validação no início de cada script
+  - [x] chat.py, ingest.py main()
+  - [x] Testar → Commit: `feat: validate config at startup`
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
