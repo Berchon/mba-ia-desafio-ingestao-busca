@@ -81,7 +81,11 @@
 - [x] **A.1.4** Refatorar `search.py` para usar Config
   - [x] Remover variáveis locais, importar de Config
   - [x] Testar → Commit: `refactor: use centralized config in search`
-- [ ] **A.1.5** Refatorar `chat.py` para usar Config
+- [x] **A.1.5** Tornar Config agnóstico ao provedor (Google/OpenAI)
+  - [x] Adicionar `OPENAI_LLM_MODEL` no .env.example
+  - [x] Criar propriedades `API_KEY`, `EMBEDDING_MODEL`, `LLM_MODEL` que retornam valores baseados no provedor disponível
+  - [x] Testar → Commit: `feat: add provider-agnostic config properties`
+- [ ] **A.1.6** Refatorar `chat.py` para usar Config
   - [ ] Remover variáveis locais, importar de Config
   - [ ] Testar → Commit: `refactor: use centralized config in chat`
 - [ ] **TESTE COMPLETO** → Merge com main
