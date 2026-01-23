@@ -58,9 +58,21 @@ def count_documents():
             logger.info(f"Contagem de documentos finalizada: {count} documentos encontrados")
             return count if count else 0
             
+    except sa.exc.OperationalError as e:
+        # Erro de conexão (ex: container desligado)
+        logger.error(f"Falha de conexão com o banco de dados. Verifique se o container Postgres está rodando: {e}")
+        return 0
+    except sa.exc.ProgrammingError as e:
+        # Erro de tabelas não encontradas (banco inicializado mas vazio/sem extensões)
+        logger.warning(f"Tabelas não encontradas no banco de dados. Elas serão criadas na primeira ingestão. Detalhe: {e}")
+        return 0
+    except sa.exc.SQLAlchemyError as e:
+        # Outros erros do SQLAlchemy
+        logger.error(f"Erro inesperado do banco de dados: {e}")
+        return 0
     except Exception as e:
-        # Em caso de erro (tabela não existe, conexão falhou, etc), retorna 0
-        logger.warning(f"Erro ao contar documentos (o banco pode estar vazio ou tabelas não criadas): {e}")
+        # Outros erros genéricos
+        logger.error(f"Erro inesperado ao acessar o banco: {e}")
         return 0
     finally:
         if 'engine' in locals():
