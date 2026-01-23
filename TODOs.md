@@ -113,7 +113,7 @@
   - [x] Atualizar chat.py, ingest.py, search.py
   - [x] Remover imports diretos de langchain_google_genai
   - [x] Testar → Commit: `refactor: use embeddings and llm managers everywhere`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### A.3 Logging Consistente (CC3)
 - [ ] **A.3.1** Criar `src/logger.py` centralizado
