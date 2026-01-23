@@ -143,10 +143,10 @@
 - [x] **B.1.1** Adicionar `count_documents()` em database.py
   - [x] Query SQL direto (sem embeddings)
   - [x] Testar → Commit: `feat: add efficient document count function`
-- [ ] **B.1.2** Refatorar `check_database_status()` no chat.py
-  - [ ] Usar nova função de contagem
-  - [ ] Testar → Commit: `refactor: use efficient count in chat status`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **B.1.2** Refatorar `check_database_status()` no chat.py
+  - [x] Usar nova função de contagem
+  - [x] Testar → Commit: `refactor: use efficient count in chat status`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### B.2 Logging no Database (DATABASE2)
 - [ ] **B.2.1** Adicionar logger em database.py
