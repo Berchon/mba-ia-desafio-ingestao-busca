@@ -109,10 +109,10 @@
   - [x] Detecção automática de provedor (Google/OpenAI)
   - [x] Import dinâmico das classes corretas (ChatGoogleGenerativeAI ou ChatOpenAI)
   - [x] Testar → Commit: `feat: add llm singleton with provider abstraction`
-- [ ] **A.2.3** Refatorar todos arquivos para usar managers
-  - [ ] Atualizar chat.py, ingest.py, search.py
-  - [ ] Remover imports diretos de langchain_google_genai
-  - [ ] Testar → Commit: `refactor: use embeddings and llm managers everywhere`
+- [x] **A.2.3** Refatorar todos arquivos para usar managers
+  - [x] Atualizar chat.py, ingest.py, search.py
+  - [x] Remover imports diretos de langchain_google_genai
+  - [x] Testar → Commit: `refactor: use embeddings and llm managers everywhere`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### A.3 Logging Consistente (CC3)

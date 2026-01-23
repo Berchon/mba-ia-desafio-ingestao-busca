@@ -11,6 +11,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Singleton de Embeddings com abstração de provedor (Google/OpenAI) no módulo `src/embeddings_manager.py` (`946fbb1`)
 - Singleton de LLM com abstração de provedor (Google/OpenAI) no módulo `src/llm_manager.py` (`7025f72`)
 
+### Alterado
+- Refatorado `ingest.py`, `search.py` e `chat.py` para utilizar os novos managers de Embeddings e LLM (`7c2a172`)
+
 ---
 
 ## [0.1.0] - 2026-01-23
