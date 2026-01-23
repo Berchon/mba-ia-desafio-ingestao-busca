@@ -149,10 +149,10 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### B.2 Logging no Database (DATABASE2)
-- [ ] **B.2.1** Adicionar logger em database.py
-  - [ ] Logs de conexão e operações
-  - [ ] Testar → Commit: `feat: add logging to database module`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **B.2.1** Adicionar logger em database.py
+  - [x] Logs de conexão e operações
+  - [x] Testar → Commit: `feat: add logging to database module`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### B.3 Tratamento de Erros de Conexão (DATABASE4)
 - [ ] **B.3.1** Capturar erros específicos (OperationalError, etc)
