@@ -116,9 +116,9 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### A.3 Logging Consistente (CC3)
-- [ ] **A.3.1** Criar `src/logger.py` centralizado
-  - [ ] Configuração única de logging
-  - [ ] Testar → Commit: `feat: add centralized logger configuration`
+- [x] **A.3.1** Criar `src/logger.py` centralizado
+  - [x] Configuração única de logging
+  - [x] Testar → Commit: `feat: add centralized logger configuration`
 - [ ] **A.3.2** Refatorar todos arquivos
   - [ ] Remover `logging.basicConfig()` duplicado
   - [ ] Usar `logger = logging.getLogger(__name__)`
