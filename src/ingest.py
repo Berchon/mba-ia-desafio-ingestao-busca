@@ -58,12 +58,13 @@ def ingest_pdf(pdf_path: str = None):
     logger.info("Preparando inserção no banco de dados vetorial...")
     embeddings = get_embeddings()
 
-    # Inicialização via camada de banco
-    db = get_vector_store(embeddings)
+    # Inicialização via Repositório
+    from database import VectorStoreRepository
+    repo = VectorStoreRepository(embeddings)
 
     # 6. Inserção ou Atualização no Banco
     logger.info(f"Enviando {len(enriched_docs)} fragmentos para o PGVector...")
-    db.add_documents(enriched_docs, ids=ids)
+    repo.add_documents(enriched_docs, ids=ids)
     logger.info("PROCESSO DE INGESTÃO CONCLUÍDO COM SUCESSO! ✅")
     return True
 

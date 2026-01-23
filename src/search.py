@@ -52,11 +52,12 @@ def search_prompt(question=None):
         # 1. Inicializar Embeddings
         embeddings = get_embeddings()
         
-        # 2. Conectar ao Vector Store
-        vector_store = get_vector_store(embeddings)
+        # 2. Conectar ao Repositório
+        from database import VectorStoreRepository
+        repo = VectorStoreRepository(embeddings)
         
         # 3. Criar Retriever (k=10 conforme requisitos)
-        retriever = vector_store.as_retriever(
+        retriever = repo.as_retriever(
             search_type="similarity",
             search_kwargs={"k": Config.TOP_K}
         )

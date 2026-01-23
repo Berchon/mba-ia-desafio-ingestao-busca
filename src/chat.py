@@ -20,8 +20,9 @@ def check_database_status():
         int: Número de documentos no banco (0 se vazio ou erro)
     """
     try:
-        from database import count_documents
-        count = count_documents()
+        from database import VectorStoreRepository
+        repo = VectorStoreRepository()
+        count = repo.count()
         
         if count > 0:
             logger.info(f"Banco contém {count} documentos")
@@ -79,6 +80,9 @@ def display_help():
     print("   exit                   (Mesmo que 'sair')")
     print("   quit                   (Mesmo que 'sair')")
     print("   q                      (Mesmo que 'sair')")
+    
+    print("\n🧹 LIMPAR BASE (ADMIN):")
+    print("   clear                  Remove todos os documentos do banco")
     
     print("="*70 + "\n")
 
@@ -223,6 +227,17 @@ def chat_loop(chain):
             
             elif is_add_command(user_input):
                 handle_add_command(user_input)
+            
+            elif user_input.lower().strip() == 'clear':
+                confirm = input("⚠️  CERTEZA que deseja limpar toda a base? (sim/n): ").strip().lower()
+                if confirm == 'sim':
+                    from database import VectorStoreRepository
+                    if VectorStoreRepository().clear():
+                        print("✅ Base de dados limpa com sucesso!\n")
+                    else:
+                        print("❌ Erro ao limpar a base.\n")
+                else:
+                    print("Operação cancelada.\n")
             
             else:
                 # Processar como pergunta normal
