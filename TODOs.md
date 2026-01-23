@@ -155,10 +155,10 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### B.3 Tratamento de Erros de Conexão (DATABASE4)
-- [ ] **B.3.1** Capturar erros específicos (OperationalError, etc)
-  - [ ] Try/except específicos
-  - [ ] Testar → Commit: `feat: add specific error handling for database`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **B.3.1** Capturar erros específicos (OperationalError, etc)
+  - [x] Try/except específicos
+  - [x] Testar → Commit: `feat: add specific error handling for database`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### B.4 Expandir para Repositório (DATABASE1)
 - [ ] **B.4.1** Criar classe `VectorStoreRepository`
