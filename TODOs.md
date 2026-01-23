@@ -75,9 +75,9 @@
 - [x] **A.1.2** Refatorar `database.py` para usar Config
   - [x] Remover variáveis locais, importar de Config
   - [x] Testar → Commit: `refactor: use centralized config in database`
-- [ ] **A.1.3** Refatorar `ingest.py` para usar Config
-  - [ ] Remover variáveis locais, importar de Config
-  - [ ] Testar → Commit: `refactor: use centralized config in ingest`
+- [x] **A.1.3** Refatorar `ingest.py` para usar Config
+  - [x] Remover variáveis locais, importar de Config
+  - [x] Testar → Commit: `refactor: use centralized config in ingest`
 - [ ] **A.1.4** Refatorar `search.py` para usar Config
   - [ ] Remover variáveis locais, importar de Config
   - [ ] Testar → Commit: `refactor: use centralized config in search`
