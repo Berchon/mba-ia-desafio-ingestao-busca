@@ -7,6 +7,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+### Adicionado
+- Singleton de Embeddings com abstração de provedor (Google/OpenAI) no módulo `src/embeddings_manager.py` (`946fbb1`)
+
 ---
 
 ## [0.1.0] - 2026-01-23

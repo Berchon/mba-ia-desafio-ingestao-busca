@@ -99,11 +99,11 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### A.2 Singleton de Embeddings e Abstração de Provedor (CC1)
-- [ ] **A.2.1** Criar `src/embeddings_manager.py`
-  - [ ] Função `get_embeddings()` com singleton pattern
-  - [ ] Detecção automática de provedor (Google/OpenAI)
-  - [ ] Import dinâmico das classes corretas (GoogleGenerativeAIEmbeddings ou OpenAIEmbeddings)
-  - [ ] Testar → Commit: `feat: add embeddings singleton with provider abstraction`
+- [x] **A.2.1** Criar `src/embeddings_manager.py`
+  - [x] Função `get_embeddings()` com singleton pattern
+  - [x] Detecção automática de provedor (Google/OpenAI)
+  - [x] Import dinâmico das classes corretas (GoogleGenerativeAIEmbeddings ou OpenAIEmbeddings)
+  - [x] Testar → Commit: `feat: add embeddings singleton with provider abstraction`
 - [ ] **A.2.2** Criar `src/llm_manager.py`
   - [ ] Função `get_llm()` com singleton pattern
   - [ ] Detecção automática de provedor (Google/OpenAI)
