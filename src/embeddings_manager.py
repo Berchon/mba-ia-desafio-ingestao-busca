@@ -5,10 +5,10 @@ Implementa o padrão Singleton para garantir que o modelo de embeddings
 seja instanciado apenas uma vez e fornece abstração de provedor (Google/OpenAI).
 """
 
-import logging
 from config import Config
+from logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 class EmbeddingsManager:
     """

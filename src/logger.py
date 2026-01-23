@@ -50,14 +50,15 @@ def setup_logger(name: str = None, level: int = logging.INFO) -> logging.Logger:
     return logger
 
 
-def get_logger(name: str = None) -> logging.Logger:
+def get_logger(name: str = None, level: int = logging.INFO) -> logging.Logger:
     """
     Função de conveniência para obter um logger.
     
     Args:
         name: Nome do logger (geralmente __name__ do módulo)
+        level: Nível de logging (default: INFO)
         
     Returns:
         logging.Logger: Logger configurado
     """
-    return setup_logger(name)
+    return setup_logger(name, level)

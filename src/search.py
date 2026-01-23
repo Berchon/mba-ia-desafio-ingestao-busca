@@ -1,4 +1,3 @@
-import logging
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
@@ -6,10 +5,9 @@ from database import get_vector_store
 from config import Config
 from embeddings_manager import get_embeddings
 from llm_manager import get_llm
+from logger import get_logger
 
-# Configuração de Logs
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 # Template do Prompt (conforme requisitos.md)
 PROMPT_TEMPLATE = """

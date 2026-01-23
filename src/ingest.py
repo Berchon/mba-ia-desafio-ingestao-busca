@@ -1,14 +1,12 @@
 import os
-import logging
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from database import get_vector_store
 from config import Config
 from embeddings_manager import get_embeddings
+from logger import get_logger
 
-# Configuração de Logs
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 def ingest_pdf(pdf_path: str = None):
     # Validar configuração

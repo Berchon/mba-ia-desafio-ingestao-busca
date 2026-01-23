@@ -7,10 +7,9 @@ from database import get_vector_store
 from ingest import ingest_pdf
 from config import Config
 from embeddings_manager import get_embeddings
+from logger import get_logger
 
-# Configuração de Logs
-logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__, level=logging.WARNING)
 
 
 def check_database_status():
