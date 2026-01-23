@@ -1,21 +1,15 @@
-import os
 import sys
 import argparse
 import logging
-from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from search import search_prompt
 from database import get_vector_store
 from ingest import ingest_pdf
+from config import Config
 
 # Configuração de Logs
 logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
-
-load_dotenv()
-
-# Variáveis de Ambiente
-EMBEDDING_MODEL = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/text-embedding-004")
 
 
 def check_database_status():
@@ -26,7 +20,7 @@ def check_database_status():
         int: Número de documentos no banco (0 se vazio ou erro)
     """
     try:
-        embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
+        embeddings = GoogleGenerativeAIEmbeddings(model=Config.GOOGLE_EMBEDDING_MODEL)
         vector_store = get_vector_store(embeddings)
         
         # Tenta buscar 1 documento para verificar se há dados
@@ -249,6 +243,13 @@ def main():
     """
     Função principal do CLI.
     """
+    # Validar configuração
+    try:
+        Config.validate_config()
+    except ValueError as e:
+        print(f"\n❌ Erro de configuração: {e}\n")
+        sys.exit(1)
+    
     # Parser de argumentos
     parser = argparse.ArgumentParser(
         description='Chat RAG - Sistema de busca semântica em PDFs',

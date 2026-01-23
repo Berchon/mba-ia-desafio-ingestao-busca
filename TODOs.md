@@ -85,9 +85,9 @@
   - [x] Adicionar `OPENAI_LLM_MODEL` no .env.example
   - [x] Criar propriedades `API_KEY`, `EMBEDDING_MODEL`, `LLM_MODEL` que retornam valores baseados no provedor disponível
   - [x] Testar → Commit: `feat: add provider-agnostic config properties`
-- [ ] **A.1.6** Refatorar `chat.py` para usar Config
-  - [ ] Remover variáveis locais, importar de Config
-  - [ ] Testar → Commit: `refactor: use centralized config in chat`
+- [x] **A.1.6** Refatorar `chat.py` para usar Config
+  - [x] Remover variáveis locais, importar de Config
+  - [x] Testar → Commit: `refactor: use centralized config in chat`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### A.2 Singleton de Embeddings (CC1)
