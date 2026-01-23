@@ -103,6 +103,13 @@ description: Workflow de desenvolvimento do projeto RAG
   4. Manter exemplos e instruções sincronizados com o código
   5. Testar instruções para garantir que funcionam
 
+### Contexto de Testes
+- **Nome da Empresa no PDF de Teste**: SuperTechIABrazil
+- **Perguntas de Teste Sugeridas**:
+  - "Qual o faturamento da empresa SuperTechIABrazil?"
+  - "Quantos funcionários a SuperTechIABrazil possui?"
+  - Perguntas fora do contexto para validar comportamento correto
+
 ## 🎯 Aplicar Este Workflow
 
 Este workflow deve ser seguido:
