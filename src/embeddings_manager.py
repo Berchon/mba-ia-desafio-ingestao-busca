@@ -6,7 +6,7 @@ seja instanciado apenas uma vez e fornece abstração de provedor (Google/OpenAI
 """
 
 import logging
-from src.config import Config
+from config import Config
 
 logger = logging.getLogger(__name__)
 
