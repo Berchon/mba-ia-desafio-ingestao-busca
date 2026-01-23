@@ -46,8 +46,15 @@ description: Workflow de desenvolvimento do projeto RAG
 - **SEMPRE** permitir debate em cada etapa
 
 ### Testes
-- Antes de commit: teste de subtask
-- Antes de merge: teste completo da task
+- **Testes Parciais (Subtask)**: Executar automaticamente para validar implementação isolada
+  - Scripts de teste unitário criados especificamente para a subtask
+  - Validação de sintaxe e imports
+  - Não requer interação do usuário
+- **Testes Completos (Grupo)**: Devolver controle ao usuário
+  - Teste da aplicação completa end-to-end
+  - Validação de integração entre componentes
+  - Usuário valida comportamento real do sistema
+
 - Aplicação deve funcionar após cada commit
 
 ### Manutenção do CHANGELOG
