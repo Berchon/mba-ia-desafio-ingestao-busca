@@ -1,11 +1,11 @@
 import sys
 import argparse
 import logging
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from search import search_prompt
 from database import get_vector_store
 from ingest import ingest_pdf
 from config import Config
+from embeddings_manager import get_embeddings
 
 # Configuração de Logs
 logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
@@ -20,7 +20,7 @@ def check_database_status():
         int: Número de documentos no banco (0 se vazio ou erro)
     """
     try:
-        embeddings = GoogleGenerativeAIEmbeddings(model=Config.GOOGLE_EMBEDDING_MODEL)
+        embeddings = get_embeddings()
         vector_store = get_vector_store(embeddings)
         
         # Tenta buscar 1 documento para verificar se há dados

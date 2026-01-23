@@ -2,9 +2,9 @@ import os
 import logging
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from database import get_vector_store
 from config import Config
+from embeddings_manager import get_embeddings
 
 # Configuração de Logs
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -58,7 +58,7 @@ def ingest_pdf(pdf_path: str = None):
 
     # 5. Embeddings e Vetorização
     logger.info("Preparando inserção no banco de dados vetorial...")
-    embeddings = GoogleGenerativeAIEmbeddings(model=Config.GOOGLE_EMBEDDING_MODEL)
+    embeddings = get_embeddings()
 
     # Inicialização via camada de banco
     db = get_vector_store(embeddings)

@@ -1,10 +1,11 @@
 import logging
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from database import get_vector_store
 from config import Config
+from embeddings_manager import get_embeddings
+from llm_manager import get_llm
 
 # Configuração de Logs
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -49,13 +50,9 @@ def search_prompt(question=None):
     Returns:
         RunnableSequence: Chain configurada do LangChain (pronta para .invoke())
     """
-    if not Config.GOOGLE_API_KEY:
-        logger.error("GOOGLE_API_KEY não encontrada no arquivo .env")
-        return None
-    
     try:
         # 1. Inicializar Embeddings
-        embeddings = GoogleGenerativeAIEmbeddings(model=Config.GOOGLE_EMBEDDING_MODEL)
+        embeddings = get_embeddings()
         
         # 2. Conectar ao Vector Store
         vector_store = get_vector_store(embeddings)
@@ -67,10 +64,7 @@ def search_prompt(question=None):
         )
         
         # 4. Inicializar LLM
-        llm = ChatGoogleGenerativeAI(
-            model=Config.GOOGLE_LLM_MODEL,
-            temperature=Config.RETRIEVAL_TEMPERATURE,
-        )
+        llm = get_llm()
         
         # 5. Criar o Prompt Template
         prompt = PromptTemplate(
