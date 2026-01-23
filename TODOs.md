@@ -90,6 +90,14 @@
   - [x] Testar → Commit: `refactor: use centralized config in chat`
 - [x] **TESTE COMPLETO** → Merge com main
 
+#### A.1.7 Adicionar Badge de Release no README
+**Branch**: `docs/add-release-badge`
+- [x] **A.1.7.1** Adicionar badge de release no topo do README.md
+  - [x] Badge de versão: `![GitHub release](https://img.shields.io/github/v/release/usuario/repo)`
+  - [x] Posicionar logo após o título principal
+  - [x] Testar → Commit: `docs: add release version badge to README`
+- [ ] **TESTE COMPLETO** → Merge com main
+
 #### A.2 Singleton de Embeddings e Abstração de Provedor (CC1)
 - [ ] **A.2.1** Criar `src/embeddings_manager.py`
   - [ ] Função `get_embeddings()` com singleton pattern

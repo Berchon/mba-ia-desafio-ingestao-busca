@@ -1,5 +1,7 @@
 # 🤖 Sistema RAG - Ingestão e Busca Semântica com LangChain
 
+![GitHub release](https://img.shields.io/github/v/release/Berchon/mba-ia-desafio-ingestao-busca)
+
 Sistema de Recuperação e Geração Aumentada (RAG) que permite fazer perguntas sobre documentos PDF usando busca semântica e LLMs.
 
 ## 📋 Índice
