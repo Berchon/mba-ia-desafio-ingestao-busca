@@ -88,7 +88,7 @@
 - [x] **A.1.6** Refatorar `chat.py` para usar Config
   - [x] Remover variáveis locais, importar de Config
   - [x] Testar → Commit: `refactor: use centralized config in chat`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### A.2 Singleton de Embeddings (CC1)
 - [ ] **A.2.1** Criar `src/embeddings_manager.py`
