@@ -90,13 +90,21 @@
   - [x] Testar → Commit: `refactor: use centralized config in chat`
 - [x] **TESTE COMPLETO** → Merge com main
 
-#### A.2 Singleton de Embeddings (CC1)
+#### A.2 Singleton de Embeddings e Abstração de Provedor (CC1)
 - [ ] **A.2.1** Criar `src/embeddings_manager.py`
   - [ ] Função `get_embeddings()` com singleton pattern
-  - [ ] Testar → Commit: `feat: add embeddings singleton manager`
-- [ ] **A.2.2** Refatorar todos arquivos para usar singleton
-  - [ ] Atualizar chat, ingest, search
-  - [ ] Testar → Commit: `refactor: use embeddings singleton everywhere`
+  - [ ] Detecção automática de provedor (Google/OpenAI)
+  - [ ] Import dinâmico das classes corretas (GoogleGenerativeAIEmbeddings ou OpenAIEmbeddings)
+  - [ ] Testar → Commit: `feat: add embeddings singleton with provider abstraction`
+- [ ] **A.2.2** Criar `src/llm_manager.py`
+  - [ ] Função `get_llm()` com singleton pattern
+  - [ ] Detecção automática de provedor (Google/OpenAI)
+  - [ ] Import dinâmico das classes corretas (ChatGoogleGenerativeAI ou ChatOpenAI)
+  - [ ] Testar → Commit: `feat: add llm singleton with provider abstraction`
+- [ ] **A.2.3** Refatorar todos arquivos para usar managers
+  - [ ] Atualizar chat.py, ingest.py, search.py
+  - [ ] Remover imports diretos de langchain_google_genai
+  - [ ] Testar → Commit: `refactor: use embeddings and llm managers everywhere`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### A.3 Logging Consistente (CC3)
