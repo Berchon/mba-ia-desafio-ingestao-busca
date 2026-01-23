@@ -9,6 +9,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Adicionado
 - Singleton de Embeddings com abstração de provedor (Google/OpenAI) no módulo `src/embeddings_manager.py` (`946fbb1`)
+- Singleton de LLM com abstração de provedor (Google/OpenAI) no módulo `src/llm_manager.py` (`7025f72`)
 
 ---
 

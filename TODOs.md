@@ -104,11 +104,11 @@
   - [x] Detecção automática de provedor (Google/OpenAI)
   - [x] Import dinâmico das classes corretas (GoogleGenerativeAIEmbeddings ou OpenAIEmbeddings)
   - [x] Testar → Commit: `feat: add embeddings singleton with provider abstraction`
-- [ ] **A.2.2** Criar `src/llm_manager.py`
-  - [ ] Função `get_llm()` com singleton pattern
-  - [ ] Detecção automática de provedor (Google/OpenAI)
-  - [ ] Import dinâmico das classes corretas (ChatGoogleGenerativeAI ou ChatOpenAI)
-  - [ ] Testar → Commit: `feat: add llm singleton with provider abstraction`
+- [x] **A.2.2** Criar `src/llm_manager.py`
+  - [x] Função `get_llm()` com singleton pattern
+  - [x] Detecção automática de provedor (Google/OpenAI)
+  - [x] Import dinâmico das classes corretas (ChatGoogleGenerativeAI ou ChatOpenAI)
+  - [x] Testar → Commit: `feat: add llm singleton with provider abstraction`
 - [ ] **A.2.3** Refatorar todos arquivos para usar managers
   - [ ] Atualizar chat.py, ingest.py, search.py
   - [ ] Remover imports diretos de langchain_google_genai
