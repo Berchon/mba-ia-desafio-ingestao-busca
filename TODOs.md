@@ -140,9 +140,9 @@
 **Branch**: `feature/database-improvements`
 
 #### B.1 Função de Contagem Eficiente (DATABASE3, CHAT17)
-- [ ] **B.1.1** Adicionar `count_documents()` em database.py
-  - [ ] Query SQL direto (sem embeddings)
-  - [ ] Testar → Commit: `feat: add efficient document count function`
+- [x] **B.1.1** Adicionar `count_documents()` em database.py
+  - [x] Query SQL direto (sem embeddings)
+  - [x] Testar → Commit: `feat: add efficient document count function`
 - [ ] **B.1.2** Refatorar `check_database_status()` no chat.py
   - [ ] Usar nova função de contagem
   - [ ] Testar → Commit: `refactor: use efficient count in chat status`
