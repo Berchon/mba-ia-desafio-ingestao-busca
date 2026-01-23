@@ -1,5 +1,7 @@
 from langchain_postgres.vectorstores import PGVector
 from config import Config
+import sqlalchemy as sa
+from sqlalchemy import text
 
 def get_vector_store(embeddings):
     """
@@ -21,4 +23,37 @@ def get_vector_store(embeddings):
         connection=Config.DATABASE_URL,
         use_jsonb=True,
     )
+
+
+def count_documents():
+    """
+    Conta o número de documentos no banco de dados vetorial de forma eficiente.
+    
+    Usa query SQL direta sem precisar gerar embeddings, tornando a operação
+    muito mais rápida e econômica.
+    
+    Returns:
+        int: Número de documentos no banco (0 se vazio ou erro)
+    """
+    try:
+        # Criar engine do SQLAlchemy
+        engine = sa.create_engine(Config.DATABASE_URL)
+        
+        # Nome da tabela é baseado no collection_name
+        table_name = f"langchain_pg_embedding"
+        
+        # Query SQL direta para contar documentos
+        query = text(f"SELECT COUNT(*) FROM {table_name} WHERE cmetadata->>'collection_name' = :collection")
+        
+        with engine.connect() as conn:
+            result = conn.execute(query, {"collection": Config.PG_VECTOR_COLLECTION_NAME})
+            count = result.scalar()
+            return count if count else 0
+            
+    except Exception as e:
+        # Em caso de erro (tabela não existe, conexão falhou, etc), retorna 0
+        return 0
+    finally:
+        if 'engine' in locals():
+            engine.dispose()
 
