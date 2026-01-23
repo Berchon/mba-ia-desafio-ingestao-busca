@@ -30,6 +30,8 @@ Este sistema permite:
 
 - ✅ Suporte para múltiplos provedores de IA (Google Gemini e OpenAI)
 - ✅ Configuração centralizada e validação automática
+- ✅ Arquitetura com Singleton Managers para Embeddings e LLM
+- ✅ Sistema de logging centralizado e consistente
 - ✅ Banco de dados vetorial PostgreSQL com pgVector
 - ✅ Chunking inteligente com overlap
 - ✅ Respostas baseadas apenas no contexto (sem alucinações)
@@ -280,7 +282,10 @@ mba-ia-desafio-ingestao-busca/
 │   ├── chat.py                        # CLI de interação
 │   ├── config.py                      # Configuração centralizada
 │   ├── database.py                    # Conexão com PGVector
+│   ├── embeddings_manager.py          # Singleton Manager de Embeddings
 │   ├── ingest.py                      # Script de ingestão
+│   ├── llm_manager.py                 # Singleton Manager de LLM
+│   ├── logger.py                      # Sistema de logging centralizado
 │   └── search.py                      # Módulo de busca semântica
 ├── .env                               # Variáveis de ambiente (não versionado)
 ├── .env.example                       # Template de configuração
@@ -398,14 +403,10 @@ No chat interativo, você pode usar:
 
 Consulte o arquivo [TODOs.md](TODOs.md) para ver as melhorias planejadas, incluindo:
 
-- Singleton de embeddings e abstração de provedor
-- Logging consistente
-- Validação de API keys
-- Melhorias no database (contagem eficiente, tratamento de erros)
-- Comandos adicionais (clear, stats)
-- Barra de progresso na ingestão
-- Retorno de fontes nas respostas
-- E muito mais!
+- Melhorias no database (contagem eficiente, tratamento de erros, repositório pattern)
+- Melhorias na ingestão (IDs determinísticos, confirmação de sobrescrita, metadados enriquecidos)
+- Comandos adicionais no chat (clear, stats, atalhos)
+- Melhorias de UX (indicador de progresso, modo silencioso)
 
 ## 🤖 Desenvolvido com Antigravity
 
