@@ -7,6 +7,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+---
+
+## [0.2.0] - 2026-01-23
+
 ### Adicionado
 - Singleton de Embeddings com abstração de provedor (Google/OpenAI) no módulo `src/embeddings_manager.py` (`946fbb1`)
 - Singleton de LLM com abstração de provedor (Google/OpenAI) no módulo `src/llm_manager.py` (`7025f72`)
@@ -16,6 +20,13 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Refatorado `ingest.py`, `search.py` e `chat.py` para utilizar os novos managers de Embeddings e LLM (`7c2a172`)
 - Atualizado workflow de desenvolvimento para incluir testes automáticos de subtasks (`e663baa`)
 - Refatorados todos os módulos (`ingest.py`, `search.py`, `chat.py`, `embeddings_manager.py`, `llm_manager.py`) para usar logger centralizado (`7af7e47`)
+- README.md atualizado com novas características e estrutura do projeto (`3b906c4`)
+
+### Melhorias de Infraestrutura
+- Arquitetura com padrão Singleton para Embeddings e LLM
+- Sistema de logging centralizado e consistente
+- Abstração completa de provedor (Google/OpenAI)
+- Validação de configuração já implementada desde v0.1.0
 
 ---
 
