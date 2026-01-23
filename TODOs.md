@@ -96,7 +96,7 @@
   - [x] Badge de versão: `![GitHub release](https://img.shields.io/github/v/release/usuario/repo)`
   - [x] Posicionar logo após o título principal
   - [x] Testar → Commit: `docs: add release version badge to README`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### A.2 Singleton de Embeddings e Abstração de Provedor (CC1)
 - [ ] **A.2.1** Criar `src/embeddings_manager.py`
