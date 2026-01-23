@@ -161,13 +161,13 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### B.4 Expandir para Repositório (DATABASE1)
-- [ ] **B.4.1** Criar classe `VectorStoreRepository`
-  - [ ] Métodos: count, clear, exists
-  - [ ] Testar → Commit: `refactor: create vector store repository class`
-- [ ] **B.4.2** Migrar código existente para nova classe
-  - [ ] Atualizar todos os imports
-  - [ ] Testar → Commit: `refactor: migrate to repository pattern`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **B.4.1** Criar classe `VectorStoreRepository`
+  - [x] Métodos: count, clear, exists
+  - [x] Testar → Commit: `refactor: create vector store repository class`
+- [x] **B.4.2** Migrar código existente para nova classe
+  - [x] Atualizar todos os imports
+  - [x] Testar → Commit: `refactor: migrate to repository pattern`
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
