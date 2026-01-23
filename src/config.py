@@ -28,8 +28,9 @@ class Config:
     GOOGLE_EMBEDDING_MODEL = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/text-embedding-004")
     GOOGLE_LLM_MODEL = os.getenv("GOOGLE_LLM_MODEL", "gemini-2.5-flash-lite")
     
-    # === Modelos OpenAI (para uso futuro) ===
+    # === Modelos OpenAI ===
     OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
+    OPENAI_LLM_MODEL = os.getenv("OPENAI_LLM_MODEL", "gpt-4o-mini")
     
     # === Configurações do Banco de Dados ===
     DATABASE_URL = os.getenv("DATABASE_URL")
@@ -43,6 +44,67 @@ class Config:
     # === Configurações de Busca/Retrieval ===
     TOP_K = int(os.getenv("TOP_K", "10"))
     RETRIEVAL_TEMPERATURE = float(os.getenv("RETRIEVAL_TEMPERATURE", "0"))
+    
+    # === Propriedades Agnósticas ao Provedor ===
+    # Estas propriedades retornam automaticamente os valores corretos
+    # baseados em qual provedor (Google ou OpenAI) está configurado
+    
+    @classmethod
+    @property
+    def API_KEY(cls):
+        """
+        Retorna a API key disponível (Google ou OpenAI).
+        Prioriza Google se ambas estiverem configuradas.
+        
+        Raises:
+            ValueError: Se nenhuma API key estiver configurada.
+        """
+        key = cls.GOOGLE_API_KEY or cls.OPENAI_API_KEY
+        if not key:
+            raise ValueError(
+                "Nenhuma API key configurada. Configure GOOGLE_API_KEY ou OPENAI_API_KEY no arquivo .env"
+            )
+        return key
+    
+    @classmethod
+    @property
+    def EMBEDDING_MODEL(cls):
+        """
+        Retorna o modelo de embedding apropriado baseado na API key disponível.
+        Se Google API key está configurada, retorna modelo Google.
+        Caso contrário, retorna modelo OpenAI.
+        
+        Raises:
+            ValueError: Se nenhuma API key estiver configurada.
+        """
+        if cls.GOOGLE_API_KEY:
+            return cls.GOOGLE_EMBEDDING_MODEL
+        elif cls.OPENAI_API_KEY:
+            return cls.OPENAI_EMBEDDING_MODEL
+        else:
+            raise ValueError(
+                "Nenhuma API key configurada. Configure GOOGLE_API_KEY ou OPENAI_API_KEY no arquivo .env"
+            )
+    
+    @classmethod
+    @property
+    def LLM_MODEL(cls):
+        """
+        Retorna o modelo LLM apropriado baseado na API key disponível.
+        Se Google API key está configurada, retorna modelo Google.
+        Caso contrário, retorna modelo OpenAI.
+        
+        Raises:
+            ValueError: Se nenhuma API key estiver configurada.
+        """
+        if cls.GOOGLE_API_KEY:
+            return cls.GOOGLE_LLM_MODEL
+        elif cls.OPENAI_API_KEY:
+            return cls.OPENAI_LLM_MODEL
+        else:
+            raise ValueError(
+                "Nenhuma API key configurada. Configure GOOGLE_API_KEY ou OPENAI_API_KEY no arquivo .env"
+            )
     
     @classmethod
     def validate_config(cls):
