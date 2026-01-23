@@ -262,6 +262,13 @@
   - [ ] Testar → Commit: `feat: handle empty database in questions`
 - [ ] **TESTE COMPLETO** → Merge com main
 
+#### E.4 Corrigir Warning de Shutdown (CHAT21)
+- [ ] **E.4.1** Adicionar cleanup adequado ao sair
+  - [ ] Implementar graceful shutdown para objetos assíncronos
+  - [ ] Fechar conexões do LangChain/httpx adequadamente
+  - [ ] Testar → Commit: `fix: add graceful shutdown to prevent sys.excepthook error`
+- [ ] **TESTE COMPLETO** → Merge com main
+
 ---
 
 ### FASE F: Chat Improvements - Comandos (Média Prioridade)
