@@ -119,11 +119,11 @@
 - [x] **A.3.1** Criar `src/logger.py` centralizado
   - [x] Configuração única de logging
   - [x] Testar → Commit: `feat: add centralized logger configuration`
-- [ ] **A.3.2** Refatorar todos arquivos
-  - [ ] Remover `logging.basicConfig()` duplicado
-  - [ ] Usar `logger = logging.getLogger(__name__)`
-  - [ ] Testar → Commit: `refactor: use centralized logging`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **A.3.2** Refatorar todos arquivos
+  - [x] Remover `logging.basicConfig()` duplicado
+  - [x] Usar `logger = logging.getLogger(__name__)`
+  - [x] Testar → Commit: `refactor: use centralized logging`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### A.4 Validação de API Key (CC5, CHAT18)
 - [ ] **A.4.1** Adicionar validação no `config.py`

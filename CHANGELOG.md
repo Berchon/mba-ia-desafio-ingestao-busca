@@ -15,6 +15,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ### Alterado
 - Refatorado `ingest.py`, `search.py` e `chat.py` para utilizar os novos managers de Embeddings e LLM (`7c2a172`)
 - Atualizado workflow de desenvolvimento para incluir testes automáticos de subtasks (`e663baa`)
+- Refatorados todos os módulos (`ingest.py`, `search.py`, `chat.py`, `embeddings_manager.py`, `llm_manager.py`) para usar logger centralizado (`7af7e47`)
 
 ---
 
