@@ -23,7 +23,7 @@ description: Workflow de desenvolvimento do projeto RAG
 3. **DEVOLVER CONTROLE** ao usuário para testar
 4. Usuário testa e valida
 5. **PERGUNTAR**: "Posso fazer o commit e merge desta subtask?"
-6. Se OK → Commit → Merge para main → Atualizar TODOs.md → Próxima subtask
+6. Se OK → Commit → Atualizar CHANGELOG.md → Merge para main → Atualizar TODOs.md → Próxima subtask
 7. Se NOK → Ajustar → Repetir ciclo
 
 #### Para CADA Grupo de Subtasks (ex: A.1):
@@ -49,6 +49,40 @@ description: Workflow de desenvolvimento do projeto RAG
 - Antes de commit: teste de subtask
 - Antes de merge: teste completo da task
 - Aplicação deve funcionar após cada commit
+
+### Manutenção do CHANGELOG
+- **QUANDO**: Atualizar CHANGELOG.md após cada commit, antes do merge para main
+- **COMO**: 
+  1. Adicionar entrada na seção `[Não Lançado]` com a mudança
+  2. Categorizar como: Adicionado, Alterado, Corrigido, Removido, etc
+  3. Usar descrição clara e concisa
+  4. Incluir hash do commit se relevante
+- **EXEMPLO**:
+  ```markdown
+  ## [Não Lançado]
+  
+  ### Adicionado
+  - Sistema de cache para embeddings (`abc1234`)
+  
+  ### Corrigido
+  - Bug na validação de API keys (`def5678`)
+  ```
+
+### Manutenção do README
+- **QUANDO**: Atualizar README.md sempre que uma modificação depreciar ou alterar informações existentes
+- **EXEMPLOS DE QUANDO ATUALIZAR**:
+  - Mudança na forma de executar comandos
+  - Novas variáveis de ambiente adicionadas ou alteradas
+  - Novos comandos ou funcionalidades disponíveis
+  - Mudanças na estrutura de arquivos
+  - Alterações em dependências ou requisitos
+  - Novos passos de instalação ou configuração
+- **COMO**:
+  1. Identificar seções afetadas pela mudança
+  2. Atualizar informações desatualizadas
+  3. Adicionar novas seções se necessário
+  4. Manter exemplos e instruções sincronizados com o código
+  5. Testar instruções para garantir que funcionam
 
 ## 🎯 Aplicar Este Workflow
 
