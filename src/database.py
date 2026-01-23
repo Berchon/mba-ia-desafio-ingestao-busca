@@ -39,11 +39,13 @@ def count_documents():
         # Criar engine do SQLAlchemy
         engine = sa.create_engine(Config.DATABASE_URL)
         
-        # Nome da tabela é baseado no collection_name
-        table_name = f"langchain_pg_embedding"
-        
-        # Query SQL direta para contar documentos
-        query = text(f"SELECT COUNT(*) FROM {table_name} WHERE cmetadata->>'collection_name' = :collection")
+        # Query SQL com JOIN para filtrar por nome da coleção
+        query = text("""
+            SELECT COUNT(*) 
+            FROM langchain_pg_embedding e
+            JOIN langchain_pg_collection c ON e.collection_id = c.uuid
+            WHERE c.name = :collection
+        """)
         
         with engine.connect() as conn:
             result = conn.execute(query, {"collection": Config.PG_VECTOR_COLLECTION_NAME})

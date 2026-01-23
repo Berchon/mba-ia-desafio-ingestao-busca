@@ -44,7 +44,7 @@ def display_welcome(doc_count):
     print("="*70)
     
     if doc_count > 0:
-        print("✅ Status: Banco de dados conectado com documentos disponíveis")
+        print(f"✅ Status: Banco de dados conectado com {doc_count} documentos disponíveis")
     else:
         print("⚠️  Status: Banco de dados vazio")
         print("💡 Dica: Use o comando 'add <caminho_pdf>' para adicionar documentos")

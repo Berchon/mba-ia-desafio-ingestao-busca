@@ -7,6 +7,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+### Adicionado
+- Contador de documentos eficiente no banco de dados vetorial usando SQL direto (`src/database.py`)
+- Exibição do número real de documentos na tela de boas-vindas do chat (`src/chat.py`)
+
+### Corrigido
+- Bug na query de contagem de documentos que sempre retornava 0 devido a filtragem incorreta de metadados (`src/database.py`)
+- Remoção de variável não utilizada `table_name` em `src/database.py`
+
 ---
 
 ## [0.2.0] - 2026-01-23
