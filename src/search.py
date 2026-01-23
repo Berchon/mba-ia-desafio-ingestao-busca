@@ -1,22 +1,14 @@
-import os
 import logging
-from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from database import get_vector_store
+from config import Config
 
 # Configuração de Logs
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
-
-load_dotenv()
-
-# Variáveis de Ambiente
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-EMBEDDING_MODEL = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/text-embedding-004")
-LLM_MODEL = os.getenv("GOOGLE_LLM_MODEL", "gemini-2.5-flash-lite")
 
 # Template do Prompt (conforme requisitos.md)
 PROMPT_TEMPLATE = """
@@ -57,13 +49,13 @@ def search_prompt(question=None):
     Returns:
         RunnableSequence: Chain configurada do LangChain (pronta para .invoke())
     """
-    if not GOOGLE_API_KEY:
+    if not Config.GOOGLE_API_KEY:
         logger.error("GOOGLE_API_KEY não encontrada no arquivo .env")
         return None
     
     try:
         # 1. Inicializar Embeddings
-        embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
+        embeddings = GoogleGenerativeAIEmbeddings(model=Config.GOOGLE_EMBEDDING_MODEL)
         
         # 2. Conectar ao Vector Store
         vector_store = get_vector_store(embeddings)
@@ -71,13 +63,13 @@ def search_prompt(question=None):
         # 3. Criar Retriever (k=10 conforme requisitos)
         retriever = vector_store.as_retriever(
             search_type="similarity",
-            search_kwargs={"k": 10}
+            search_kwargs={"k": Config.TOP_K}
         )
         
         # 4. Inicializar LLM
         llm = ChatGoogleGenerativeAI(
-            model=LLM_MODEL,
-            temperature=0,  # Respostas determinísticas baseadas no contexto
+            model=Config.GOOGLE_LLM_MODEL,
+            temperature=Config.RETRIEVAL_TEMPERATURE,
         )
         
         # 5. Criar o Prompt Template
