@@ -2,6 +2,9 @@ from langchain_postgres.vectorstores import PGVector
 from config import Config
 import sqlalchemy as sa
 from sqlalchemy import text
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 def get_vector_store(embeddings):
     """
@@ -17,6 +20,7 @@ def get_vector_store(embeddings):
         raise ValueError("Configurações de banco (DATABASE_URL ou PG_VECTOR_COLLECTION_NAME) não encontradas no .env")
 
     # Inicialização do Vector Store usando langchain-postgres
+    logger.info(f"Conectando ao banco de dados: {Config.PG_VECTOR_COLLECTION_NAME}")
     return PGVector(
         embeddings=embeddings,
         collection_name=Config.PG_VECTOR_COLLECTION_NAME,
@@ -48,12 +52,15 @@ def count_documents():
         """)
         
         with engine.connect() as conn:
+            logger.debug(f"Consultando contagem de documentos para a coleção: {Config.PG_VECTOR_COLLECTION_NAME}")
             result = conn.execute(query, {"collection": Config.PG_VECTOR_COLLECTION_NAME})
             count = result.scalar()
+            logger.info(f"Contagem de documentos finalizada: {count} documentos encontrados")
             return count if count else 0
             
     except Exception as e:
         # Em caso de erro (tabela não existe, conexão falhou, etc), retorna 0
+        logger.warning(f"Erro ao contar documentos (o banco pode estar vazio ou tabelas não criadas): {e}")
         return 0
     finally:
         if 'engine' in locals():
