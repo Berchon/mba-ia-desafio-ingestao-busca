@@ -68,10 +68,10 @@
 **Branch**: `feature/infrastructure-improvements`
 
 #### A.1 Config Centralizado (CC2)
-- [ ] **A.1.1** Criar arquivo `src/config.py`
-  - [ ] Classe `Config` com todas variáveis de ambiente
-  - [ ] Método `validate_config()` para validação
-  - [ ] Testar → Commit: `feat: add centralized config module`
+- [x] **A.1.1** Criar arquivo `src/config.py`
+  - [x] Classe `Config` com todas variáveis de ambiente
+  - [x] Método `validate_config()` para validação
+  - [x] Testar → Commit: `feat: add centralized config module`
 - [ ] **A.1.2** Refatorar `database.py` para usar Config
   - [ ] Remover variáveis locais, importar de Config
   - [ ] Testar → Commit: `refactor: use centralized config in database`
