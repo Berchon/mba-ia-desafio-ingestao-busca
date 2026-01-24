@@ -355,7 +355,21 @@ def process_question(chain, question):
         question: Pergunta do usuário
     """
     try:
-        print("🔍 Buscando resposta...\n")
+        # Mostrar etapas do processo
+        print("🔍 Recuperando informações relevantes...")
+        # A chain irá processar, mas queremos feedback visual
+        
+        # Como o invoke é síncrono e opaco para os prints internos, 
+        # poderiamos usar callbacks do LangChain se quiséssemos algo mais granulado,
+        # mas para UX simples de terminal, prints antes de etapas bastam se soubermos onde ocorrem.
+        # No entanto, a chain.invoke executa tudo de uma vez.
+        
+        # Vamos manter o print de "Gerando resposta" logo após se tivéssemos etapas separadas,
+        # mas como está em uma RunnableSequence única, vamos apenas mudar a mensagem inicial
+        # para algo que indique o processo completo ou usar a função search_with_sources
+        # se quisermos mais controle.
+        
+        print("🧠 Gerando resposta baseada nos documentos...\n")
         response = chain.invoke(question)
         
         print("-" * 70)
