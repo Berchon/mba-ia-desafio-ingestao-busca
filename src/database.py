@@ -105,6 +105,29 @@ class VectorStoreRepository:
             logger.error(f"Erro ao contar fontes: {e}")
             return 0
 
+    def list_sources(self) -> list:
+        """
+        Lista todas as fontes únicas (arquivos) na coleção.
+        
+        Returns:
+            list: Lista de nomes de arquivos/fontes
+        """
+        query = text("""
+            SELECT DISTINCT e.cmetadata->>'source'
+            FROM langchain_pg_embedding e
+            JOIN langchain_pg_collection c ON e.collection_id = c.uuid
+            WHERE c.name = :collection
+            ORDER BY e.cmetadata->>'source'
+        """)
+        
+        try:
+            with self.engine.connect() as conn:
+                result = conn.execute(query, {"collection": Config.PG_VECTOR_COLLECTION_NAME})
+                return [row[0] for row in result if row[0]]
+        except Exception as e:
+            logger.error(f"Erro ao listar fontes: {e}")
+            return []
+
     def exists(self) -> bool:
         """Verifica se existem documentos na coleção."""
         return self.count() > 0

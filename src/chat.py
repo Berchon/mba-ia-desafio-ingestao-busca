@@ -87,6 +87,9 @@ def display_help():
     print("\n🧹 LIMPAR BASE (ADMIN):")
     print("   clear                  Remove todos os documentos do banco")
     
+    print("\n📊 ESTATÍSTICAS:")
+    print("   stats                  Mostra estatísticas detalhadas do banco")
+    
     print("="*70 + "\n")
 
 
@@ -207,6 +210,50 @@ def is_clear_command(text):
     return text.lower().strip() == 'clear'
 
 
+def is_stats_command(text):
+    """
+    Verifica se o comando é de estatísticas.
+    
+    Args:
+        text: Texto do usuário
+        
+    Returns:
+        bool: True se for comando de estatísticas
+    """
+    return text.lower().strip() == 'stats'
+
+
+def handle_stats_command():
+    """
+    Exibe estatísticas detalhadas do banco de dados.
+    """
+    from database import VectorStoreRepository
+    repo = VectorStoreRepository()
+    
+    num_chunks = repo.count()
+    sources = repo.list_sources()
+    num_sources = len(sources)
+    
+    print("\n" + "="*70)
+    print("📊 ESTATÍSTICAS DO BANCO DE DADOS")
+    print("="*70)
+    
+    if num_chunks == 0:
+        print("A base de dados está vazia.")
+    else:
+        print(f"🔹 Total de trechos (chunks): {num_chunks}")
+        print(f"🔹 Total de arquivos:        {num_sources}")
+        
+        if sources:
+            print("\n📄 Arquivos na base:")
+            for i, src in enumerate(sources, 1):
+                # Tentar extrair apenas o nome do arquivo se for um caminho
+                filename = os.path.basename(src)
+                print(f"   {i}. {filename} ({src})")
+    
+    print("="*70 + "\n")
+
+
 def handle_clear_command():
     """
     Processa o comando de limpeza da base de dados com confirmação.
@@ -287,6 +334,9 @@ def chat_loop(chain):
             
             elif is_clear_command(user_input):
                 handle_clear_command()
+            
+            elif is_stats_command(user_input):
+                handle_stats_command()
             
             else:
                 # Verificar se há documentos antes de perguntar
