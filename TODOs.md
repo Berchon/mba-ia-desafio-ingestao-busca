@@ -175,10 +175,10 @@
 **Branch**: `feature/ingest-improvements`
 
 #### C.1 IDs Determinísticos (INGEST1)
-- [ ] **C.1.1** Implementar Cenário A (Nome do Arquivo + Índice)
-  - [ ] Garantir que IDs sejam únicos por arquivo (ex: doc.pdf-0, doc.pdf-1)
-  - [ ] Testar → Commit: `feat: implement file-based deterministic IDs`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **C.1.1** Implementar Cenário A (Nome do Arquivo + Índice)
+  - [x] Garantir que IDs sejam únicos por arquivo (ex: doc.pdf-0, doc.pdf-1)
+  - [x] Testar → Commit: `feat: implement file-based deterministic IDs`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### C.2 Limpeza Automática por Source (INGEST2, CHAT6)
 - [ ] **C.2.1** Implementar `delete_by_source()` no `VectorStoreRepository`

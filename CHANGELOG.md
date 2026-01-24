@@ -14,6 +14,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Tratamento de erros específicos de conexão (OperationalError) e tabelas ausentes (ProgrammingError) (`src/database.py`) (`5be4ed1`)
 - Implementação do padrão Repository com a classe `VectorStoreRepository` (`src/database.py`) (`cbc68f9`)
 - Novo comando `clear` no Chat CLI para limpeza total da base de dados (`src/chat.py`) (`cbc68f9`)
+- Implementação de IDs determinísticos baseados no nome do arquivo (Cenário A) (`src/ingest.py`) (`af396e7`)
 
 ### Corrigido
 - Bug na query de contagem de documentos que sempre retornava 0 devido a filtragem incorreta de metadados (`src/database.py`) (`36dc8e3`)
