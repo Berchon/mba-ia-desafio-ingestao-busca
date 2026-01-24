@@ -8,6 +8,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+- Novo comando `remove` no Chat CLI para remover arquivos específicos da base com confirmação (`6279bf9`)
 - Novo comando `stats` no Chat CLI para exibir estatísticas detalhadas do banco de dados (`b84c137`)
 - Novo comando `clear` no Chat CLI com confirmação de segurança e verificação de banco vazio (`a395130`)
 - Novo método `count_sources` no `VectorStoreRepository` para contagem de arquivos únicos (`276e684`)

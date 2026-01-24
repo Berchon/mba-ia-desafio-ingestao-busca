@@ -288,10 +288,10 @@
   - [x] Testar → Commit: `feat: add stats command`
 
 #### F.3 Comando remove <arquivo> (Novo)
-- [ ] **F.3.1** Implementar comando `remove <nome_arquivo>` ou `delete <nome_arquivo>`
-  - [ ] Permitir remover dados de apenas um documento específico
-  - [ ] Testar → Commit: `feat: add remove by file command to chat`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **F.3.1** Implementar comando `remove <nome_arquivo>` ou `delete <nome_arquivo>`
+  - [x] Permitir remover dados de apenas um documento específico
+  - [x] Testar → Commit: `feat: add remove by file command to chat`
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
