@@ -45,9 +45,13 @@ def ingest_pdf(pdf_path: str = None):
     total_chunks = len(splits)
     logger.info(f"Enriquecendo metadados para {total_chunks} fragmentos...")
     
+    from tqdm import tqdm
+    
     enriched_docs = []
     ids = []
-    for i, doc in enumerate(splits):
+    
+    # Usando tqdm para mostrar progresso no processamento de metadados
+    for i, doc in enumerate(tqdm(splits, desc="Processando fragmentos", unit="chunk")):
         # Limpar metadados nulos/vazios
         meta = {k: v for k, v in doc.metadata.items() if v not in ("", None)}
         
@@ -79,10 +83,35 @@ def ingest_pdf(pdf_path: str = None):
     logger.info(f"Limpando dados antigos da fonte: {target_pdf}...")
     repo.delete_by_source(target_pdf)
 
-    # 7. Inserção ou Atualização no Banco
-    logger.info(f"Enviando {len(enriched_docs)} fragmentos para o PGVector...")
-    repo.add_documents(enriched_docs, ids=ids)
+    # 7. Inserção ou Atualização no Banco (com barra de progresso e batching)
+    batch_size = 16  # Tamanho do lote para enviar ao banco/embedding
+    
+    # Forçar inicialização do vector_store fora do loop para não quebrar o visual da barra de progresso
+    _ = repo.vector_store
+    
+    logger.info(f"Enviando {len(enriched_docs)} fragmentos para o PGVector em lotes de {batch_size}...")
+    
+    for i in tqdm(range(0, len(enriched_docs), batch_size), desc="Gerando embeddings e salvando", unit="batch"):
+        batch_docs = enriched_docs[i : i + batch_size]
+        batch_ids = ids[i : i + batch_size]
+        repo.add_documents(batch_docs, ids=batch_ids)
+
     logger.info("PROCESSO DE INGESTÃO CONCLUÍDO COM SUCESSO! ✅")
+    
+    # Exibir estatísticas finais
+    avg_chunk_size = sum(len(d.page_content) for d in enriched_docs) / total_chunks if total_chunks > 0 else 0
+    
+    print("\n" + "="*70)
+    print("📊 ESTATÍSTICAS DE INGESTÃO")
+    print("="*70)
+    print(f"📄 Arquivo:           {filename}")
+    print(f"📑 Total de Páginas:   {len(docs)}")
+    print(f"🧱 Total de Chunks:    {total_chunks}")
+    print(f"📏 Tamanho Médio:      {avg_chunk_size:.1f} caracteres")
+    print(f"🆔 Chunks IDs:         {filename}-0 até {filename}-{total_chunks-1}")
+    print(f"🔗 Banco de Dados:     {Config.PG_VECTOR_COLLECTION_NAME}")
+    print("="*70 + "\n")
+    
     return True
 
 if __name__ == "__main__":
