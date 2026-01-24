@@ -322,9 +322,9 @@
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.5 Estatísticas de Resposta (CHAT14)
-- [ ] **G.5.1** Mostrar tempo e chunks usados
-  - [ ] Flag --verbose
-  - [ ] Testar → Commit: `feat: add response statistics`
+- [x] **G.5.1** Mostrar tempo e chunks usados
+  - [x] Flag --verbose
+  - [x] Testar → Commit: `feat: add response statistics`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 ---
