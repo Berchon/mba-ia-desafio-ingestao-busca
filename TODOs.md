@@ -187,7 +187,7 @@
 - [x] **C.2.2** Integrar limpeza no fluxo de `ingest_pdf()`
   - [x] Limpar dados antigos do arquivo antes de realizar a nova ingestão
   - [x] Testar → Commit: `feat: auto-clean old file data before ingestion`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### C.3 Enriquecer Metadados (INGEST6)
 - [ ] **C.3.1** Adicionar metadados úteis aos chunks
