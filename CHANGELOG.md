@@ -7,6 +7,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+### Corrigido
+- Padronização do argumento de arquivo no chat de `-file` para `-f, --file` para seguir convenções de CLI (`75dbaaa`)
+
 ---
 
 ## [0.3.0] - 2026-01-24
