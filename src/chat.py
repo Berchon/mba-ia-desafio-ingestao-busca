@@ -14,38 +14,41 @@ logger = get_logger(__name__, level=logging.WARNING)
 
 def check_database_status():
     """
-    Verifica quantos documentos existem no banco de dados vetorial.
+    Verifica quantos registros e arquivos existem no banco de dados vetorial.
     
     Returns:
-        int: Número de documentos no banco (0 se vazio ou erro)
+        tuple: (num_chunks, num_sources)
     """
     try:
         from database import VectorStoreRepository
         repo = VectorStoreRepository()
-        count = repo.count()
+        num_chunks = repo.count()
+        num_sources = repo.count_sources()
         
-        if count > 0:
-            logger.info(f"Banco contém {count} documentos")
+        if num_chunks > 0:
+            logger.info(f"Banco contém {num_chunks} chunks de {num_sources} arquivos")
         
-        return count
+        return num_chunks, num_sources
     except Exception as e:
         logger.warning(f"Não foi possível verificar o status do banco: {e}")
-        return 0
+        return 0, 0
 
 
-def display_welcome(doc_count):
+def display_welcome(counts):
     """
     Exibe mensagem de boas-vindas com status do banco.
     
     Args:
-        doc_count: Número de documentos no banco
+        counts: Tupla (num_chunks, num_sources)
     """
+    num_chunks, num_sources = counts
     print("\n" + "="*70)
     print("🤖 CHAT RAG - Sistema de Busca Semântica com LangChain")
     print("="*70)
     
-    if doc_count > 0:
-        print(f"✅ Status: Banco de dados conectado com {doc_count} documentos disponíveis")
+    if num_chunks > 0:
+        plural_files = "arquivos" if num_sources > 1 else "arquivo"
+        print(f"✅ Status: Banco conectado com {num_chunks} trechos de {num_sources} {plural_files}")
     else:
         print("⚠️  Status: Banco de dados vazio")
         print("💡 Dica: Use o comando 'add <caminho_pdf>' para adicionar documentos")
@@ -295,10 +298,10 @@ def main():
             print("⚠️  Continuando mesmo com falha na ingestão...\n")
     
     # Verificar status do banco
-    doc_count = check_database_status()
+    counts = check_database_status()
     
     # Exibir boas-vindas
-    display_welcome(doc_count)
+    display_welcome(counts)
     
     # Inicializar chain de busca
     print("🔧 Inicializando sistema de busca...\n")

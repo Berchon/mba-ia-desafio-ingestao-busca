@@ -82,6 +82,29 @@ class VectorStoreRepository:
             logger.error(f"Erro inesperado ao contar documentos: {e}")
             return 0
 
+    def count_sources(self) -> int:
+        """
+        Conta o número de fontes únicas (arquivos) na coleção.
+        
+        Returns:
+            int: Número de fontes (0 se vazio ou erro)
+        """
+        query = text("""
+            SELECT COUNT(DISTINCT e.cmetadata->>'source') 
+            FROM langchain_pg_embedding e
+            JOIN langchain_pg_collection c ON e.collection_id = c.uuid
+            WHERE c.name = :collection
+        """)
+        
+        try:
+            with self.engine.connect() as conn:
+                result = conn.execute(query, {"collection": Config.PG_VECTOR_COLLECTION_NAME})
+                count = result.scalar()
+                return count if count else 0
+        except Exception as e:
+            logger.error(f"Erro ao contar fontes: {e}")
+            return 0
+
     def exists(self) -> bool:
         """Verifica se existem documentos na coleção."""
         return self.count() > 0
