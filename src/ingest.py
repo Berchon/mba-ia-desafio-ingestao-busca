@@ -50,9 +50,11 @@ def ingest_pdf(pdf_path: str = None):
         for doc in splits
     ]
     
-    # 4. Geração de IDs Determinísticos
-    # Isso permite que, se rodarmos o mesmo PDF, ele atualize os dados em vez de duplicar
-    ids = [f"doc-{i}" for i in range(len(enriched_docs))]
+    # 4. Geração de IDs Determinísticos (Cenário A: Nome do Arquivo + Índice)
+    # Isso garante que documentos de arquivos diferentes não colidam mesmo que tenham o mesmo índice.
+    filename = os.path.basename(target_pdf)
+    ids = [f"{filename}-{i}" for i in range(len(enriched_docs))]
+    logger.info(f"Gerados {len(ids)} IDs únicos para o arquivo {filename}.")
 
     # 5. Embeddings e Vetorização
     logger.info("Preparando inserção no banco de dados vetorial...")

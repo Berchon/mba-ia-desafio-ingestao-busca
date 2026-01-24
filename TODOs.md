@@ -175,21 +175,18 @@
 **Branch**: `feature/ingest-improvements`
 
 #### C.1 IDs Determinísticos (INGEST1)
-- [ ] **C.1.1** Escolher estratégia (hash vs limpar vs metadata)
-  - [ ] Implementar solução escolhida
-  - [ ] Testar → Commit: `fix: improve document id generation strategy`
+- [ ] **C.1.1** Implementar Cenário A (Nome do Arquivo + Índice)
+  - [ ] Garantir que IDs sejam únicos por arquivo (ex: doc.pdf-0, doc.pdf-1)
+  - [ ] Testar → Commit: `feat: implement file-based deterministic IDs`
 - [ ] **TESTE COMPLETO** → Merge com main
 
-#### C.2 Confirmação de Sobrescrita (INGEST2, CHAT6)
-- [ ] **C.2.1** Adicionar parâmetro `force` no ingest_pdf()
-  - [ ] Verificar contagem antes de ingest
-  - [ ] Testar → Commit: `feat: add force parameter to ingest`
-- [ ] **C.2.2** Adicionar confirmação interativa
-  - [ ] Perguntar ao usuário se sobrescrever
-  - [ ] Testar → Commit: `feat: add overwrite confirmation`
-- [ ] **C.2.3** Atualizar chat.py para usar confirmação
-  - [ ] Integrar com handle_add_command
-  - [ ] Testar → Commit: `feat: integrate overwrite confirmation in chat`
+#### C.2 Limpeza Automática por Source (INGEST2, CHAT6)
+- [ ] **C.2.1** Implementar `delete_by_source()` no `VectorStoreRepository`
+  - [ ] Lógica para apagar todos os chunks que tenham o mesmo `metadata['source']`
+  - [ ] Testar → Commit: `feat: add delete by source to repository`
+- [ ] **C.2.2** Integrar limpeza no fluxo de `ingest_pdf()`
+  - [ ] Limpar dados antigos do arquivo antes de realizar a nova ingestão
+  - [ ] Testar → Commit: `feat: auto-clean old file data before ingestion`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### C.3 Enriquecer Metadados (INGEST6)
@@ -284,6 +281,12 @@
 - [ ] **F.2.1** Implementar comando `stats`
   - [ ] Mostrar estatísticas do banco
   - [ ] Testar → Commit: `feat: add stats command`
+- [ ] **TESTE COMPLETO** → Merge com main
+
+#### F.3 Comando remove <arquivo> (Novo)
+- [ ] **F.3.1** Implementar comando `remove <nome_arquivo>` ou `delete <nome_arquivo>`
+  - [ ] Permitir remover dados de apenas um documento específico
+  - [ ] Testar → Commit: `feat: add remove by file command to chat`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 ---
