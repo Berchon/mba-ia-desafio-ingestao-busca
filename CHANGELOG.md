@@ -8,6 +8,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+- Prompt simplificado (`>`) no Chat CLI após a primeira instrução para uma interface mais limpa (`e540e31`)
 - Novo comando `remove` no Chat CLI para remover arquivos específicos da base com confirmação (`6279bf9`)
 - Novo comando `stats` no Chat CLI para exibir estatísticas detalhadas do banco de dados (`b84c137`)
 - Novo comando `clear` no Chat CLI com confirmação de segurança e verificação de banco vazio (`a395130`)

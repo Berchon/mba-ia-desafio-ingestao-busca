@@ -299,9 +299,9 @@
 **Branch**: `feature/chat-ux-improvements`
 
 #### G.1 Simplificar Prompt (CHAT8)
-- [ ] **G.1.1** Prompt simplificado após primeira vez
-  - [ ] Apenas `>` depois da primeira pergunta
-  - [ ] Testar → Commit: `feat: simplify prompt after first question`
+- [x] **G.1.1** Prompt simplificado após primeira vez
+  - [x] Apenas `>` depois da primeira pergunta
+  - [x] Testar → Commit: `feat: simplify prompt after first question`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.2 Indicador de Progresso (CHAT7)
