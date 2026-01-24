@@ -71,7 +71,8 @@ def display_help():
     print("\n📄 GERENCIAR DOCUMENTOS:")
     print("   add <caminho_pdf>      Adicionar novo PDF ao banco de dados")
     print("   ingest <caminho_pdf>   (Mesmo que 'add')")
-    print("   Exemplo: add document.pdf")
+    print("   remove <nome_arquivo>  Remove um arquivo específico da base")
+    print("   Exemplo: remove document.pdf")
     
     print("\n❓ AJUDA:")
     print("   help                   Mostrar esta mensagem de ajuda")
@@ -194,7 +195,8 @@ def is_add_command(text):
     Returns:
         bool: True se for comando de adição
     """
-    return text.lower().strip().startswith(('add ', 'ingest '))
+    cleaned = text.lower().strip()
+    return cleaned == 'add' or cleaned == 'ingest' or cleaned.startswith(('add ', 'ingest '))
 
 
 def is_clear_command(text):
@@ -221,6 +223,68 @@ def is_stats_command(text):
         bool: True se for comando de estatísticas
     """
     return text.lower().strip() == 'stats'
+
+
+def is_remove_command(text):
+    """
+    Verifica se o comando é de remover um arquivo.
+    
+    Args:
+        text: Texto do usuário
+        
+    Returns:
+        bool: True se for comando de remoção
+    """
+    cleaned = text.lower().strip()
+    return cleaned == 'remove' or cleaned == 'delete' or cleaned.startswith(('remove ', 'delete '))
+
+
+def handle_remove_command(user_input):
+    """
+    Processa a remoção de um arquivo específico da base.
+    
+    Args:
+        user_input: Entrada do usuário (ex: 'remove document.pdf')
+    """
+    parts = user_input.strip().split(maxsplit=1)
+    
+    if len(parts) < 2:
+        print("❌ Erro: Você deve especificar o nome do arquivo a ser removido.")
+        print("   Uso: remove <nome_arquivo>")
+        return
+    
+    source_name = parts[1].strip()
+    
+    from database import VectorStoreRepository
+    repo = VectorStoreRepository()
+    
+    # Verificar se o arquivo existe na base
+    # O source no metadados pode ser o caminho completo ou apenas o nome
+    # Vamos listar as fontes para validar
+    sources = repo.list_sources()
+    
+    # Tentar encontrar correspondência exata ou pelo nome do arquivo
+    target_source = None
+    for src in sources:
+        if src == source_name or os.path.basename(src) == source_name:
+            target_source = src
+            break
+            
+    if not target_source:
+        print(f"⚠️  Arquivo '{source_name}' não encontrado na base de dados.")
+        print("💡 Use o comando 'stats' para ver a lista de arquivos disponíveis.")
+        return
+
+    print(f"\n⚠️  Você está prestes a remover TODOS os dados relacionados a: {target_source}")
+    confirm = input("Tem certeza que deseja continuar? (sim/n): ").strip().lower()
+    
+    if confirm == 'sim':
+        if repo.delete_by_source(target_source):
+            print(f"✅ Arquivo '{source_name}' removido com sucesso!\n")
+        else:
+            print(f"❌ Erro ao remover o arquivo '{source_name}'.\n")
+    else:
+        print("Operação cancelada.\n")
 
 
 def handle_stats_command():
@@ -337,6 +401,9 @@ def chat_loop(chain):
             
             elif is_stats_command(user_input):
                 handle_stats_command()
+            
+            elif is_remove_command(user_input):
+                handle_remove_command(user_input)
             
             else:
                 # Verificar se há documentos antes de perguntar
