@@ -248,29 +248,29 @@
 **Branch**: `feature/chat-technical-improvements`
 
 #### E.1 Corrigir Argumento --file (CHAT16)
-- [ ] **E.1.1** Mudar de `-file` para `-f, --file`
-  - [ ] Atualizar argparse
-  - [ ] Testar → Commit: `fix: correct file argument to standard format`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **E.1.1** Mudar de `-file` para `-f, --file`
+  - [x] Atualizar argparse
+  - [x] Testar → Commit: `fix: correct file argument to standard format`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### E.2 Feedback Visual (CHAT4)
-- [ ] **E.2.1** Mostrar contagem exata de documentos
-  - [ ] Usar count_documents() eficiente
-  - [ ] Testar → Commit: `feat: show exact document count`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **E.2.1** Mostrar contagem exata de documentos
+  - [x] Usar count_documents() eficiente
+  - [x] Testar → Commit: `feat: show exact document count`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### E.3 Tratamento de Banco Vazio (CHAT20)
-- [ ] **E.3.1** Verificar banco antes de perguntas
-  - [ ] Mensagem clara se vazio
-  - [ ] Testar → Commit: `feat: handle empty database in questions`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **E.3.1** Verificar banco antes de perguntas
+  - [x] Mensagem clara se vazio
+  - [x] Testar → Commit: `feat: handle empty database in questions`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### E.4 Corrigir Warning de Shutdown (CHAT21)
-- [ ] **E.4.1** Adicionar cleanup adequado ao sair
-  - [ ] Implementar graceful shutdown para objetos assíncronos
-  - [ ] Fechar conexões do LangChain/httpx adequadamente
-  - [ ] Testar → Commit: `fix: add graceful shutdown to prevent sys.excepthook error`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **E.4.1** Adicionar cleanup adequado ao sair
+  - [x] Implementar graceful shutdown para objetos assíncronos
+  - [x] Fechar conexões do LangChain/httpx adequadamente
+  - [x] Testar → Commit: `fix: add graceful shutdown to prevent sys.excepthook error`
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
@@ -278,16 +278,14 @@
 **Branch**: `feature/chat-commands`
 
 #### F.1 Comando clear (CHAT9)
-- [ ] **F.1.1** Implementar comando `clear`
-  - [ ] Confirmação antes de limpar
-  - [ ] Testar → Commit: `feat: add clear command`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **F.1.1** Implementar comando `clear`
+  - [x] Confirmação antes de limpar
+  - [x] Testar → Commit: `feat: add clear command`
 
 #### F.2 Comando stats (CHAT15)
-- [ ] **F.2.1** Implementar comando `stats`
-  - [ ] Mostrar estatísticas do banco
-  - [ ] Testar → Commit: `feat: add stats command`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **F.2.1** Implementar comando `stats`
+  - [x] Mostrar estatísticas do banco
+  - [x] Testar → Commit: `feat: add stats command`
 
 #### F.3 Comando remove <arquivo> (Novo)
 - [ ] **F.3.1** Implementar comando `remove <nome_arquivo>` ou `delete <nome_arquivo>`
