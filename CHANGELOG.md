@@ -8,6 +8,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+- Novo comando `clear` no Chat CLI com confirmação de segurança e verificação de banco vazio (`feature/chat-clear-command`)
 - Novo método `count_sources` no `VectorStoreRepository` para contagem de arquivos únicos (`276e684`)
 - Feedback visual no Chat CLI mostrando contagem de trechos e arquivos (`276e684`)
 - Tratamento de banco de dados vazio no chat, impedindo perguntas sem documentos e orientando o usuário (`9eab3cc`)

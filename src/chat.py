@@ -194,6 +194,47 @@ def is_add_command(text):
     return text.lower().strip().startswith(('add ', 'ingest '))
 
 
+def is_clear_command(text):
+    """
+    Verifica se o comando é de limpar a base.
+    
+    Args:
+        text: Texto do usuário
+        
+    Returns:
+        bool: True se for comando de limpeza
+    """
+    return text.lower().strip() == 'clear'
+
+
+def handle_clear_command():
+    """
+    Processa o comando de limpeza da base de dados com confirmação.
+    
+    Returns:
+        bool: True se a base foi limpa, False caso contrário
+    """
+    from database import VectorStoreRepository
+    repo = VectorStoreRepository()
+    
+    # Verificar se já não está vazio para evitar confirmação desnecessária
+    if repo.count() == 0:
+        print("💡 O banco de dados já está vazio. Nada para limpar.\n")
+        return False
+
+    confirm = input("⚠️  CERTEZA que deseja limpar toda a base? (sim/n): ").strip().lower()
+    if confirm == 'sim':
+        if repo.clear():
+            print("✅ Base de dados limpa com sucesso!\n")
+            return True
+        else:
+            print("❌ Erro ao limpar a base.\n")
+            return False
+    else:
+        print("Operação cancelada.\n")
+        return False
+
+
 def process_question(chain, question):
     """
     Processa uma pergunta usando a chain do RAG.
@@ -244,16 +285,8 @@ def chat_loop(chain):
             elif is_add_command(user_input):
                 handle_add_command(user_input)
             
-            elif user_input.lower().strip() == 'clear':
-                confirm = input("⚠️  CERTEZA que deseja limpar toda a base? (sim/n): ").strip().lower()
-                if confirm == 'sim':
-                    from database import VectorStoreRepository
-                    if VectorStoreRepository().clear():
-                        print("✅ Base de dados limpa com sucesso!\n")
-                    else:
-                        print("❌ Erro ao limpar a base.\n")
-                else:
-                    print("Operação cancelada.\n")
+            elif is_clear_command(user_input):
+                handle_clear_command()
             
             else:
                 # Verificar se há documentos antes de perguntar
