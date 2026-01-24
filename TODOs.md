@@ -344,10 +344,10 @@
 **Branch**: `feature/error-handling`
 
 #### I.1 Erros Específicos
-- [ ] **I.1.1** Substituir `except Exception` por erros específicos
-  - [ ] FileNotFoundError, PermissionError, etc
-  - [ ] Testar cada arquivo → Commits individuais
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **I.1.1** Substituir `except Exception` por erros específicos
+  - [x] FileNotFoundError, PermissionError, etc
+  - [x] Testar cada arquivo → Commits individuais
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
@@ -427,6 +427,20 @@
 
 ---
 
+### FASE L: Seleção Dinâmica de Provedor (Novo)
+**Branch**: `feature/dynamic-provider-selection`
+
+#### L.1 Flag --provider
+- [ ] **L.1.1** Implementar troca via CLI
+  - [ ] Adicionar argumento `--provider` (google/openai)
+  - [ ] Validar se as chaves do provedor escolhido existem no `.env`
+  - [ ] Atualizar Singletons (Embeddings/LLM) para suportar "reset" e troca
+  - [ ] Testar → Commit: `feat: add dynamic provider selection`
+- [ ] **TESTE COMPLETO** → Merge com main
+
+
+---
+
 ### 1.5 Testes e Validação
 - [ ] **1.5.1** Testar fluxo completo
 - [ ] **1.5.2** Atualizar README.md
@@ -441,13 +455,3 @@
 
 ## Fase 4: Sistema de Load do PDF no CLI
 *(Gestão avançada de múltiplos PDFs)*
-### FASE L: Seleção Dinâmica de Provedor (Novo)
-**Branch**: `feature/dynamic-provider-selection`
-
-#### L.1 Flag --provider
-- [ ] **L.1.1** Implementar troca via CLI
-  - [ ] Adicionar argumento `--provider` (google/openai)
-  - [ ] Validar se as chaves do provedor escolhido existem no `.env`
-  - [ ] Atualizar Singletons (Embeddings/LLM) para suportar "reset" e troca
-  - [ ] Testar → Commit: `feat: add dynamic provider selection`
-- [ ] **TESTE COMPLETO** → Merge com main
