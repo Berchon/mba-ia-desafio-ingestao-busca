@@ -8,6 +8,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+
+---
+
+## [0.4.0] - 2026-01-24
+
+### Adicionado
 - Melhorias no tratamento de erros (`feature/error-handling`): substituição de exceções genéricas por `SQLAlchemyError`, `IOError`, etc em `database.py`, `chat.py` e `search.py` (`d6b9534`)
 - Parâmetros configuráveis via CLI (`--chunk-size`, `--chunk-overlap`, `--top-k`, `--temperature`) em `chat.py` e `ingest.py` (`e8df239`)
 - Estatísticas de resposta no Chat CLI (tempo de execução e fontes) ativadas via flag `-v, --verbose` (`986c201`)
