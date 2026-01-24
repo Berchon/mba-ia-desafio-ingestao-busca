@@ -62,3 +62,28 @@ def get_logger(name: str = None, level: int = logging.INFO) -> logging.Logger:
         logging.Logger: Logger configurado
     """
     return setup_logger(name, level)
+
+
+def set_global_log_level(level: int):
+    """
+    Define o nível de log para todos os loggers já criados e para o root logger.
+    Útil para implementar o modo silencioso.
+    
+    Args:
+        level: Nível de logging (ex: logging.WARNING)
+    """
+    # 1. Ajustar o root logger
+    root_logger = logging.getLogger()
+    root_logger.setLevel(level)
+    for handler in root_logger.handlers:
+        handler.setLevel(level)
+    
+    # 2. Ajustar todos os loggers criados via get_logger
+    # O logger manager mantém um dicionário de todos os loggers
+    for logger_name in logging.root.manager.loggerDict:
+        # Pular entradas que não são loggers (Placeholders)
+        if isinstance(logging.root.manager.loggerDict[logger_name], logging.Logger):
+            logger = logging.getLogger(logger_name)
+            logger.setLevel(level)
+            for handler in logger.handlers:
+                handler.setLevel(level)

@@ -6,11 +6,18 @@ from config import Config
 from embeddings_manager import get_embeddings
 from logger import get_logger
 
+import logging
+
 logger = get_logger(__name__)
 
-def ingest_pdf(pdf_path: str = None):
+def ingest_pdf(pdf_path: str = None, quiet: bool = False):
     # Validar configuração
     Config.validate_config()
+    
+    # Se modo silencioso, ajustar nível de log globalmente
+    if quiet:
+        from logger import set_global_log_level
+        set_global_log_level(logging.WARNING)
     
     # Fallback para variável de ambiente se não for passado parâmetro
     target_pdf = pdf_path or Config.PDF_PATH
@@ -51,7 +58,7 @@ def ingest_pdf(pdf_path: str = None):
     ids = []
     
     # Usando tqdm para mostrar progresso no processamento de metadados
-    for i, doc in enumerate(tqdm(splits, desc="Processando fragmentos", unit="chunk")):
+    for i, doc in enumerate(tqdm(splits, desc="Processando fragmentos", unit="chunk", disable=quiet)):
         # Limpar metadados nulos/vazios
         meta = {k: v for k, v in doc.metadata.items() if v not in ("", None)}
         
@@ -91,48 +98,58 @@ def ingest_pdf(pdf_path: str = None):
     
     logger.info(f"Enviando {len(enriched_docs)} fragmentos para o PGVector em lotes de {batch_size}...")
     
-    for i in tqdm(range(0, len(enriched_docs), batch_size), desc="Gerando embeddings e salvando", unit="batch"):
+    for i in tqdm(range(0, len(enriched_docs), batch_size), desc="Gerando embeddings e salvando", unit="batch", disable=quiet):
         batch_docs = enriched_docs[i : i + batch_size]
         batch_ids = ids[i : i + batch_size]
         repo.add_documents(batch_docs, ids=batch_ids)
 
     logger.info("PROCESSO DE INGESTÃO CONCLUÍDO COM SUCESSO! ✅")
     
-    # Exibir estatísticas finais
-    avg_chunk_size = sum(len(d.page_content) for d in enriched_docs) / total_chunks if total_chunks > 0 else 0
-    
-    print("\n" + "="*70)
-    print("📊 ESTATÍSTICAS DE INGESTÃO")
-    print("="*70)
-    print(f"📄 Arquivo:           {filename}")
-    print(f"📑 Total de Páginas:   {len(docs)}")
-    print(f"🧱 Total de Chunks:    {total_chunks}")
-    print(f"📏 Tamanho Médio:      {avg_chunk_size:.1f} caracteres")
-    print(f"🆔 Chunks IDs:         {filename}-0 até {filename}-{total_chunks-1}")
-    print(f"🔗 Banco de Dados:     {Config.PG_VECTOR_COLLECTION_NAME}")
-    print("="*70 + "\n")
+    # Exibir estatísticas finais (apenas se não estiver em modo silencioso)
+    if not quiet:
+        avg_chunk_size = sum(len(d.page_content) for d in enriched_docs) / total_chunks if total_chunks > 0 else 0
+        
+        print("\n" + "="*70)
+        print("📊 ESTATÍSTICAS DE INGESTÃO")
+        print("="*70)
+        print(f"📄 Arquivo:           {filename}")
+        print(f"📑 Total de Páginas:   {len(docs)}")
+        print(f"🧱 Total de Chunks:    {total_chunks}")
+        print(f"📏 Tamanho Médio:      {avg_chunk_size:.1f} caracteres")
+        print(f"🆔 Chunks IDs:         {filename}-0 até {filename}-{total_chunks-1}")
+        print(f"🔗 Banco de Dados:     {Config.PG_VECTOR_COLLECTION_NAME}")
+        print("="*70 + "\n")
     
     return True
 
 if __name__ == "__main__":
+    import argparse
     import sys
     
-    # Se houver argumento, usa ele, senão usa o do Config
-    pdf_to_ingest = sys.argv[1] if len(sys.argv) > 1 else Config.PDF_PATH
+    parser = argparse.ArgumentParser(description='Ingestão de PDFs no PGVector')
+    parser.add_argument('pdf_path', nargs='?', help='Caminho do PDF para ingestão', default=Config.PDF_PATH)
+    parser.add_argument('-q', '--quiet', action='store_true', help='Modo silencioso: oculta logs e progresso')
+    
+    args = parser.parse_args()
+    
+    pdf_to_ingest = args.pdf_path
     
     if pdf_to_ingest:
         from database import VectorStoreRepository
         repo = VectorStoreRepository()
         
         if repo.source_exists(pdf_to_ingest):
-            print(f"\n⚠️  O arquivo '{pdf_to_ingest}' já existe na base de dados.")
-            try:
-                confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
-                if confirm != 'sim':
-                    print("Operação cancelada pelo usuário.")
-                    sys.exit(0)
-            except EOFError:
-                # Se não for interativo (ex: em um pipe), prossegue
-                pass
+            if not args.quiet:
+                print(f"\n⚠️  O arquivo '{pdf_to_ingest}' já existe na base de dados.")
+                try:
+                    confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
+                    if confirm != 'sim':
+                        print("Operação cancelada pelo usuário.")
+                        sys.exit(0)
+                except EOFError:
+                    pass
+            # Se for quiet, assumimos que ele quer processar? 
+            # Ou deveriamos pedir um --yes/--force? 
+            # Por enquanto, mantivemos a confirmação apenas se NOT quiet.
                 
-    ingest_pdf(pdf_to_ingest)
+    ingest_pdf(pdf_to_ingest, quiet=args.quiet)

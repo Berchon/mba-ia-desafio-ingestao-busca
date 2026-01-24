@@ -94,12 +94,13 @@ def display_help():
     print("="*70 + "\n")
 
 
-def handle_add_command(user_input):
+def handle_add_command(user_input, quiet=False):
     """
     Processa comando de adição de PDF ao banco.
     
     Args:
         user_input: Entrada completa do usuário (ex: "add document.pdf")
+        quiet: Se True, oculta mensagens de progresso
         
     Returns:
         bool: True se processado com sucesso, False caso contrário
@@ -107,25 +108,29 @@ def handle_add_command(user_input):
     parts = user_input.strip().split(maxsplit=1)
     
     if len(parts) < 2:
-        print("❌ Erro: Você deve especificar o caminho do PDF.")
-        print("   Uso: add <caminho_pdf>")
-        print("   Exemplo: add document.pdf\n")
+        if not quiet:
+            print("❌ Erro: Você deve especificar o caminho do PDF.")
+            print("   Uso: add <caminho_pdf>")
+            print("   Exemplo: add document.pdf\n")
         return False
     
     pdf_path = parts[1].strip()
     
     # Validar se arquivo existe
     if not os.path.exists(pdf_path):
-        print(f"❌ Erro: Arquivo não encontrado: {pdf_path}\n")
+        if not quiet:
+            print(f"❌ Erro: Arquivo não encontrado: {pdf_path}\n")
         return False
     
     # Validar extensão
     if not pdf_path.lower().endswith('.pdf'):
-        print(f"❌ Erro: O arquivo deve ser um PDF (.pdf)\n")
+        if not quiet:
+            print(f"❌ Erro: O arquivo deve ser um PDF (.pdf)\n")
         return False
     
-    print(f"\n📄 Iniciando ingestão do PDF: {pdf_path}")
-    print("-" * 70)
+    if not quiet:
+        print(f"\n📄 Iniciando ingestão do PDF: {pdf_path}")
+        print("-" * 70)
     
     try:
         # 1. Inicializar Repositório para verificar existência
@@ -134,28 +139,34 @@ def handle_add_command(user_input):
         
         # 2. Verificar se o arquivo já foi ingerido
         if repo.source_exists(pdf_path):
-            print(f"⚠️  O arquivo '{pdf_path}' já existe na base de dados.")
-            confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
-            if confirm != 'sim':
-                print("Operação cancelada pelo usuário.\n")
-                return False
-            print("Limpando dados antigos e re-ingerindo...\n")
+            if not quiet:
+                print(f"⚠️  O arquivo '{pdf_path}' já existe na base de dados.")
+                confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
+                if confirm != 'sim':
+                    print("Operação cancelada pelo usuário.\n")
+                    return False
+                print("Limpando dados antigos e re-ingerindo...\n")
+            # Se quiet=True, prossegue sem perguntar (sobrescreve por padrão)
+            # ou deve falhar? Geralmente quiet mode em automação requer um "yes" implícito.
 
         # 3. Reutilizar lógica do ingest.py
-        success = ingest_pdf(pdf_path)
+        success = ingest_pdf(pdf_path, quiet=quiet)
         
         if success:
-            print("-" * 70)
-            print("✅ PDF adicionado com sucesso ao banco de dados!\n")
+            if not quiet:
+                print("-" * 70)
+                print("✅ PDF adicionado com sucesso ao banco de dados!\n")
             return True
         else:
-            print("-" * 70)
-            print("❌ Falha ao adicionar PDF ao banco de dados.\n")
+            if not quiet:
+                print("-" * 70)
+                print("❌ Falha ao adicionar PDF ao banco de dados.\n")
             return False
             
     except Exception as e:
-        print("-" * 70)
-        print(f"❌ Erro ao processar PDF: {e}\n")
+        if not quiet:
+            print("-" * 70)
+            print(f"❌ Erro ao processar PDF: {e}\n")
         return False
 
 
@@ -346,55 +357,55 @@ def handle_clear_command():
         return False
 
 
-def process_question(chain, question):
+def process_question(chain, question, quiet=False):
     """
     Processa uma pergunta usando a chain do RAG.
     
     Args:
         chain: Chain do LangChain configurada
         question: Pergunta do usuário
+        quiet: Se True, oculta indicadores de progresso
     """
     try:
-        # Mostrar etapas do processo
-        print("🔍 Recuperando informações relevantes...")
-        # A chain irá processar, mas queremos feedback visual
+        if not quiet:
+            # Mostrar etapas do processo
+            print("🔍 Recuperando informações relevantes...")
+            print("🧠 Gerando resposta baseada nos documentos...\n")
         
-        # Como o invoke é síncrono e opaco para os prints internos, 
-        # poderiamos usar callbacks do LangChain se quiséssemos algo mais granulado,
-        # mas para UX simples de terminal, prints antes de etapas bastam se soubermos onde ocorrem.
-        # No entanto, a chain.invoke executa tudo de uma vez.
-        
-        # Vamos manter o print de "Gerando resposta" logo após se tivéssemos etapas separadas,
-        # mas como está em uma RunnableSequence única, vamos apenas mudar a mensagem inicial
-        # para algo que indique o processo completo ou usar a função search_with_sources
-        # se quisermos mais controle.
-        
-        print("🧠 Gerando resposta baseada nos documentos...\n")
         response = chain.invoke(question)
         
-        print("-" * 70)
-        print(f"PERGUNTA: {question}")
-        print("-" * 70)
-        print(f"RESPOSTA: {response}")
-        print("-" * 70 + "\n")
+        if not quiet:
+            print("-" * 70)
+            print(f"PERGUNTA: {question}")
+            print("-" * 70)
+            print(f"RESPOSTA: {response}")
+            print("-" * 70 + "\n")
+        else:
+            # Em modo quieto, mostra apenas a resposta pura para facilitar automação
+            print(response)
         
     except Exception as e:
         print(f"❌ Erro ao processar pergunta: {e}\n")
         logger.error(f"Erro detalhado: {e}", exc_info=True)
 
 
-def chat_loop(chain):
+def chat_loop(chain, quiet=False):
     """
     Loop principal do chat interativo.
     
     Args:
         chain: Chain do LangChain configurada
+        quiet: Se True, opera em modo silencioso
     """
     try:
         first_prompt = True
         while True:
             # Solicitar entrada do usuário
-            prompt_text = "Faça sua pergunta (ou 'help' para ajuda)\n> " if first_prompt else "> "
+            if quiet:
+                prompt_text = "> "
+            else:
+                prompt_text = "Faça sua pergunta (ou 'help' para ajuda)\n> " if first_prompt else "> "
+            
             user_input = input(prompt_text).strip()
             
             # Ignorar entradas vazias
@@ -405,14 +416,15 @@ def chat_loop(chain):
             
             # Verificar comandos especiais
             if is_exit_command(user_input):
-                print("\n👋 Até logo! Chat encerrado.\n")
+                if not quiet:
+                    print("\n👋 Até logo! Chat encerrado.\n")
                 break
             
             elif is_help_command(user_input):
                 display_help()
             
             elif is_add_command(user_input):
-                handle_add_command(user_input)
+                handle_add_command(user_input, quiet=quiet)
             
             elif is_clear_command(user_input):
                 handle_clear_command()
@@ -427,12 +439,13 @@ def chat_loop(chain):
                 # Verificar se há documentos antes de perguntar
                 num_chunks, _ = check_database_status()
                 if num_chunks == 0:
-                    print("⚠️  O banco de dados está vazio!")
-                    print("💡 Adicione um PDF primeiro usando 'add <caminho_pdf>'.\n")
+                    if not quiet:
+                        print("⚠️  O banco de dados está vazio!")
+                        print("💡 Adicione um PDF primeiro usando 'add <caminho_pdf>'.\n")
                     continue
                 
                 # Processar como pergunta normal
-                process_question(chain, user_input)
+                process_question(chain, user_input, quiet=quiet)
     
     except KeyboardInterrupt:
         print("\n\n👋 Chat interrompido pelo usuário. Até logo!\n")
@@ -463,33 +476,48 @@ def main():
         help='Caminho do PDF para usar como referência (opcional)',
         metavar='PDF_PATH'
     )
+    parser.add_argument(
+        '-q', '--quiet',
+        action='store_true',
+        help='Modo silencioso: oculta logs de inicialização e estatísticas iniciais'
+    )
     
     args = parser.parse_args()
     
+    # Se modo silencioso, ajustar nível de log globalmente
+    if args.quiet:
+        from logger import set_global_log_level
+        set_global_log_level(logging.WARNING)
+    
     # Se foi especificado um arquivo, processar ingestão primeiro
     if args.file:
-        print(f"\n📄 Arquivo especificado via argumento: {args.file}")
-        if not handle_add_command(f"add {args.file}"):
-            print("⚠️  Continuando mesmo com falha na ingestão...\n")
+        if not args.quiet:
+            print(f"\n📄 Arquivo especificado via argumento: {args.file}")
+        if not handle_add_command(f"add {args.file}", quiet=args.quiet):
+            if not args.quiet:
+                print("⚠️  Continuando mesmo com falha na ingestão...\n")
     
     # Verificar status do banco
     counts = check_database_status()
     
-    # Exibir boas-vindas
-    display_welcome(counts)
+    # Exibir boas-vindas (apenas se não estiver em modo silencioso)
+    if not args.quiet:
+        display_welcome(counts)
     
     # Inicializar chain de busca
-    print("🔧 Inicializando sistema de busca...\n")
+    if not args.quiet:
+        print("🔧 Inicializando sistema de busca...\n")
     chain = search_prompt()
     
     if not chain:
         print("❌ Não foi possível iniciar o chat. Verifique as configurações no .env\n")
         sys.exit(1)
     
-    print("✅ Sistema pronto!\n")
+    if not args.quiet:
+        print("✅ Sistema pronto!\n")
     
     # Iniciar loop de chat
-    chat_loop(chain)
+    chat_loop(chain, quiet=args.quiet)
 
 
 if __name__ == "__main__":
