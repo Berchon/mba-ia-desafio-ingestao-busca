@@ -441,3 +441,13 @@
 
 ## Fase 4: Sistema de Load do PDF no CLI
 *(Gestão avançada de múltiplos PDFs)*
+### FASE L: Seleção Dinâmica de Provedor (Novo)
+**Branch**: `feature/dynamic-provider-selection`
+
+#### L.1 Flag --provider
+- [ ] **L.1.1** Implementar troca via CLI
+  - [ ] Adicionar argumento `--provider` (google/openai)
+  - [ ] Validar se as chaves do provedor escolhido existem no `.env`
+  - [ ] Atualizar Singletons (Embeddings/LLM) para suportar "reset" e troca
+  - [ ] Testar → Commit: `feat: add dynamic provider selection`
+- [ ] **TESTE COMPLETO** → Merge com main

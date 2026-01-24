@@ -101,8 +101,11 @@ class VectorStoreRepository:
                 result = conn.execute(query, {"collection": Config.PG_VECTOR_COLLECTION_NAME})
                 count = result.scalar()
                 return count if count else 0
+        except sa.exc.SQLAlchemyError as e:
+            logger.error(f"Erro de banco de dados ao contar fontes: {e}")
+            return 0
         except Exception as e:
-            logger.error(f"Erro ao contar fontes: {e}")
+            logger.error(f"Erro inesperado ao contar fontes: {e}")
             return 0
 
     def list_sources(self) -> list:
@@ -124,8 +127,11 @@ class VectorStoreRepository:
             with self.engine.connect() as conn:
                 result = conn.execute(query, {"collection": Config.PG_VECTOR_COLLECTION_NAME})
                 return [row[0] for row in result if row[0]]
+        except sa.exc.SQLAlchemyError as e:
+            logger.error(f"Erro de banco de dados ao listar fontes: {e}")
+            return []
         except Exception as e:
-            logger.error(f"Erro ao listar fontes: {e}")
+            logger.error(f"Erro inesperado ao listar fontes: {e}")
             return []
 
     def exists(self) -> bool:
@@ -158,8 +164,11 @@ class VectorStoreRepository:
                         logger.info(f"Coleção '{Config.PG_VECTOR_COLLECTION_NAME}' limpa com sucesso.")
                         return True
             return False
+        except sa.exc.SQLAlchemyError as e:
+            logger.error(f"Erro de banco de dados ao limpar banco: {e}")
+            return False
         except Exception as e:
-            logger.error(f"Erro ao limpar banco de dados: {e}")
+            logger.error(f"Erro inesperado ao limpar banco: {e}")
             return False
 
     def delete_by_source(self, source: str) -> bool:
@@ -188,8 +197,11 @@ class VectorStoreRepository:
                     })
                     logger.info(f"Removidos {result.rowcount} chunks antigos de '{source}'.")
                     return True
+        except sa.exc.SQLAlchemyError as e:
+            logger.error(f"Erro de banco de dados ao deletar por fonte ({source}): {e}")
+            return False
         except Exception as e:
-            logger.error(f"Erro ao deletar documentos por fonte ({source}): {e}")
+            logger.error(f"Erro inesperado ao deletar por fonte ({source}): {e}")
             return False
 
     def source_exists(self, source: str) -> bool:
@@ -216,8 +228,11 @@ class VectorStoreRepository:
                     "collection": Config.PG_VECTOR_COLLECTION_NAME
                 })
                 return result.scalar()
+        except sa.exc.SQLAlchemyError as e:
+            logger.error(f"Erro de banco de dados ao verificar existência ({source}): {e}")
+            return False
         except Exception as e:
-            logger.error(f"Erro ao verificar existência da fonte ({source}): {e}")
+            logger.error(f"Erro inesperado ao verificar existência ({source}): {e}")
             return False
 
     def add_documents(self, documents, ids=None):

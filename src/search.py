@@ -91,8 +91,14 @@ def search_prompt(top_k=Config.TOP_K, temperature=None):
         logger.info("Chain de busca criada com sucesso!")
         return chain
         
+    except ValueError as e:
+        logger.error(f"Erro de configuração ou parâmetros na busca: {e}")
+        return None
+    except sa.exc.SQLAlchemyError as e:
+        logger.error(f"Erro de banco de dados ao criar chain: {e}")
+        return None
     except Exception as e:
-        logger.error(f"Erro ao criar a chain de busca: {e}")
+        logger.error(f"Erro inesperado ao criar a chain de busca: {e}", exc_info=True)
         return None
 
 def search_with_sources(question, top_k=Config.TOP_K, temperature=None):
@@ -156,9 +162,21 @@ def search_with_sources(question, top_k=Config.TOP_K, temperature=None):
             "sources": sources
         }
         
-    except Exception as e:
-        logger.error(f"Erro na busca com fontes: {e}")
+    except ValueError as e:
+        logger.error(f"Erro de parâmetros na busca com fontes: {e}")
         return {
-            "answer": f"Lamento, ocorreu um erro ao processar sua pergunta: {str(e)}",
+            "answer": f"Lamento, erro de configuração: {str(e)}",
+            "sources": []
+        }
+    except sa.exc.SQLAlchemyError as e:
+        logger.error(f"Erro de banco de dados na busca: {e}")
+        return {
+            "answer": "Lamento, ocorreu um erro ao consultar o banco de dados.",
+            "sources": []
+        }
+    except Exception as e:
+        logger.error(f"Erro inesperado na busca com fontes: {e}", exc_info=True)
+        return {
+            "answer": f"Lamento, ocorreu um erro inesperado ao processar sua pergunta.",
             "sources": []
         }

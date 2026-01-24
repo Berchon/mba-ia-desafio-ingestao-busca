@@ -29,8 +29,14 @@ def check_database_status():
             logger.info(f"Banco contém {num_chunks} chunks de {num_sources} arquivos")
         
         return num_chunks, num_sources
+    except (ImportError, ModuleNotFoundError) as e:
+        logger.error(f"Erro de dependência ao verificar status: {e}")
+        return 0, 0
+    except sa.exc.SQLAlchemyError as e:
+        logger.error(f"Erro de banco de dados ao verificar status: {e}")
+        return 0, 0
     except Exception as e:
-        logger.warning(f"Não foi possível verificar o status do banco: {e}")
+        logger.warning(f"Erro inesperado ao verificar o status do banco: {e}")
         return 0, 0
 
 
@@ -164,10 +170,21 @@ def handle_add_command(user_input, quiet=False, chunk_size=None, chunk_overlap=N
                 print("❌ Falha ao adicionar PDF ao banco de dados.\n")
             return False
             
+    except (IOError, OSError) as e:
+        if not quiet:
+            print("-" * 70)
+            print(f"❌ Erro de sistema/arquivo ao processar PDF: {e}\n")
+        return False
+    except sa.exc.SQLAlchemyError as e:
+        if not quiet:
+            print("-" * 70)
+            print(f"❌ Erro de banco de dados ao salvar PDF: {e}\n")
+        return False
     except Exception as e:
         if not quiet:
             print("-" * 70)
-            print(f"❌ Erro ao processar PDF: {e}\n")
+            print(f"❌ Erro inesperado ao processar PDF: {e}\n")
+        logger.error(f"Erro inesperado na ingestão: {e}", exc_info=True)
         return False
 
 
@@ -421,9 +438,15 @@ def process_question(chain, question, quiet=False, verbose=False, top_k=None, te
                 # Se for verbose E quiet, mostra estatísticas mínimas
                 print(f"--- Stats: {elapsed_time:.2f}s | {len(sources)} sources ---")
         
+    except (KeyboardInterrupt, EOFError):
+        # Captura interrupção voluntária (Ctrl+C ou Ctrl+D) sem explodir o log
+        raise
+    except sa.exc.SQLAlchemyError as e:
+        print(f"❌ Erro crítico de banco de dados: {e}\n")
+        logger.error(f"Erro de banco no processamento: {e}")
     except Exception as e:
-        print(f"❌ Erro ao processar pergunta: {e}\n")
-        logger.error(f"Erro detalhado: {e}", exc_info=True)
+        print(f"❌ Erro inesperado ao processar pergunta: {e}\n")
+        logger.error(f"Erro detalhado ao processar pergunta: {e}", exc_info=True)
 
 
 def chat_loop(chain, quiet=False, verbose=False, top_k=None, temperature=None, chunk_size=None, chunk_overlap=None):
