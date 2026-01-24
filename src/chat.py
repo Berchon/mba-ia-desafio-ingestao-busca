@@ -256,6 +256,13 @@ def chat_loop(chain):
                     print("Operação cancelada.\n")
             
             else:
+                # Verificar se há documentos antes de perguntar
+                num_chunks, _ = check_database_status()
+                if num_chunks == 0:
+                    print("⚠️  O banco de dados está vazio!")
+                    print("💡 Adicione um PDF primeiro usando 'add <caminho_pdf>'.\n")
+                    continue
+                
                 # Processar como pergunta normal
                 process_question(chain, user_input)
     
