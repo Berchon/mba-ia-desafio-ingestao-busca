@@ -316,9 +316,9 @@
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.4 Modo Silencioso (CHAT13)
-- [ ] **G.4.1** Flag --quiet
-  - [ ] Esconder logs de inicialização
-  - [ ] Testar → Commit: `feat: add quiet mode flag`
+- [x] **G.4.1** Flag --quiet
+  - [x] Esconder logs de inicialização
+  - [x] Testar → Commit: `feat: add quiet mode flag`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.5 Estatísticas de Resposta (CHAT14)
