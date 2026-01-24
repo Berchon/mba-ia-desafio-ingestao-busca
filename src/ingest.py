@@ -10,7 +10,7 @@ import logging
 
 logger = get_logger(__name__)
 
-def ingest_pdf(pdf_path: str = None, quiet: bool = False):
+def ingest_pdf(pdf_path: str = None, quiet: bool = False, chunk_size: int = None, chunk_overlap: int = None):
     # Validar configuração
     Config.validate_config()
     
@@ -37,8 +37,8 @@ def ingest_pdf(pdf_path: str = None, quiet: bool = False):
     # 2. Chunking do texto
     logger.info("Dividindo o texto em fragmentos (chunks)...")
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=Config.CHUNK_SIZE,
-        chunk_overlap=Config.CHUNK_OVERLAP
+        chunk_size=chunk_size or Config.CHUNK_SIZE,
+        chunk_overlap=chunk_overlap or Config.CHUNK_OVERLAP
     )
     splits = text_splitter.split_documents(docs)
     
@@ -129,6 +129,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Ingestão de PDFs no PGVector')
     parser.add_argument('pdf_path', nargs='?', help='Caminho do PDF para ingestão', default=Config.PDF_PATH)
     parser.add_argument('-q', '--quiet', action='store_true', help='Modo silencioso: oculta logs e progresso')
+    parser.add_argument('--chunk-size', type=int, help=f'Tamanho do chunk (default: {Config.CHUNK_SIZE})')
+    parser.add_argument('--chunk-overlap', type=int, help=f'Sobreposição do chunk (default: {Config.CHUNK_OVERLAP})')
     
     args = parser.parse_args()
     
@@ -152,4 +154,4 @@ if __name__ == "__main__":
             # Ou deveriamos pedir um --yes/--force? 
             # Por enquanto, mantivemos a confirmação apenas se NOT quiet.
                 
-    ingest_pdf(pdf_to_ingest, quiet=args.quiet)
+    ingest_pdf(pdf_to_ingest, quiet=args.quiet, chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap)

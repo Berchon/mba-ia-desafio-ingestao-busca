@@ -94,13 +94,15 @@ def display_help():
     print("="*70 + "\n")
 
 
-def handle_add_command(user_input, quiet=False):
+def handle_add_command(user_input, quiet=False, chunk_size=None, chunk_overlap=None):
     """
     Processa comando de adição de PDF ao banco.
     
     Args:
         user_input: Entrada completa do usuário (ex: "add document.pdf")
         quiet: Se True, oculta mensagens de progresso
+        chunk_size: Tamanho do chunk (opcional)
+        chunk_overlap: Sobreposição do chunk (opcional)
         
     Returns:
         bool: True se processado com sucesso, False caso contrário
@@ -147,10 +149,9 @@ def handle_add_command(user_input, quiet=False):
                     return False
                 print("Limpando dados antigos e re-ingerindo...\n")
             # Se quiet=True, prossegue sem perguntar (sobrescreve por padrão)
-            # ou deve falhar? Geralmente quiet mode em automação requer um "yes" implícito.
 
         # 3. Reutilizar lógica do ingest.py
-        success = ingest_pdf(pdf_path, quiet=quiet)
+        success = ingest_pdf(pdf_path, quiet=quiet, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
         
         if success:
             if not quiet:
@@ -357,7 +358,7 @@ def handle_clear_command():
         return False
 
 
-def process_question(chain, question, quiet=False, verbose=False):
+def process_question(chain, question, quiet=False, verbose=False, top_k=None, temperature=None):
     """
     Processa uma pergunta usando a chain do RAG.
     
@@ -366,6 +367,8 @@ def process_question(chain, question, quiet=False, verbose=False):
         question: Pergunta do usuário
         quiet: Se True, oculta indicadores de progresso
         verbose: Se True, mostra estatísticas detalhadas da resposta
+        top_k: Número de documentos a recuperar (opcional)
+        temperature: Temperatura para geração (opcional)
     """
     try:
         import time
@@ -378,7 +381,12 @@ def process_question(chain, question, quiet=False, verbose=False):
         
         if verbose:
             # Usar search_with_sources para obter detalhes dos chunks
-            result = search_with_sources(question)
+            # Passar top_k e temperature se fornecidos, senão usar os do Config via default da função
+            kwargs = {}
+            if top_k is not None: kwargs['top_k'] = top_k
+            if temperature is not None: kwargs['temperature'] = temperature
+            
+            result = search_with_sources(question, **kwargs)
             response = result["answer"]
             sources = result["sources"]
             end_time = time.time()
@@ -418,7 +426,7 @@ def process_question(chain, question, quiet=False, verbose=False):
         logger.error(f"Erro detalhado: {e}", exc_info=True)
 
 
-def chat_loop(chain, quiet=False, verbose=False):
+def chat_loop(chain, quiet=False, verbose=False, top_k=None, temperature=None, chunk_size=None, chunk_overlap=None):
     """
     Loop principal do chat interativo.
     
@@ -426,6 +434,10 @@ def chat_loop(chain, quiet=False, verbose=False):
         chain: Chain do LangChain configurada
         quiet: Se True, opera em modo silencioso
         verbose: Se True, mostra estatísticas detalhadas
+        top_k: Número de documentos a recuperar (opcional)
+        temperature: Temperatura para geração (opcional)
+        chunk_size: Tamanho do chunk para novas ingestões (opcional)
+        chunk_overlap: Sobreposição do chunk para novas ingestões (opcional)
     """
     try:
         first_prompt = True
@@ -454,7 +466,7 @@ def chat_loop(chain, quiet=False, verbose=False):
                 display_help()
             
             elif is_add_command(user_input):
-                handle_add_command(user_input, quiet=quiet)
+                handle_add_command(user_input, quiet=quiet, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
             
             elif is_clear_command(user_input):
                 handle_clear_command()
@@ -475,7 +487,7 @@ def chat_loop(chain, quiet=False, verbose=False):
                     continue
                 
                 # Processar como pergunta normal
-                process_question(chain, user_input, quiet=quiet, verbose=verbose)
+                process_question(chain, user_input, quiet=quiet, verbose=verbose, top_k=top_k, temperature=temperature)
     
     except KeyboardInterrupt:
         print("\n\n👋 Chat interrompido pelo usuário. Até logo!\n")
@@ -516,6 +528,10 @@ def main():
         action='store_true',
         help='Modo detalhado: mostra tempo de resposta e fontes utilizadas'
     )
+    parser.add_argument('--top-k', type=int, help=f'Número de documentos a recuperar (default: {Config.TOP_K})')
+    parser.add_argument('--temperature', type=float, help='Temperatura para geração (default: conforme Config)')
+    parser.add_argument('--chunk-size', type=int, help=f'Tamanho do chunk para novas ingestões (default: {Config.CHUNK_SIZE})')
+    parser.add_argument('--chunk-overlap', type=int, help=f'Sobreposição do chunk para novas ingestões (default: {Config.CHUNK_OVERLAP})')
     
     args = parser.parse_args()
     
@@ -528,7 +544,7 @@ def main():
     if args.file:
         if not args.quiet:
             print(f"\n📄 Arquivo especificado via argumento: {args.file}")
-        if not handle_add_command(f"add {args.file}", quiet=args.quiet):
+        if not handle_add_command(f"add {args.file}", quiet=args.quiet, chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap):
             if not args.quiet:
                 print("⚠️  Continuando mesmo com falha na ingestão...\n")
     
@@ -542,7 +558,13 @@ def main():
     # Inicializar chain de busca
     if not args.quiet:
         print("🔧 Inicializando sistema de busca...\n")
-    chain = search_prompt()
+    
+    # Criar kwargs para search_prompt
+    search_kwargs = {}
+    if args.top_k is not None: search_kwargs['top_k'] = args.top_k
+    if args.temperature is not None: search_kwargs['temperature'] = args.temperature
+    
+    chain = search_prompt(**search_kwargs)
     
     if not chain:
         print("❌ Não foi possível iniciar o chat. Verifique as configurações no .env\n")
@@ -552,7 +574,15 @@ def main():
         print("✅ Sistema pronto!\n")
     
     # Iniciar loop de chat
-    chat_loop(chain, quiet=args.quiet, verbose=args.verbose)
+    chat_loop(
+        chain, 
+        quiet=args.quiet, 
+        verbose=args.verbose, 
+        top_k=args.top_k, 
+        temperature=args.temperature,
+        chunk_size=args.chunk_size,
+        chunk_overlap=args.chunk_overlap
+    )
 
 
 if __name__ == "__main__":
