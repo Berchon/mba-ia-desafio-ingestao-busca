@@ -7,6 +7,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+### Adicionado
+- Novo método `count_sources` no `VectorStoreRepository` para contagem de arquivos únicos (`276e684`)
+- Feedback visual no Chat CLI mostrando contagem de trechos e arquivos (`276e684`)
+
 ### Corrigido
 - Padronização do argumento de arquivo no chat de `-file` para `-f, --file` para seguir convenções de CLI (`75dbaaa`)
 
