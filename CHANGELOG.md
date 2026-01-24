@@ -14,6 +14,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Corrigido
 - Padronização do argumento de arquivo no chat de `-file` para `-f, --file` para seguir convenções de CLI (`75dbaaa`)
+- Erro `sys.excepthook` ao encerrar o chat, implementando um encerramento mais robusto com `os._exit` (`1bbde33`)
 
 ---
 
