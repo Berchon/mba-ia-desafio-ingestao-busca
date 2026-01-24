@@ -41,20 +41,31 @@ def ingest_pdf(pdf_path: str = None):
     logger.info(f"Texto dividido em {len(splits)} fragmentos.")
 
     # 3. Enriquecimento e Limpeza de Metadados
-    # Garantimos que não existam metadados nulos ou vazios que possam quebrar o banco
-    enriched_docs = [
-        type(doc)(
-            page_content=doc.page_content,
-            metadata={k: v for k, v in doc.metadata.items() if v not in ("", None)},
-        )
-        for doc in splits
-    ]
-    
-    # 4. Geração de IDs Determinísticos (Cenário A: Nome do Arquivo + Índice)
-    # Isso garante que documentos de arquivos diferentes não colidam mesmo que tenham o mesmo índice.
     filename = os.path.basename(target_pdf)
-    ids = [f"{filename}-{i}" for i in range(len(enriched_docs))]
-    logger.info(f"Gerados {len(ids)} IDs únicos para o arquivo {filename}.")
+    total_chunks = len(splits)
+    logger.info(f"Enriquecendo metadados para {total_chunks} fragmentos...")
+    
+    enriched_docs = []
+    ids = []
+    for i, doc in enumerate(splits):
+        # Limpar metadados nulos/vazios
+        meta = {k: v for k, v in doc.metadata.items() if v not in ("", None)}
+        
+        # Adicionar novos metadados
+        chunk_id = f"{filename}-{i}"
+        meta["chunk_id"] = chunk_id
+        meta["chunk_index"] = i
+        meta["total_chunks"] = total_chunks
+        meta["filename"] = filename
+        
+        # Criar novo objeto documento com metadados enriquecidos
+        enriched_docs.append(type(doc)(
+            page_content=doc.page_content,
+            metadata=meta
+        ))
+        ids.append(chunk_id)
+
+    logger.info(f"Gerados {len(ids)} IDs únicos e metadados enriquecidos para o arquivo {filename}.")
 
     # 5. Embeddings e Vetorização
     logger.info("Preparando inserção no banco de dados vetorial...")
