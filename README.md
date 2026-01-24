@@ -399,7 +399,9 @@ Consulte o arquivo [TODOs.md](TODOs.md) para ver as melhorias planejadas, inclui
 
 - **Fase E: Melhorias Técnicas do Chat** (Argumentos CLI padrão, tratamento de banco vazio)
 - **Fase F: Comandos Estendidos** (Comandos `stats` e `remove <arquivo>`)
-- **Fase G: Melhorias de UX** (Simplificação de prompt, atalhos de comando)
+- **Fase G: Melhorias de UX** (Simplificação de prompt, atalhos de comando, modo silencioso)
+- **Fase H: Parâmetros Configuráveis** (Controle de chunks, temperatura e top-k via CLI)
+- **Fase I: Tratamento de Erros** (Exceções específicas e robustez)
 - **Fase K: Refatorações Avançadas** (Histórico de conversas, cache de embeddings)
 
 ## 🤖 Desenvolvido com Antigravity
