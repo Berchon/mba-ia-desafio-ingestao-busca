@@ -181,12 +181,12 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### C.2 Limpeza Automática por Source (INGEST2, CHAT6)
-- [ ] **C.2.1** Implementar `delete_by_source()` no `VectorStoreRepository`
-  - [ ] Lógica para apagar todos os chunks que tenham o mesmo `metadata['source']`
-  - [ ] Testar → Commit: `feat: add delete by source to repository`
-- [ ] **C.2.2** Integrar limpeza no fluxo de `ingest_pdf()`
-  - [ ] Limpar dados antigos do arquivo antes de realizar a nova ingestão
-  - [ ] Testar → Commit: `feat: auto-clean old file data before ingestion`
+- [x] **C.2.1** Implementar `delete_by_source()` no `VectorStoreRepository`
+  - [x] Lógica para apagar todos os chunks que tenham o mesmo `metadata['source']`
+  - [x] Testar → Commit: `feat: add delete by source to repository`
+- [x] **C.2.2** Integrar limpeza no fluxo de `ingest_pdf()`
+  - [x] Limpar dados antigos do arquivo antes de realizar a nova ingestão
+  - [x] Testar → Commit: `feat: auto-clean old file data before ingestion`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### C.3 Enriquecer Metadados (INGEST6)

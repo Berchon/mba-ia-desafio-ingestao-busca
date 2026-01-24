@@ -15,6 +15,8 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Implementação do padrão Repository com a classe `VectorStoreRepository` (`src/database.py`) (`cbc68f9`)
 - Novo comando `clear` no Chat CLI para limpeza total da base de dados (`src/chat.py`) (`cbc68f9`)
 - Implementação de IDs determinísticos baseados no nome do arquivo (Cenário A) (`src/ingest.py`) (`af396e7`)
+- Sistema de limpeza seletiva por fonte no `VectorStoreRepository` (`src/database.py`) (`03c1a95`)
+- Integração da limpeza automática no fluxo de ingestão de PDFs (`src/ingest.py`) (`e0c0d89`)
 
 ### Corrigido
 - Bug na query de contagem de documentos que sempre retornava 0 devido a filtragem incorreta de metadados (`src/database.py`) (`36dc8e3`)

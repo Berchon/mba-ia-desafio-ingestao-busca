@@ -64,7 +64,11 @@ def ingest_pdf(pdf_path: str = None):
     from database import VectorStoreRepository
     repo = VectorStoreRepository(embeddings)
 
-    # 6. Inserção ou Atualização no Banco
+    # 6. Limpeza de dados antigos para esta fonte (Evita chunks órfãos se o número de chunks mudar)
+    logger.info(f"Limpando dados antigos da fonte: {target_pdf}...")
+    repo.delete_by_source(target_pdf)
+
+    # 7. Inserção ou Atualização no Banco
     logger.info(f"Enviando {len(enriched_docs)} fragmentos para o PGVector...")
     repo.add_documents(enriched_docs, ids=ids)
     logger.info("PROCESSO DE INGESTÃO CONCLUÍDO COM SUCESSO! ✅")
