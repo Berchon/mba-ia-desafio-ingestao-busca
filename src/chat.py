@@ -121,7 +121,20 @@ def handle_add_command(user_input):
     print("-" * 70)
     
     try:
-        # Reutilizar lógica do ingest.py
+        # 1. Inicializar Repositório para verificar existência
+        from database import VectorStoreRepository
+        repo = VectorStoreRepository()
+        
+        # 2. Verificar se o arquivo já foi ingerido
+        if repo.source_exists(pdf_path):
+            print(f"⚠️  O arquivo '{pdf_path}' já existe na base de dados.")
+            confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
+            if confirm != 'sim':
+                print("Operação cancelada pelo usuário.\n")
+                return False
+            print("Limpando dados antigos e re-ingerindo...\n")
+
+        # 3. Reutilizar lógica do ingest.py
         success = ingest_pdf(pdf_path)
         
         if success:

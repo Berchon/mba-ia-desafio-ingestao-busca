@@ -115,4 +115,24 @@ def ingest_pdf(pdf_path: str = None):
     return True
 
 if __name__ == "__main__":
-    ingest_pdf()
+    import sys
+    
+    # Se houver argumento, usa ele, senão usa o do Config
+    pdf_to_ingest = sys.argv[1] if len(sys.argv) > 1 else Config.PDF_PATH
+    
+    if pdf_to_ingest:
+        from database import VectorStoreRepository
+        repo = VectorStoreRepository()
+        
+        if repo.source_exists(pdf_to_ingest):
+            print(f"\n⚠️  O arquivo '{pdf_to_ingest}' já existe na base de dados.")
+            try:
+                confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
+                if confirm != 'sim':
+                    print("Operação cancelada pelo usuário.")
+                    sys.exit(0)
+            except EOFError:
+                # Se não for interativo (ex: em um pipe), prossegue
+                pass
+                
+    ingest_pdf(pdf_to_ingest)

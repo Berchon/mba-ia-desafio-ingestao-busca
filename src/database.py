@@ -146,6 +146,34 @@ class VectorStoreRepository:
             logger.error(f"Erro ao deletar documentos por fonte ({source}): {e}")
             return False
 
+    def source_exists(self, source: str) -> bool:
+        """
+        Verifica se já existem documentos de uma fonte específica.
+        
+        Args:
+            source (str): O caminho/nome do arquivo (metadata['source'])
+            
+        Returns:
+            bool: True se existirem documentos, False caso contrário
+        """
+        query = text("""
+            SELECT EXISTS (
+                SELECT 1 FROM langchain_pg_embedding 
+                WHERE cmetadata->>'source' = :source
+                AND collection_id = (SELECT uuid FROM langchain_pg_collection WHERE name = :collection)
+            )
+        """)
+        try:
+            with self.engine.connect() as conn:
+                result = conn.execute(query, {
+                    "source": source,
+                    "collection": Config.PG_VECTOR_COLLECTION_NAME
+                })
+                return result.scalar()
+        except Exception as e:
+            logger.error(f"Erro ao verificar existência da fonte ({source}): {e}")
+            return False
+
     def add_documents(self, documents, ids=None):
         """Adiciona documentos ao vector store."""
         return self.vector_store.as_upsert().add_documents(documents, ids=ids) if hasattr(self.vector_store, 'as_upsert') else self.vector_store.add_documents(documents, ids=ids)
