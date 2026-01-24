@@ -2,7 +2,7 @@ import sys
 import os
 import argparse
 import logging
-from search import search_prompt
+from search import search_prompt, search_with_sources
 from database import get_vector_store
 from ingest import ingest_pdf
 from config import Config
@@ -357,7 +357,7 @@ def handle_clear_command():
         return False
 
 
-def process_question(chain, question, quiet=False):
+def process_question(chain, question, quiet=False, verbose=False):
     """
     Processa uma pergunta usando a chain do RAG.
     
@@ -365,37 +365,67 @@ def process_question(chain, question, quiet=False):
         chain: Chain do LangChain configurada
         question: Pergunta do usuário
         quiet: Se True, oculta indicadores de progresso
+        verbose: Se True, mostra estatísticas detalhadas da resposta
     """
     try:
+        import time
+        start_time = time.time()
+        
         if not quiet:
             # Mostrar etapas do processo
             print("🔍 Recuperando informações relevantes...")
             print("🧠 Gerando resposta baseada nos documentos...\n")
         
-        response = chain.invoke(question)
+        if verbose:
+            # Usar search_with_sources para obter detalhes dos chunks
+            result = search_with_sources(question)
+            response = result["answer"]
+            sources = result["sources"]
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+        else:
+            response = chain.invoke(question)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            sources = []
         
         if not quiet:
             print("-" * 70)
             print(f"PERGUNTA: {question}")
             print("-" * 70)
             print(f"RESPOSTA: {response}")
+            
+            if verbose:
+                print("-" * 70)
+                print(f"📊 ESTATÍSTICAS DA RESPOSTA:")
+                print(f"⏱️  Tempo de execução: {elapsed_time:.2f}s")
+                if sources:
+                    print(f"📚 Fontes utilizadas ({len(sources)}):")
+                    for spec in sources:
+                        page_info = f", pág. {spec['page']}" if spec['page'] is not None else ""
+                        print(f"   • {spec['filename']}{page_info}")
+            
             print("-" * 70 + "\n")
         else:
             # Em modo quieto, mostra apenas a resposta pura para facilitar automação
             print(response)
+            if verbose:
+                # Se for verbose E quiet, mostra estatísticas mínimas
+                print(f"--- Stats: {elapsed_time:.2f}s | {len(sources)} sources ---")
         
     except Exception as e:
         print(f"❌ Erro ao processar pergunta: {e}\n")
         logger.error(f"Erro detalhado: {e}", exc_info=True)
 
 
-def chat_loop(chain, quiet=False):
+def chat_loop(chain, quiet=False, verbose=False):
     """
     Loop principal do chat interativo.
     
     Args:
         chain: Chain do LangChain configurada
         quiet: Se True, opera em modo silencioso
+        verbose: Se True, mostra estatísticas detalhadas
     """
     try:
         first_prompt = True
@@ -445,7 +475,7 @@ def chat_loop(chain, quiet=False):
                     continue
                 
                 # Processar como pergunta normal
-                process_question(chain, user_input, quiet=quiet)
+                process_question(chain, user_input, quiet=quiet, verbose=verbose)
     
     except KeyboardInterrupt:
         print("\n\n👋 Chat interrompido pelo usuário. Até logo!\n")
@@ -480,6 +510,11 @@ def main():
         '-q', '--quiet',
         action='store_true',
         help='Modo silencioso: oculta logs de inicialização e estatísticas iniciais'
+    )
+    parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help='Modo detalhado: mostra tempo de resposta e fontes utilizadas'
     )
     
     args = parser.parse_args()
@@ -517,7 +552,7 @@ def main():
         print("✅ Sistema pronto!\n")
     
     # Iniciar loop de chat
-    chat_loop(chain, quiet=args.quiet)
+    chat_loop(chain, quiet=args.quiet, verbose=args.verbose)
 
 
 if __name__ == "__main__":
