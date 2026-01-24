@@ -116,6 +116,36 @@ class VectorStoreRepository:
             logger.error(f"Erro ao limpar banco de dados: {e}")
             return False
 
+    def delete_by_source(self, source: str) -> bool:
+        """
+        Remove todos os chunks que tenham o mesmo 'source' no metadados.
+        
+        Args:
+            source (str): O caminho/nome do arquivo (metadata['source'])
+            
+        Returns:
+            bool: True se a operação foi concluída (mesmo que nada tenha sido deletado)
+        """
+        query = text("""
+            DELETE FROM langchain_pg_embedding 
+            WHERE cmetadata->>'source' = :source
+            AND collection_id = (SELECT uuid FROM langchain_pg_collection WHERE name = :collection)
+        """)
+        
+        try:
+            with self.engine.connect() as conn:
+                with conn.begin():
+                    logger.info(f"Removendo documentos antigos da fonte: {source}")
+                    result = conn.execute(query, {
+                        "source": source,
+                        "collection": Config.PG_VECTOR_COLLECTION_NAME
+                    })
+                    logger.info(f"Removidos {result.rowcount} chunks antigos de '{source}'.")
+                    return True
+        except Exception as e:
+            logger.error(f"Erro ao deletar documentos por fonte ({source}): {e}")
+            return False
+
     def add_documents(self, documents, ids=None):
         """Adiciona documentos ao vector store."""
         return self.vector_store.as_upsert().add_documents(documents, ids=ids) if hasattr(self.vector_store, 'as_upsert') else self.vector_store.add_documents(documents, ids=ids)
