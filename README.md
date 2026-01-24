@@ -28,14 +28,14 @@ Este sistema permite:
 
 ### Características Principais
 
-- ✅ Suporte para múltiplos provedores de IA (Google Gemini e OpenAI)
-- ✅ Configuração centralizada e validação automática
-- ✅ Arquitetura com Singleton Managers para Embeddings e LLM
-- ✅ Sistema de logging centralizado e consistente
-- ✅ Banco de dados vetorial PostgreSQL com pgVector
-- ✅ Chunking inteligente com overlap
-- ✅ Respostas baseadas apenas no contexto (sem alucinações)
-- ✅ Interface CLI interativa com comandos especiais
+- ✅ Barra de progresso visual durante a ingestão (`tqdm`)
+- ✅ Sistema de IDs determinísticos baseados em arquivo
+- ✅ Confirmação de segurança antes de sobrescrever documentos
+- ✅ Exibição de estatísticas detalhadas pós-ingestão
+- ✅ Amostragem de fontes (arquivo e página) nas respostas da IA
+- ✅ Interface CLI interativa com comandos especiais (`add`, `clear`, `help`)
+- ✅ Suporte completo a Google Gemini e OpenAI com abstração de provedor
+- ✅ Banco de dados vetorial PostgreSQL com pgVector via Repository Pattern
 
 ## 🛠 Tecnologias Utilizadas
 
@@ -237,21 +237,15 @@ Faça sua pergunta:
 RESPOSTA:
 O faturamento da empresa SuperTechIABrazil foi de 10 milhões de reais.
 
----
-Faça sua pergunta:
-> Quantos clientes temos em 2024?
-
-🔍 Buscando informações...
-💡 Gerando resposta...
-
-RESPOSTA:
-Não tenho informações necessárias para responder sua pergunta.
+FONTES:
+- document.pdf (pág 26)
+- document.pdf (pág 2)
 
 ---
 Faça sua pergunta:
 > sair
 
-👋 Encerrando chat. Até logo!
+👋 Até logo! Chat encerrado.
 ```
 
 #### 3. Ingerir PDF via CLI
@@ -403,10 +397,10 @@ No chat interativo, você pode usar:
 
 Consulte o arquivo [TODOs.md](TODOs.md) para ver as melhorias planejadas, incluindo:
 
-- Melhorias no database (contagem eficiente, tratamento de erros, repositório pattern)
-- Melhorias na ingestão (IDs determinísticos, confirmação de sobrescrita, metadados enriquecidos)
-- Comandos adicionais no chat (clear, stats, atalhos)
-- Melhorias de UX (indicador de progresso, modo silencioso)
+- **Fase E: Melhorias Técnicas do Chat** (Argumentos CLI padrão, tratamento de banco vazio)
+- **Fase F: Comandos Estendidos** (Comandos `stats` e `remove <arquivo>`)
+- **Fase G: Melhorias de UX** (Simplificação de prompt, atalhos de comando)
+- **Fase K: Refatorações Avançadas** (Histórico de conversas, cache de embeddings)
 
 ## 🤖 Desenvolvido com Antigravity
 

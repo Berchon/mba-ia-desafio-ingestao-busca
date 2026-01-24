@@ -5,9 +5,13 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [Não Lançado]
+## [0.3.0] - 2026-01-24
 
 ### Adicionado
+- Sistema de confirmação antes de sobrescrever documentos já existentes na base durante a ingestão (`src/chat.py`, `src/ingest.py`) (`ff16bb4`)
+- Nova função `search_with_sources` que retorna um dicionário com a resposta e metadados das fontes utilizadas (`src/search.py`) (`7e3f01f`)
+- Temperatura configurável para geração da LLM com reset dinâmico de singleton (`src/llm_manager.py`, `src/search.py`) (`86fa760`)
+- Parametrização do número de resultados recuperados (`top_k`) na chain de busca (`src/search.py`) (`ef56f88`)
 - Contador de documentos eficiente no banco de dados vetorial usando SQL direto (`src/database.py`) (`36dc8e3`)
 - Exibição do número real de documentos na tela de boas-vindas do chat (`src/chat.py`) (`36dc8e3`)
 - Sistema de logs detalhados para operações no banco de dados (`src/database.py`) (`d4a9790`)
@@ -20,6 +24,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Barra de progresso visual usando `tqdm` durante a geração de embeddings (`src/ingest.py`) (`09e81b7`)
 - Exibição de estatísticas detalhadas pós-ingestão, incluindo total de páginas, chunks e tamanho médio (`src/ingest.py`) (`09e81b7`)
 - Sistema de enriquecimento de metadados durante a ingestão com `chunk_id`, `chunk_index`, `total_chunks` e `filename` (`src/ingest.py`) (`daa0944`)
+
+### Alterado
+- Removido parâmetro `question` não utilizado na função `search_prompt` para melhor clareza do código (`src/search.py`) (`8577128`)
 
 ### Corrigido
 - Bug na query de contagem de documentos que sempre retornava 0 devido a filtragem incorreta de metadados (`src/database.py`) (`36dc8e3`)

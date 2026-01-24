@@ -207,34 +207,40 @@
   - [x] Testar → Commit: `feat: show ingestion statistics`
 - [x] **TESTE COMPLETO** → Merge com main
 
+#### C.6 Confirmação de Sobrescrita (Novo)
+- [x] **C.6.1** Verificar se 'source' já existe no repositório
+- [x] **C.6.2** Solicitar confirmação (Y/n) antes de limpar e re-ingerir
+- [x] Testar → Commit: `feat: add overwrite confirmation for existing documents`
+- [x] **TESTE COMPLETO** → Merge com main
+
 ---
 
 ### FASE D: Search Improvements (Média Prioridade)
 **Branch**: `feature/search-improvements`
 
 #### D.1 Parametrizar k (SEARCH2)
-- [ ] **D.1.1** Adicionar parâmetro `top_k` em search_prompt()
-  - [ ] Default = Config.TOP_K
-  - [ ] Testar → Commit: `feat: parametrize top k in search`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **D.1.1** Adicionar parâmetro `top_k` em search_prompt()
+  - [x] Default = Config.TOP_K
+  - [x] Testar → Commit: `feat: parametrize top k in search`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### D.2 Temperature Configurável (SEARCH4)
-- [ ] **D.2.1** Adicionar parâmetro `temperature`
-  - [ ] Default = Config.RETRIEVAL_TEMPERATURE
-  - [ ] Testar → Commit: `feat: make temperature configurable`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **D.2.1** Adicionar parâmetro `temperature`
+  - [x] Default = Config.RETRIEVAL_TEMPERATURE
+  - [x] Testar → Commit: `feat: make temperature configurable`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### D.3 Remover Parâmetro question Não Usado (SEARCH6)
-- [ ] **D.3.1** Limpar parâmetro question ou usar
-  - [ ] Decisão: remover ou validar
-  - [ ] Testar → Commit: `refactor: clean unused question parameter`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **D.3.1** Limpar parâmetro question ou usar
+  - [x] Decisão: remover ou validar
+  - [x] Testar → Commit: `refactor: clean unused question parameter`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### D.4 Retornar Fontes (SEARCH3)
-- [ ] **D.4.1** Modificar para retornar dict com answer + sources
-  - [ ] Criar função search_with_sources()
-  - [ ] Testar → Commit: `feat: return sources with answer`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **D.4.1** Modificar para retornar dict com answer + sources
+  - [x] Criar função search_with_sources()
+  - [x] Testar → Commit: `feat: return sources with answer`
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
