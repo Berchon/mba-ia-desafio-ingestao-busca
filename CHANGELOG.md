@@ -8,6 +8,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+- Parâmetros configuráveis via CLI (`--chunk-size`, `--chunk-overlap`, `--top-k`, `--temperature`) em `chat.py` e `ingest.py` (`e8df239`)
 - Estatísticas de resposta no Chat CLI (tempo de execução e fontes) ativadas via flag `-v, --verbose` (`986c201`)
 - Modo silencioso (`-q, --quiet`) em todos os comandos (`chat.py` e `ingest.py`) para suprimir logs e feedback visual (`65b9f96`)
 - Atalhos de comandos no Chat CLI (`h`, `a`, `c`, `s`, `r`) para maior agilidade (`12b4a89`)

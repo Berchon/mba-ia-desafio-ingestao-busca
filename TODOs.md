@@ -307,25 +307,25 @@
 - [x] **G.2.1** Mostrar etapas durante busca
   - [x] "Recuperando...", "Gerando resposta..."
   - [x] Testar → Commit: `feat: add progress indicator to search`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### G.3 Atalhos (CHAT10)
 - [x] **G.3.1** Adicionar aliases para comandos
   - [x] h→help, a→add, c→clear, etc
   - [x] Testar → Commit: `feat: add command shortcuts`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### G.4 Modo Silencioso (CHAT13)
 - [x] **G.4.1** Flag --quiet
   - [x] Esconder logs de inicialização
   - [x] Testar → Commit: `feat: add quiet mode flag`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### G.5 Estatísticas de Resposta (CHAT14)
 - [x] **G.5.1** Mostrar tempo e chunks usados
   - [x] Flag --verbose
   - [x] Testar → Commit: `feat: add response statistics`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
@@ -333,10 +333,10 @@
 **Branch**: `feature/configurable-parameters`
 
 #### H.1 CLI Arguments Override
-- [ ] **H.1.1** Adicionar args para chunk_size, overlap, top_k
-  - [ ] Atualizar ingest.py e search.py
-  - [ ] Testar → Commit: `feat: add cli arguments for parameters`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **H.1.1** Adicionar args para chunk_size, overlap, top_k
+  - [x] Atualizar ingest.py e search.py
+  - [x] Testar → Commit: `feat: add cli arguments for parameters`
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 
