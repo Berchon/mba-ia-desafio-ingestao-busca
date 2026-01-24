@@ -8,6 +8,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+- Indicadores de progresso visual durante a busca ("Recuperando...", "Gerando...") no Chat CLI (`a1a8c23`)
 - Prompt simplificado (`>`) no Chat CLI após a primeira instrução para uma interface mais limpa (`e540e31`)
 - Novo comando `remove` no Chat CLI para remover arquivos específicos da base com confirmação (`6279bf9`)
 - Novo comando `stats` no Chat CLI para exibir estatísticas detalhadas do banco de dados (`b84c137`)

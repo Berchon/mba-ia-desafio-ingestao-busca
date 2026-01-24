@@ -302,12 +302,11 @@
 - [x] **G.1.1** Prompt simplificado após primeira vez
   - [x] Apenas `>` depois da primeira pergunta
   - [x] Testar → Commit: `feat: simplify prompt after first question`
-- [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.2 Indicador de Progresso (CHAT7)
-- [ ] **G.2.1** Mostrar etapas durante busca
-  - [ ] "Recuperando...", "Gerando resposta..."
-  - [ ] Testar → Commit: `feat: add progress indicator to search`
+- [x] **G.2.1** Mostrar etapas durante busca
+  - [x] "Recuperando...", "Gerando resposta..."
+  - [x] Testar → Commit: `feat: add progress indicator to search`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.3 Atalhos (CHAT10)
