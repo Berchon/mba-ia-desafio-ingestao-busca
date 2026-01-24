@@ -37,7 +37,7 @@ PERGUNTA DO USUÁRIO:
 RESPONDA A "PERGUNTA DO USUÁRIO"
 """
 
-def search_prompt(question=None, top_k=Config.TOP_K):
+def search_prompt(question=None, top_k=Config.TOP_K, temperature=None):
     """
     Cria e retorna uma chain LangChain configurada para realizar busca semântica 
     e responder perguntas baseadas no contexto recuperado do banco vetorial.
@@ -45,6 +45,7 @@ def search_prompt(question=None, top_k=Config.TOP_K):
     Args:
         question: A pergunta do usuário (opcional, usado para validação inicial)
         top_k: Número de documentos a recuperar (default: Config.TOP_K)
+        temperature: Temperatura para geração do LLM (opcional)
         
     Returns:
         RunnableSequence: Chain configurada do LangChain (pronta para .invoke())
@@ -64,7 +65,7 @@ def search_prompt(question=None, top_k=Config.TOP_K):
         )
         
         # 4. Inicializar LLM
-        llm = get_llm()
+        llm = get_llm(temperature=temperature)
         
         # 5. Criar o Prompt Template
         prompt = PromptTemplate(

@@ -17,21 +17,33 @@ class LLMManager:
     _instance = None
 
     @classmethod
-    def get_llm(cls):
+    def get_llm(cls, temperature=None):
         """
         Retorna a instância do modelo LLM, criando-a se necessário.
         A escolha do provedor é baseada na configuração disponível no Config.
+        
+        Args:
+            temperature: Temperatura para geração (opcional). Se None, usa Config.RETRIEVAL_TEMPERATURE.
         """
+        target_temp = temperature if temperature is not None else Config.RETRIEVAL_TEMPERATURE
+        
+        # Se pedirem uma temperatura diferente da que já temos instanciada, resetamos para forçar a mudança
+        if cls._instance is not None:
+            current_temp = getattr(cls._instance, 'temperature', None)
+            if temperature is not None and current_temp != temperature:
+                logger.debug(f"Redefinindo LLM para nova temperatura: {temperature}")
+                cls._instance = None
+
         if cls._instance is None:
             # Tentar Google primeiro (prioridade conforme Config.API_KEY)
             if Config.GOOGLE_API_KEY:
                 try:
                     from langchain_google_genai import ChatGoogleGenerativeAI
-                    logger.info(f"Inicializando LLM Google: {Config.GOOGLE_LLM_MODEL}")
+                    logger.info(f"Inicializando LLM Google: {Config.GOOGLE_LLM_MODEL} (temp={target_temp})")
                     cls._instance = ChatGoogleGenerativeAI(
                         model=Config.GOOGLE_LLM_MODEL,
                         google_api_key=Config.GOOGLE_API_KEY,
-                        temperature=Config.RETRIEVAL_TEMPERATURE
+                        temperature=target_temp
                     )
                 except Exception as e:
                     logger.error(f"Erro ao inicializar LLM Google: {e}")
@@ -41,11 +53,11 @@ class LLMManager:
             elif Config.OPENAI_API_KEY:
                 try:
                     from langchain_openai import ChatOpenAI
-                    logger.info(f"Inicializando LLM OpenAI: {Config.OPENAI_LLM_MODEL}")
+                    logger.info(f"Inicializando LLM OpenAI: {Config.OPENAI_LLM_MODEL} (temp={target_temp})")
                     cls._instance = ChatOpenAI(
                         model=Config.OPENAI_LLM_MODEL,
                         api_key=Config.OPENAI_API_KEY,
-                        temperature=Config.RETRIEVAL_TEMPERATURE
+                        temperature=target_temp
                     )
                 except Exception as e:
                     logger.error(f"Erro ao inicializar LLM OpenAI: {e}")
@@ -59,8 +71,11 @@ class LLMManager:
         return cls._instance
 
 
-def get_llm():
+def get_llm(temperature=None):
     """
     Função de conveniência para obter o modelo LLM seguindo o padrão Singleton.
+    
+    Args:
+        temperature: Temperatura para geração (opcional).
     """
-    return LLMManager.get_llm()
+    return LLMManager.get_llm(temperature=temperature)
