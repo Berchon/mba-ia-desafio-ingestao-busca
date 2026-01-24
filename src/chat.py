@@ -280,7 +280,7 @@ def main():
         epilog='Exemplo: python src/chat.py'
     )
     parser.add_argument(
-        '-file', '--file',
+        '-f', '--file',
         type=str,
         help='Caminho do PDF para usar como referência (opcional)',
         metavar='PDF_PATH'
