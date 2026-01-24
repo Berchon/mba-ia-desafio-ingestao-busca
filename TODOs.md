@@ -190,22 +190,22 @@
 - [x] **TESTE COMPLETO** → Merge com main
 
 #### C.3 Enriquecer Metadados (INGEST6)
-- [ ] **C.3.1** Adicionar metadados úteis aos chunks
-  - [ ] chunk_id, total_chunks, pdf_source, etc
-  - [ ] Testar → Commit: `feat: enrich document metadata`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **C.3.1** Adicionar metadados úteis aos chunks
+  - [x] chunk_id, total_chunks, pdf_source, etc
+  - [x] Testar → Commit: `feat: enrich document metadata`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### C.4 Barra de Progresso (INGEST4)
-- [ ] **C.4.1** Instalar tqdm e adicionar progresso
-  - [ ] Barra para chunking/embedding
-  - [ ] Testar → Commit: `feat: add progress bar to ingestion`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **C.4.1** Instalar tqdm e adicionar progresso
+  - [x] Barra para chunking/embedding
+  - [x] Testar → Commit: `feat: add progress bar to ingestion`
+- [x] **TESTE COMPLETO** → Merge com main
 
 #### C.5 Estatísticas Pós-Ingestão (INGEST5)
-- [ ] **C.5.1** Mostrar resumo após ingestão
-  - [ ] Páginas, chunks, tamanho médio
-  - [ ] Testar → Commit: `feat: show ingestion statistics`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **C.5.1** Mostrar resumo após ingestão
+  - [x] Páginas, chunks, tamanho médio
+  - [x] Testar → Commit: `feat: show ingestion statistics`
+- [x] **TESTE COMPLETO** → Merge com main
 
 ---
 

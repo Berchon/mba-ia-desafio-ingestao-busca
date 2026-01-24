@@ -17,7 +17,8 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Implementação de IDs determinísticos baseados no nome do arquivo (Cenário A) (`src/ingest.py`) (`af396e7`)
 - Sistema de limpeza seletiva por fonte no `VectorStoreRepository` (`src/database.py`) (`03c1a95`)
 - Integração da limpeza automática no fluxo de ingestão de PDFs (`src/ingest.py`) (`e0c0d89`)
-- Barra de progresso visual usando `tqdm` e exibição de estatísticas detalhadas (páginas, chunks, tamanho médio) (`src/ingest.py`) (`09e81b7`)
+- Barra de progresso visual usando `tqdm` durante a geração de embeddings (`src/ingest.py`) (`09e81b7`)
+- Exibição de estatísticas detalhadas pós-ingestão, incluindo total de páginas, chunks e tamanho médio (`src/ingest.py`) (`09e81b7`)
 - Sistema de enriquecimento de metadados durante a ingestão com `chunk_id`, `chunk_index`, `total_chunks` e `filename` (`src/ingest.py`) (`daa0944`)
 
 ### Corrigido
