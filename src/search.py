@@ -37,13 +37,14 @@ PERGUNTA DO USUÁRIO:
 RESPONDA A "PERGUNTA DO USUÁRIO"
 """
 
-def search_prompt(question=None):
+def search_prompt(question=None, top_k=Config.TOP_K):
     """
     Cria e retorna uma chain LangChain configurada para realizar busca semântica 
     e responder perguntas baseadas no contexto recuperado do banco vetorial.
     
     Args:
         question: A pergunta do usuário (opcional, usado para validação inicial)
+        top_k: Número de documentos a recuperar (default: Config.TOP_K)
         
     Returns:
         RunnableSequence: Chain configurada do LangChain (pronta para .invoke())
@@ -56,10 +57,10 @@ def search_prompt(question=None):
         from database import VectorStoreRepository
         repo = VectorStoreRepository(embeddings)
         
-        # 3. Criar Retriever (k=10 conforme requisitos)
+        # 3. Criar Retriever
         retriever = repo.as_retriever(
             search_type="similarity",
-            search_kwargs={"k": Config.TOP_K}
+            search_kwargs={"k": top_k}
         )
         
         # 4. Inicializar LLM
