@@ -377,13 +377,17 @@ def chat_loop(chain):
         chain: Chain do LangChain configurada
     """
     try:
+        first_prompt = True
         while True:
             # Solicitar entrada do usuário
-            user_input = input("Faça sua pergunta (ou 'help' para ajuda): ").strip()
+            prompt_text = "Faça sua pergunta (ou 'help' para ajuda)\n> " if first_prompt else "> "
+            user_input = input(prompt_text).strip()
             
             # Ignorar entradas vazias
             if not user_input:
                 continue
+            
+            first_prompt = False
             
             # Verificar comandos especiais
             if is_exit_command(user_input):
