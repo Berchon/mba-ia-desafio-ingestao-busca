@@ -8,6 +8,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+- Atalhos de comandos no Chat CLI (`h`, `a`, `c`, `s`, `r`) para maior agilidade (`12b4a89`)
 - Indicadores de progresso visual durante a busca ("Recuperando...", "Gerando...") no Chat CLI (`a1a8c23`)
 - Prompt simplificado (`>`) no Chat CLI após a primeira instrução para uma interface mais limpa (`e540e31`)
 - Novo comando `remove` no Chat CLI para remover arquivos específicos da base com confirmação (`6279bf9`)

@@ -310,9 +310,9 @@
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.3 Atalhos (CHAT10)
-- [ ] **G.3.1** Adicionar aliases para comandos
-  - [ ] h→help, a→add, c→clear, etc
-  - [ ] Testar → Commit: `feat: add command shortcuts`
+- [x] **G.3.1** Adicionar aliases para comandos
+  - [x] h→help, a→add, c→clear, etc
+  - [x] Testar → Commit: `feat: add command shortcuts`
 - [ ] **TESTE COMPLETO** → Merge com main
 
 #### G.4 Modo Silencioso (CHAT13)
