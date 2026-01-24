@@ -94,3 +94,71 @@ def search_prompt(top_k=Config.TOP_K, temperature=None):
     except Exception as e:
         logger.error(f"Erro ao criar a chain de busca: {e}")
         return None
+
+def search_with_sources(question, top_k=Config.TOP_K, temperature=None):
+    """
+    Realiza a busca, gera a resposta e retorna também as fontes utilizadas.
+    
+    Args:
+        question: Pergunta do usuário
+        top_k: Número de documentos a recuperar
+        temperature: Temperatura da LLM
+        
+    Returns:
+        dict: Dicionário contendo 'answer' (str) e 'sources' (list)
+    """
+    try:
+        # 1. Inicializar Embeddings
+        embeddings = get_embeddings()
+        
+        # 2. Conectar ao Repositório
+        from database import VectorStoreRepository
+        repo = VectorStoreRepository(embeddings)
+        
+        # 3. Recuperar documentos
+        docs = repo.vector_store.similarity_search(question, k=top_k)
+        
+        # 4. Formatar contexto
+        def format_docs(docs):
+            return "\n\n".join(doc.page_content for doc in docs)
+        
+        contexto = format_docs(docs)
+        
+        # 5. Inicializar LLM
+        llm = get_llm(temperature=temperature)
+        
+        # 6. Criar o Prompt Template
+        prompt = PromptTemplate(
+            template=PROMPT_TEMPLATE,
+            input_variables=["contexto", "pergunta"]
+        )
+        
+        # 7. Gerar resposta
+        chain = prompt | llm | StrOutputParser()
+        answer = chain.invoke({"contexto": contexto, "pergunta": question})
+        
+        # 8. Extrair fontes (metadados únicos)
+        sources = []
+        seen_sources = set()
+        for doc in docs:
+            # Criar identificador único para a fonte (arquivo + página)
+            source_id = f"{doc.metadata.get('source', 'desconhecido')}_p{doc.metadata.get('page', '??')}"
+            if source_id not in seen_sources:
+                sources.append({
+                    "filename": doc.metadata.get("filename", doc.metadata.get("source")),
+                    "page": doc.metadata.get("page"),
+                    "source": doc.metadata.get("source")
+                })
+                seen_sources.add(source_id)
+        
+        return {
+            "answer": answer,
+            "sources": sources
+        }
+        
+    except Exception as e:
+        logger.error(f"Erro na busca com fontes: {e}")
+        return {
+            "answer": f"Lamento, ocorreu um erro ao processar sua pergunta: {str(e)}",
+            "sources": []
+        }
