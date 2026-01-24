@@ -69,27 +69,27 @@ def display_help():
     print("   O sistema buscará respostas baseadas nos PDFs ingeridos.")
     
     print("\n📄 GERENCIAR DOCUMENTOS:")
-    print("   add <caminho_pdf>      Adicionar novo PDF ao banco de dados")
+    print("   add <caminho_pdf>      Adicionar novo PDF ao banco de dados (atalho: 'a')")
     print("   ingest <caminho_pdf>   (Mesmo que 'add')")
-    print("   remove <nome_arquivo>  Remove um arquivo específico da base")
+    print("   remove <nome_arquivo>  Remove um arquivo específico da base (atalho: 'r')")
     print("   Exemplo: remove document.pdf")
     
     print("\n❓ AJUDA:")
-    print("   help                   Mostrar esta mensagem de ajuda")
+    print("   help                   Mostrar esta mensagem de ajuda (atalho: 'h')")
     print("   ajuda                  (Mesmo que 'help')")
     print("   ?                      (Mesmo que 'help')")
     
     print("\n🚪 SAIR:")
-    print("   sair                   Encerrar o chat")
+    print("   sair                   Encerrar o chat (atalho: 'q')")
     print("   exit                   (Mesmo que 'sair')")
     print("   quit                   (Mesmo que 'sair')")
     print("   q                      (Mesmo que 'sair')")
     
     print("\n🧹 LIMPAR BASE (ADMIN):")
-    print("   clear                  Remove todos os documentos do banco")
+    print("   clear                  Remove todos os documentos do banco (atalho: 'c')")
     
     print("\n📊 ESTATÍSTICAS:")
-    print("   stats                  Mostra estatísticas detalhadas do banco")
+    print("   stats                  Mostra estatísticas detalhadas do banco (atalho: 's')")
     
     print("="*70 + "\n")
 
@@ -182,7 +182,7 @@ def is_help_command(text):
     Returns:
         bool: True se for comando de ajuda
     """
-    return text.lower().strip() in ['help', 'ajuda', '?']
+    return text.lower().strip() in ['help', 'ajuda', '?', 'h']
 
 
 def is_add_command(text):
@@ -196,7 +196,7 @@ def is_add_command(text):
         bool: True se for comando de adição
     """
     cleaned = text.lower().strip()
-    return cleaned == 'add' or cleaned == 'ingest' or cleaned.startswith(('add ', 'ingest '))
+    return cleaned == 'add' or cleaned == 'ingest' or cleaned == 'a' or cleaned.startswith(('add ', 'ingest ', 'a '))
 
 
 def is_clear_command(text):
@@ -209,7 +209,7 @@ def is_clear_command(text):
     Returns:
         bool: True se for comando de limpeza
     """
-    return text.lower().strip() == 'clear'
+    return text.lower().strip() in ['clear', 'c']
 
 
 def is_stats_command(text):
@@ -222,7 +222,7 @@ def is_stats_command(text):
     Returns:
         bool: True se for comando de estatísticas
     """
-    return text.lower().strip() == 'stats'
+    return text.lower().strip() in ['stats', 's']
 
 
 def is_remove_command(text):
@@ -236,7 +236,7 @@ def is_remove_command(text):
         bool: True se for comando de remoção
     """
     cleaned = text.lower().strip()
-    return cleaned == 'remove' or cleaned == 'delete' or cleaned.startswith(('remove ', 'delete '))
+    return cleaned == 'remove' or cleaned == 'delete' or cleaned == 'r' or cleaned.startswith(('remove ', 'delete ', 'r '))
 
 
 def handle_remove_command(user_input):
