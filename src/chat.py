@@ -325,4 +325,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+        os._exit(0)
+    except (KeyboardInterrupt, SystemExit):
+        os._exit(0)
