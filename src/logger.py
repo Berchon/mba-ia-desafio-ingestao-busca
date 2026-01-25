@@ -4,11 +4,14 @@ Módulo de Logging Centralizado
 Configura o sistema de logging de forma consistente para toda a aplicação.
 """
 
+from __future__ import annotations
+
 import logging
 import sys
+from typing import Optional
 
 
-def setup_logger(name: str = None, level: int = logging.INFO) -> logging.Logger:
+def setup_logger(name: Optional[str] = None, level: int = logging.INFO) -> logging.Logger:
     """
     Configura e retorna um logger com formatação consistente.
     
@@ -50,7 +53,7 @@ def setup_logger(name: str = None, level: int = logging.INFO) -> logging.Logger:
     return logger
 
 
-def get_logger(name: str = None, level: int = logging.INFO) -> logging.Logger:
+def get_logger(name: Optional[str] = None, level: int = logging.INFO) -> logging.Logger:
     """
     Função de conveniência para obter um logger.
     
@@ -64,7 +67,7 @@ def get_logger(name: str = None, level: int = logging.INFO) -> logging.Logger:
     return setup_logger(name, level)
 
 
-def set_global_log_level(level: int):
+def set_global_log_level(level: int) -> None:
     """
     Define o nível de log para todos os loggers já criados e para o root logger.
     Útil para implementar o modo silencioso.

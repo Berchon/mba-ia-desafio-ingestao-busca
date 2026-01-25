@@ -5,7 +5,11 @@ Este módulo centraliza todas as variáveis de ambiente e configurações do pro
 eliminando duplicação e facilitando manutenção.
 """
 
+from __future__ import annotations
+
 import os
+from typing import ClassVar, Optional
+
 from dotenv import load_dotenv
 
 # Carregar variáveis de ambiente do arquivo .env
@@ -21,29 +25,29 @@ class Config:
     """
     
     # === API Keys ===
-    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    GOOGLE_API_KEY: ClassVar[Optional[str]] = os.getenv("GOOGLE_API_KEY")
+    OPENAI_API_KEY: ClassVar[Optional[str]] = os.getenv("OPENAI_API_KEY")
     
     # === Modelos Google Gemini ===
-    GOOGLE_EMBEDDING_MODEL = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/embedding-001")
-    GOOGLE_LLM_MODEL = os.getenv("GOOGLE_LLM_MODEL", "gemini-2.5-flash-lite")
+    GOOGLE_EMBEDDING_MODEL: ClassVar[str] = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/embedding-001")
+    GOOGLE_LLM_MODEL: ClassVar[str] = os.getenv("GOOGLE_LLM_MODEL", "gemini-2.5-flash-lite")
     
     # === Modelos OpenAI ===
-    OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
-    OPENAI_LLM_MODEL = os.getenv("OPENAI_LLM_MODEL", "gpt-5-nano")
+    OPENAI_EMBEDDING_MODEL: ClassVar[str] = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
+    OPENAI_LLM_MODEL: ClassVar[str] = os.getenv("OPENAI_LLM_MODEL", "gpt-5-nano")
     
     # === Configurações do Banco de Dados ===
-    DATABASE_URL = os.getenv("DATABASE_URL")
-    PG_VECTOR_COLLECTION_NAME = os.getenv("PG_VECTOR_COLLECTION_NAME")
+    DATABASE_URL: ClassVar[Optional[str]] = os.getenv("DATABASE_URL")
+    PG_VECTOR_COLLECTION_NAME: ClassVar[Optional[str]] = os.getenv("PG_VECTOR_COLLECTION_NAME")
     
     # === Configurações de Ingestão ===
-    PDF_PATH = os.getenv("PDF_PATH")
-    CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1000"))
-    CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "150"))
+    PDF_PATH: ClassVar[Optional[str]] = os.getenv("PDF_PATH")
+    CHUNK_SIZE: ClassVar[int] = int(os.getenv("CHUNK_SIZE", "1000"))
+    CHUNK_OVERLAP: ClassVar[int] = int(os.getenv("CHUNK_OVERLAP", "150"))
     
     # === Configurações de Busca/Retrieval ===
-    TOP_K = int(os.getenv("TOP_K", "10"))
-    RETRIEVAL_TEMPERATURE = float(os.getenv("RETRIEVAL_TEMPERATURE", "0"))
+    TOP_K: ClassVar[int] = int(os.getenv("TOP_K", "10"))
+    RETRIEVAL_TEMPERATURE: ClassVar[float] = float(os.getenv("RETRIEVAL_TEMPERATURE", "0"))
     
     # === Propriedades Agnósticas ao Provedor ===
     # Estas propriedades retornam automaticamente os valores corretos
@@ -51,7 +55,7 @@ class Config:
     
     @classmethod
     @property
-    def API_KEY(cls):
+    def API_KEY(cls) -> str:
         """
         Retorna a API key disponível (Google ou OpenAI).
         Prioriza Google se ambas estiverem configuradas.
@@ -68,7 +72,7 @@ class Config:
     
     @classmethod
     @property
-    def EMBEDDING_MODEL(cls):
+    def EMBEDDING_MODEL(cls) -> str:
         """
         Retorna o modelo de embedding apropriado baseado na API key disponível.
         Se Google API key está configurada, retorna modelo Google.
@@ -88,7 +92,7 @@ class Config:
     
     @classmethod
     @property
-    def LLM_MODEL(cls):
+    def LLM_MODEL(cls) -> str:
         """
         Retorna o modelo LLM apropriado baseado na API key disponível.
         Se Google API key está configurada, retorna modelo Google.
@@ -107,7 +111,7 @@ class Config:
             )
     
     @classmethod
-    def validate_config(cls):
+    def validate_config(cls) -> None:
         """
         Valida se todas as variáveis de ambiente críticas estão configuradas.
         
@@ -137,7 +141,7 @@ class Config:
             )
     
     @classmethod
-    def display_config(cls):
+    def display_config(cls) -> None:
         """
         Exibe as configurações atuais (útil para debug).
         Oculta valores sensíveis como API keys.

@@ -1,7 +1,12 @@
+from __future__ import annotations
+
+from typing import Any, Optional, Sequence
+
 from langchain_postgres.vectorstores import PGVector
 from config import Config
 import sqlalchemy as sa
 from sqlalchemy import text
+from sqlalchemy.engine import Engine
 from logger import get_logger
 
 logger = get_logger(__name__)
@@ -12,7 +17,7 @@ class VectorStoreRepository:
     Implementa o padrão Repository para abstrair o acesso aos dados.
     """
     
-    def __init__(self, embeddings=None):
+    def __init__(self, embeddings: Optional[Any] = None) -> None:
         """
         Inicializa o repositório.
         
@@ -21,12 +26,12 @@ class VectorStoreRepository:
                        Se None, algumas operações que não exigem embeddings (como count) 
                        ainda funcionarão.
         """
-        self.embeddings = embeddings
-        self._vector_store = None
-        self._engine = None
+        self.embeddings: Optional[Any] = embeddings
+        self._vector_store: Optional[PGVector] = None
+        self._engine: Optional[Engine] = None
 
     @property
-    def vector_store(self):
+    def vector_store(self) -> PGVector:
         """Retorna a instância do PGVector, inicializando-a se necessário."""
         if self._vector_store is None:
             if self.embeddings is None:
@@ -45,10 +50,11 @@ class VectorStoreRepository:
         return self._vector_store
 
     @property
-    def engine(self):
+    def engine(self) -> Engine:
         """Retorna o engine do SQLAlchemy, inicializando-o se necessário."""
         if self._engine is None:
-            self._engine = sa.create_engine(Config.DATABASE_URL)
+            # Config.DATABASE_URL é Optional[str]; em runtime isso deve estar configurado.
+            self._engine = sa.create_engine(Config.DATABASE_URL)  # type: ignore[arg-type]
         return self._engine
 
     def count(self) -> int:
@@ -108,7 +114,7 @@ class VectorStoreRepository:
             logger.error(f"Erro inesperado ao contar fontes: {e}")
             return 0
 
-    def list_sources(self) -> list:
+    def list_sources(self) -> list[str]:
         """
         Lista todas as fontes únicas (arquivos) na coleção.
         
@@ -227,7 +233,7 @@ class VectorStoreRepository:
                     "source": source,
                     "collection": Config.PG_VECTOR_COLLECTION_NAME
                 })
-                return result.scalar()
+                return bool(result.scalar())
         except sa.exc.SQLAlchemyError as e:
             logger.error(f"Erro de banco de dados ao verificar existência ({source}): {e}")
             return False
@@ -235,19 +241,19 @@ class VectorStoreRepository:
             logger.error(f"Erro inesperado ao verificar existência ({source}): {e}")
             return False
 
-    def add_documents(self, documents, ids=None):
+    def add_documents(self, documents: Sequence[Any], ids: Optional[Sequence[str]] = None) -> Any:
         """Adiciona documentos ao vector store."""
         return self.vector_store.as_upsert().add_documents(documents, ids=ids) if hasattr(self.vector_store, 'as_upsert') else self.vector_store.add_documents(documents, ids=ids)
 
-    def as_retriever(self, **kwargs):
+    def as_retriever(self, **kwargs: Any) -> Any:
         """Retorna o vector store como um retriever."""
         return self.vector_store.as_retriever(**kwargs)
 
 # Funções de compatibilidade (Legacy) para não quebrar o código existente imediatamente
-def get_vector_store(embeddings):
+def get_vector_store(embeddings: Any) -> PGVector:
     repo = VectorStoreRepository(embeddings)
     return repo.vector_store
 
-def count_documents():
+def count_documents() -> int:
     repo = VectorStoreRepository()
     return repo.count()

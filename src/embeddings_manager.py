@@ -5,6 +5,10 @@ Implementa o padrão Singleton para garantir que o modelo de embeddings
 seja instanciado apenas uma vez e fornece abstração de provedor (Google/OpenAI).
 """
 
+from __future__ import annotations
+
+from typing import Any, Optional
+
 from config import Config
 from logger import get_logger
 
@@ -14,10 +18,10 @@ class EmbeddingsManager:
     """
     Gerencia a instância do modelo de embeddings.
     """
-    _instance = None
+    _instance: Optional[Any] = None
 
     @classmethod
-    def get_embeddings(cls):
+    def get_embeddings(cls) -> Any:
         """
         Retorna a instância do modelo de embeddings, criando-a se necessário.
         A escolha do provedor é baseada na configuração disponível no Config.
@@ -57,7 +61,7 @@ class EmbeddingsManager:
         return cls._instance
 
 
-def get_embeddings():
+def get_embeddings() -> Any:
     """
     Função de conveniência para obter o modelo de embeddings seguindo o padrão Singleton.
     """

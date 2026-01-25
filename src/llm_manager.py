@@ -5,6 +5,10 @@ Implementa o padrão Singleton para garantir que o modelo de linguagem (LLM)
 seja instanciado apenas uma vez e fornece abstração de provedor (Google/OpenAI).
 """
 
+from __future__ import annotations
+
+from typing import Any, Optional
+
 from config import Config
 from logger import get_logger
 
@@ -14,10 +18,10 @@ class LLMManager:
     """
     Gerencia a instância do modelo LLM.
     """
-    _instance = None
+    _instance: Optional[Any] = None
 
     @classmethod
-    def get_llm(cls, temperature=None):
+    def get_llm(cls, temperature: Optional[float] = None) -> Any:
         """
         Retorna a instância do modelo LLM, criando-a se necessário.
         A escolha do provedor é baseada na configuração disponível no Config.
@@ -71,7 +75,7 @@ class LLMManager:
         return cls._instance
 
 
-def get_llm(temperature=None):
+def get_llm(temperature: Optional[float] = None) -> Any:
     """
     Função de conveniência para obter o modelo LLM seguindo o padrão Singleton.
     

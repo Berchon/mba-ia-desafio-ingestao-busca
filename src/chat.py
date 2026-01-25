@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 import sys
 import os
 import argparse
 import logging
+from typing import Any, Optional
+
 from sqlalchemy.exc import SQLAlchemyError
 from search import search_prompt, search_with_sources
 from database import get_vector_store
@@ -13,7 +17,7 @@ from logger import get_logger
 logger = get_logger(__name__, level=logging.WARNING)
 
 
-def check_database_status():
+def check_database_status() -> tuple[int, int]:
     """
     Verifica quantos registros e arquivos existem no banco de dados vetorial.
     
@@ -41,7 +45,7 @@ def check_database_status():
         return 0, 0
 
 
-def display_welcome(counts):
+def display_welcome(counts: tuple[int, int]) -> None:
     """
     Exibe mensagem de boas-vindas com status do banco.
     
@@ -64,7 +68,7 @@ def display_welcome(counts):
     print("="*70 + "\n")
 
 
-def display_help():
+def display_help() -> None:
     """
     Exibe a lista de comandos disponíveis.
     """
@@ -101,7 +105,12 @@ def display_help():
     print("="*70 + "\n")
 
 
-def handle_add_command(user_input, quiet=False, chunk_size=None, chunk_overlap=None):
+def handle_add_command(
+    user_input: str,
+    quiet: bool = False,
+    chunk_size: Optional[int] = None,
+    chunk_overlap: Optional[int] = None,
+) -> bool:
     """
     Processa comando de adição de PDF ao banco.
     
@@ -189,7 +198,7 @@ def handle_add_command(user_input, quiet=False, chunk_size=None, chunk_overlap=N
         return False
 
 
-def is_exit_command(text):
+def is_exit_command(text: str) -> bool:
     """
     Verifica se o comando é de saída.
     
@@ -202,7 +211,7 @@ def is_exit_command(text):
     return text.lower().strip() in ['sair', 'exit', 'quit', 'q']
 
 
-def is_help_command(text):
+def is_help_command(text: str) -> bool:
     """
     Verifica se o comando é de ajuda.
     
@@ -215,7 +224,7 @@ def is_help_command(text):
     return text.lower().strip() in ['help', 'ajuda', '?', 'h']
 
 
-def is_add_command(text):
+def is_add_command(text: str) -> bool:
     """
     Verifica se o comando é de adicionar PDF.
     
@@ -229,7 +238,7 @@ def is_add_command(text):
     return cleaned == 'add' or cleaned == 'ingest' or cleaned == 'a' or cleaned.startswith(('add ', 'ingest ', 'a '))
 
 
-def is_clear_command(text):
+def is_clear_command(text: str) -> bool:
     """
     Verifica se o comando é de limpar a base.
     
@@ -242,7 +251,7 @@ def is_clear_command(text):
     return text.lower().strip() in ['clear', 'c']
 
 
-def is_stats_command(text):
+def is_stats_command(text: str) -> bool:
     """
     Verifica se o comando é de estatísticas.
     
@@ -255,7 +264,7 @@ def is_stats_command(text):
     return text.lower().strip() in ['stats', 's']
 
 
-def is_remove_command(text):
+def is_remove_command(text: str) -> bool:
     """
     Verifica se o comando é de remover um arquivo.
     
@@ -269,7 +278,7 @@ def is_remove_command(text):
     return cleaned == 'remove' or cleaned == 'delete' or cleaned == 'r' or cleaned.startswith(('remove ', 'delete ', 'r '))
 
 
-def handle_remove_command(user_input):
+def handle_remove_command(user_input: str) -> None:
     """
     Processa a remoção de um arquivo específico da base.
     
@@ -317,7 +326,7 @@ def handle_remove_command(user_input):
         print("Operação cancelada.\n")
 
 
-def handle_stats_command():
+def handle_stats_command() -> None:
     """
     Exibe estatísticas detalhadas do banco de dados.
     """
@@ -348,7 +357,7 @@ def handle_stats_command():
     print("="*70 + "\n")
 
 
-def handle_clear_command():
+def handle_clear_command() -> bool:
     """
     Processa o comando de limpeza da base de dados com confirmação.
     
@@ -376,7 +385,14 @@ def handle_clear_command():
         return False
 
 
-def process_question(chain, question, quiet=False, verbose=False, top_k=None, temperature=None):
+def process_question(
+    chain: Any,
+    question: str,
+    quiet: bool = False,
+    verbose: bool = False,
+    top_k: Optional[int] = None,
+    temperature: Optional[float] = None,
+) -> None:
     """
     Processa uma pergunta usando a chain do RAG.
     
@@ -400,7 +416,7 @@ def process_question(chain, question, quiet=False, verbose=False, top_k=None, te
         if verbose:
             # Usar search_with_sources para obter detalhes dos chunks
             # Passar top_k e temperature se fornecidos, senão usar os do Config via default da função
-            kwargs = {}
+            kwargs: dict[str, Any] = {}
             if top_k is not None: kwargs['top_k'] = top_k
             if temperature is not None: kwargs['temperature'] = temperature
             
@@ -450,7 +466,15 @@ def process_question(chain, question, quiet=False, verbose=False, top_k=None, te
         logger.error(f"Erro detalhado ao processar pergunta: {e}", exc_info=True)
 
 
-def chat_loop(chain, quiet=False, verbose=False, top_k=None, temperature=None, chunk_size=None, chunk_overlap=None):
+def chat_loop(
+    chain: Any,
+    quiet: bool = False,
+    verbose: bool = False,
+    top_k: Optional[int] = None,
+    temperature: Optional[float] = None,
+    chunk_size: Optional[int] = None,
+    chunk_overlap: Optional[int] = None,
+) -> None:
     """
     Loop principal do chat interativo.
     
@@ -520,7 +544,7 @@ def chat_loop(chain, quiet=False, verbose=False, top_k=None, temperature=None, c
         logger.error(f"Erro fatal no loop: {e}", exc_info=True)
 
 
-def main():
+def main() -> None:
     """
     Função principal do CLI.
     """
@@ -584,7 +608,7 @@ def main():
         print("🔧 Inicializando sistema de busca...\n")
     
     # Criar kwargs para search_prompt
-    search_kwargs = {}
+    search_kwargs: dict[str, Any] = {}
     if args.top_k is not None: search_kwargs['top_k'] = args.top_k
     if args.temperature is not None: search_kwargs['temperature'] = args.temperature
     

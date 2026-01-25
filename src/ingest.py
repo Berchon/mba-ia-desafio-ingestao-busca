@@ -1,5 +1,10 @@
+from __future__ import annotations
+
 import os
+from typing import Any, Optional
+
 from langchain_community.document_loaders import PyPDFLoader
+from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from database import get_vector_store
 from config import Config
@@ -10,7 +15,12 @@ import logging
 
 logger = get_logger(__name__)
 
-def ingest_pdf(pdf_path: str = None, quiet: bool = False, chunk_size: int = None, chunk_overlap: int = None):
+def ingest_pdf(
+    pdf_path: Optional[str] = None,
+    quiet: bool = False,
+    chunk_size: Optional[int] = None,
+    chunk_overlap: Optional[int] = None,
+) -> bool:
     # Validar configuração
     Config.validate_config()
     
@@ -31,7 +41,7 @@ def ingest_pdf(pdf_path: str = None, quiet: bool = False, chunk_size: int = None
         raise FileNotFoundError(f"Arquivo PDF não encontrado: {target_pdf}")
         
     loader = PyPDFLoader(target_pdf)
-    docs = loader.load()
+    docs: list[Document] = loader.load()
     logger.info(f"PDF carregado com sucesso. Total de páginas: {len(docs)}")
 
     # 2. Chunking do texto
@@ -40,7 +50,7 @@ def ingest_pdf(pdf_path: str = None, quiet: bool = False, chunk_size: int = None
         chunk_size=chunk_size or Config.CHUNK_SIZE,
         chunk_overlap=chunk_overlap or Config.CHUNK_OVERLAP
     )
-    splits = text_splitter.split_documents(docs)
+    splits: list[Document] = text_splitter.split_documents(docs)
     
     if not splits:
         raise ValueError("Nenhum texto pôde ser extraído do PDF. O arquivo pode estar vazio ou protegido.")
@@ -54,13 +64,13 @@ def ingest_pdf(pdf_path: str = None, quiet: bool = False, chunk_size: int = None
     
     from tqdm import tqdm
     
-    enriched_docs = []
-    ids = []
+    enriched_docs: list[Document] = []
+    ids: list[str] = []
     
     # Usando tqdm para mostrar progresso no processamento de metadados
     for i, doc in enumerate(tqdm(splits, desc="Processando fragmentos", unit="chunk", disable=quiet)):
         # Limpar metadados nulos/vazios
-        meta = {k: v for k, v in doc.metadata.items() if v not in ("", None)}
+        meta: dict[str, Any] = {k: v for k, v in doc.metadata.items() if v not in ("", None)}
         
         # Adicionar novos metadados
         chunk_id = f"{filename}-{i}"
