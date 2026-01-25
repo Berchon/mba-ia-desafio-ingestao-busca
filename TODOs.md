@@ -369,11 +369,11 @@
 #### J.3 Magic Numbers (CC9)
 - [x] **J.3.1** Eliminar magic numbers
   - [x] Definir constantes
-- [ ] **TESTE COMPLETO** → depois de testar me devolva o controle, pois quero testar manualmente
+- [X] **TESTE COMPLETO** → depois de testar me devolva o controle, pois quero testar manualmente
 - [x] faça o Commit: `refactor: replace magic numbers with constants` (`b64cd4c`)
 - [x] **Atualize o Changelog** com cada feature implementada (coloque os ids de cada commit) (`666bdc3`, `a2da8e1`, `3f502e3`)
 - [x] Atualize o **TODOs.md** caso necessário
-- [ ] Faça o Merge com main
+- [x] Faça o Merge com main
 
 ---
 
