@@ -1,3 +1,12 @@
+"""
+CLI de chat para o sistema RAG.
+
+Permite:
+- fazer perguntas via terminal usando busca semântica + LLM
+- ingerir novos PDFs via comando `add`
+- administrar a base (`stats`, `remove`, `clear`)
+"""
+
 from __future__ import annotations
 
 import sys
@@ -547,6 +556,15 @@ def chat_loop(
 def main() -> None:
     """
     Função principal do CLI.
+
+    Examples:
+        Exibir ajuda:
+
+        $ python3 src/chat.py --help
+
+        Iniciar em modo silencioso:
+
+        $ python3 src/chat.py -q
     """
     # Validar configuração
     try:

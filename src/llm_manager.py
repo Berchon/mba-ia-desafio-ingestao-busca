@@ -28,6 +28,19 @@ class LLMManager:
         
         Args:
             temperature: Temperatura para geração (opcional). Se None, usa Config.RETRIEVAL_TEMPERATURE.
+
+        Returns:
+            Instância do modelo de chat do provedor selecionado (Google ou OpenAI).
+
+        Raises:
+            ValueError: Se nenhuma API key estiver configurada em `Config`.
+            Exception: Se houver falha ao importar/inicializar o provider (propaga o erro).
+
+        Examples:
+            >>> from llm_manager import get_llm
+            >>> llm = get_llm(temperature=0)
+            >>> llm is not None
+            True
         """
         target_temp = temperature if temperature is not None else Config.RETRIEVAL_TEMPERATURE
         
@@ -81,5 +94,11 @@ def get_llm(temperature: Optional[float] = None) -> Any:
     
     Args:
         temperature: Temperatura para geração (opcional).
+
+    Returns:
+        Instância do modelo de chat do provedor selecionado.
+
+    Raises:
+        ValueError: Se nenhuma API key estiver configurada.
     """
     return LLMManager.get_llm(temperature=temperature)

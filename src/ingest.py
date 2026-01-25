@@ -21,6 +21,41 @@ def ingest_pdf(
     chunk_size: Optional[int] = None,
     chunk_overlap: Optional[int] = None,
 ) -> bool:
+    """
+    Ingere um arquivo PDF, dividindo em chunks e persistindo embeddings no PGVector.
+
+    Este fluxo executa:
+    - carregamento do PDF
+    - chunking (tamanho e overlap configuráveis)
+    - enriquecimento de metadados por chunk
+    - limpeza de dados antigos da mesma fonte (source)
+    - persistência no banco vetorial em lotes
+
+    Args:
+        pdf_path: Caminho do PDF para ingestão. Se None, usa `Config.PDF_PATH`.
+        quiet: Se True, reduz logs e desabilita barras de progresso.
+        chunk_size: Sobrescreve `Config.CHUNK_SIZE` (em caracteres) se informado.
+        chunk_overlap: Sobrescreve `Config.CHUNK_OVERLAP` (em caracteres) se informado.
+
+    Returns:
+        True se o processo concluir com sucesso.
+
+    Raises:
+        ValueError: Se `pdf_path` e `Config.PDF_PATH` estiverem ausentes, ou se nenhum texto for extraído.
+        FileNotFoundError: Se o arquivo não existir no caminho informado.
+
+    Examples:
+        Ingestão padrão usando PDF do `.env`:
+
+        >>> from ingest import ingest_pdf
+        >>> ingest_pdf()
+        True
+
+        Ingestão com parâmetros customizados:
+
+        >>> ingest_pdf("document.pdf", chunk_size=1000, chunk_overlap=150)
+        True
+    """
     # Validar configuração
     Config.validate_config()
     

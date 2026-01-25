@@ -25,6 +25,19 @@ class EmbeddingsManager:
         """
         Retorna a instância do modelo de embeddings, criando-a se necessário.
         A escolha do provedor é baseada na configuração disponível no Config.
+
+        Returns:
+            Instância do modelo de embeddings do provedor selecionado (Google ou OpenAI).
+
+        Raises:
+            ValueError: Se nenhuma API key estiver configurada em `Config`.
+            Exception: Se houver falha ao importar/inicializar o provider (propaga o erro).
+
+        Examples:
+            >>> from embeddings_manager import get_embeddings
+            >>> emb = get_embeddings()
+            >>> emb is not None
+            True
         """
         if cls._instance is None:
             # Tentar Google primeiro (prioridade conforme Config.API_KEY)
@@ -64,5 +77,11 @@ class EmbeddingsManager:
 def get_embeddings() -> Any:
     """
     Função de conveniência para obter o modelo de embeddings seguindo o padrão Singleton.
+
+    Returns:
+        Instância do modelo de embeddings do provedor selecionado.
+
+    Raises:
+        ValueError: Se nenhuma API key estiver configurada.
     """
     return EmbeddingsManager.get_embeddings()

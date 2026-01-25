@@ -64,7 +64,13 @@ def search_prompt(top_k: int = Config.TOP_K, temperature: Optional[float] = None
         temperature: Temperatura para geração do LLM (opcional)
         
     Returns:
-        RunnableSequence: Chain configurada do LangChain (pronta para .invoke())
+        Chain configurada do LangChain (pronta para `.invoke()`), ou None em caso de erro.
+
+    Examples:
+        >>> from search import search_prompt
+        >>> chain = search_prompt(top_k=10, temperature=0)
+        >>> chain is not None
+        True
     """
     try:
         # 1. Inicializar Embeddings
@@ -132,7 +138,15 @@ def search_with_sources(
         temperature: Temperatura da LLM
         
     Returns:
-        dict: Dicionário contendo 'answer' (str) e 'sources' (list)
+        Dicionário contendo:
+        - `answer`: resposta gerada
+        - `sources`: lista de metadados das fontes utilizadas (arquivo/página)
+
+    Examples:
+        >>> from search import search_with_sources
+        >>> result = search_with_sources("Qual o faturamento?", top_k=10, temperature=0)
+        >>> "answer" in result and "sources" in result
+        True
     """
     try:
         # 1. Inicializar Embeddings

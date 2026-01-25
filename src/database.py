@@ -32,7 +32,15 @@ class VectorStoreRepository:
 
     @property
     def vector_store(self) -> PGVector:
-        """Retorna a instância do PGVector, inicializando-a se necessário."""
+        """
+        Retorna a instância do `PGVector`, inicializando-a se necessário.
+
+        Returns:
+            Instância de `PGVector` conectada à coleção configurada.
+
+        Raises:
+            ValueError: Se `embeddings` não foi fornecido ou se `Config` não tem DB configurado.
+        """
         if self._vector_store is None:
             if self.embeddings is None:
                 raise ValueError("Embeddings não fornecidos. Necessário para operações de Vector Store.")
@@ -51,7 +59,12 @@ class VectorStoreRepository:
 
     @property
     def engine(self) -> Engine:
-        """Retorna o engine do SQLAlchemy, inicializando-o se necessário."""
+        """
+        Retorna o engine do SQLAlchemy, inicializando-o se necessário.
+
+        Returns:
+            `sqlalchemy.engine.Engine` apontando para `Config.DATABASE_URL`.
+        """
         if self._engine is None:
             # Config.DATABASE_URL é Optional[str]; em runtime isso deve estar configurado.
             self._engine = sa.create_engine(Config.DATABASE_URL)  # type: ignore[arg-type]
