@@ -10,6 +10,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ### Adicionado
 - Documentação técnica completa: `ANALISE_REQUISITOS.md`, `FUNCTIONAL_SPECIFICATION_AS_IS.md`, e `PRD.md` na pasta `docs/` (`1205463`)
 
+### Alterado
+- Type hints completos em todos os módulos de `src/` para melhorar legibilidade e manutenção (`85321ff`)
+
 ### Corrigido
 - Adicionado import faltante de `SQLAlchemyError` em `search.py` e `chat.py` para tratamento correto de exceções de banco de dados (`f9edd2b`)
 - Corrigido modelo padrão OpenAI LLM de `gpt-4o-mini` para `gpt-5-nano` conforme requisitos (`f9edd2b`)
