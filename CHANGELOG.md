@@ -13,6 +13,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ### Alterado
 - Type hints completos em todos os módulos de `src/` para melhorar legibilidade e manutenção (`85321ff`)
 - Docstrings completas (Args/Returns/Raises/Examples) nos principais módulos e funções (`882b63e`)
+- Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
 
 ### Corrigido
 - Adicionado import faltante de `SQLAlchemyError` em `search.py` e `chat.py` para tratamento correto de exceções de banco de dados (`f9edd2b`)
