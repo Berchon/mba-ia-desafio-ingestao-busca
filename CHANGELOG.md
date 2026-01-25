@@ -8,6 +8,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Adicionado
+- Documentação técnica completa: `ANALISE_REQUISITOS.md`, `FUNCTIONAL_SPECIFICATION_AS_IS.md`, e `PRD.md` na pasta `docs/` (`1205463`)
+
+### Corrigido
+- Adicionado import faltante de `SQLAlchemyError` em `search.py` e `chat.py` para tratamento correto de exceções de banco de dados (`f9edd2b`)
+- Corrigido modelo padrão OpenAI LLM de `gpt-4o-mini` para `gpt-5-nano` conforme requisitos (`f9edd2b`)
+- Corrigido modelo padrão Google Embedding em `.env.example` para `models/embedding-001` conforme requisitos (`f9edd2b`)
 
 ---
 
