@@ -1,6 +1,7 @@
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
+from sqlalchemy.exc import SQLAlchemyError
 from database import get_vector_store
 from config import Config
 from embeddings_manager import get_embeddings
@@ -94,7 +95,7 @@ def search_prompt(top_k=Config.TOP_K, temperature=None):
     except ValueError as e:
         logger.error(f"Erro de configuração ou parâmetros na busca: {e}")
         return None
-    except sa.exc.SQLAlchemyError as e:
+    except SQLAlchemyError as e:
         logger.error(f"Erro de banco de dados ao criar chain: {e}")
         return None
     except Exception as e:
@@ -168,7 +169,7 @@ def search_with_sources(question, top_k=Config.TOP_K, temperature=None):
             "answer": f"Lamento, erro de configuração: {str(e)}",
             "sources": []
         }
-    except sa.exc.SQLAlchemyError as e:
+    except SQLAlchemyError as e:
         logger.error(f"Erro de banco de dados na busca: {e}")
         return {
             "answer": "Lamento, ocorreu um erro ao consultar o banco de dados.",

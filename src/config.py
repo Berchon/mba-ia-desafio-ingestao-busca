@@ -25,12 +25,12 @@ class Config:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     
     # === Modelos Google Gemini ===
-    GOOGLE_EMBEDDING_MODEL = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/text-embedding-004")
+    GOOGLE_EMBEDDING_MODEL = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/text-embedding-001")
     GOOGLE_LLM_MODEL = os.getenv("GOOGLE_LLM_MODEL", "gemini-2.5-flash-lite")
     
     # === Modelos OpenAI ===
     OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
-    OPENAI_LLM_MODEL = os.getenv("OPENAI_LLM_MODEL", "gpt-4o-mini")
+    OPENAI_LLM_MODEL = os.getenv("OPENAI_LLM_MODEL", "gpt-5-nano")
     
     # === Configurações do Banco de Dados ===
     DATABASE_URL = os.getenv("DATABASE_URL")

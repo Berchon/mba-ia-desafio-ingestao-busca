@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 import logging
+from sqlalchemy.exc import SQLAlchemyError
 from search import search_prompt, search_with_sources
 from database import get_vector_store
 from ingest import ingest_pdf
@@ -32,7 +33,7 @@ def check_database_status():
     except (ImportError, ModuleNotFoundError) as e:
         logger.error(f"Erro de dependência ao verificar status: {e}")
         return 0, 0
-    except sa.exc.SQLAlchemyError as e:
+    except SQLAlchemyError as e:
         logger.error(f"Erro de banco de dados ao verificar status: {e}")
         return 0, 0
     except Exception as e:
@@ -175,7 +176,7 @@ def handle_add_command(user_input, quiet=False, chunk_size=None, chunk_overlap=N
             print("-" * 70)
             print(f"❌ Erro de sistema/arquivo ao processar PDF: {e}\n")
         return False
-    except sa.exc.SQLAlchemyError as e:
+    except SQLAlchemyError as e:
         if not quiet:
             print("-" * 70)
             print(f"❌ Erro de banco de dados ao salvar PDF: {e}\n")
@@ -441,7 +442,7 @@ def process_question(chain, question, quiet=False, verbose=False, top_k=None, te
     except (KeyboardInterrupt, EOFError):
         # Captura interrupção voluntária (Ctrl+C ou Ctrl+D) sem explodir o log
         raise
-    except sa.exc.SQLAlchemyError as e:
+    except SQLAlchemyError as e:
         print(f"❌ Erro crítico de banco de dados: {e}\n")
         logger.error(f"Erro de banco no processamento: {e}")
     except Exception as e:
