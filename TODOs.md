@@ -355,22 +355,25 @@
 **Branch**: `feature/code-quality`
 
 #### J.1 Type Hints (CC7)
-- [ ] **J.1.1** Adicionar type hints completos
-  - [ ] Todos os arquivos
-  - [ ] Testar → Commit: `refactor: add complete type hints`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **J.1.1** Adicionar type hints completos
+  - [x] Todos os arquivos
+  - [x] Teste rápido (py_compile/imports) realizado pelo agente
+  - [x] Commit: `refactor: add complete type hints` (`85321ff`)
 
 #### J.2 Docstrings (CC8)
-- [ ] **J.2.1** Completar docstrings
-  - [ ] Raises, Examples, etc
-  - [ ] Testar → Commit: `docs: complete docstrings`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **J.2.1** Completar docstrings
+  - [x] Raises, Examples, etc
+  - [x] Teste rápido (py_compile/imports) realizado pelo agente
+  - [x] Commit: `docs: complete docstrings` (`882b63e`)
 
 #### J.3 Magic Numbers (CC9)
-- [ ] **J.3.1** Eliminar magic numbers
-  - [ ] Definir constantes
-  - [ ] Testar → Commit: `refactor: replace magic numbers with constants`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] **J.3.1** Eliminar magic numbers
+  - [x] Definir constantes
+- [ ] **TESTE COMPLETO** → depois de testar me devolva o controle, pois quero testar manualmente
+- [x] faça o Commit: `refactor: replace magic numbers with constants` (`b64cd4c`)
+- [x] **Atualize o Changelog** com cada feature implementada (coloque os ids de cada commit) (`666bdc3`, `a2da8e1`, `3f502e3`)
+- [x] Atualize o **TODOs.md** caso necessário
+- [ ] Faça o Merge com main
 
 ---
 
