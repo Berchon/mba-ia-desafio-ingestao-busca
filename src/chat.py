@@ -25,6 +25,10 @@ from logger import get_logger
 
 logger = get_logger(__name__, level=logging.WARNING)
 
+DISPLAY_WIDTH = 70
+HEADER_LINE = "=" * DISPLAY_WIDTH
+SECTION_LINE = "-" * DISPLAY_WIDTH
+
 
 def check_database_status() -> tuple[int, int]:
     """
@@ -62,9 +66,9 @@ def display_welcome(counts: tuple[int, int]) -> None:
         counts: Tupla (num_chunks, num_sources)
     """
     num_chunks, num_sources = counts
-    print("\n" + "="*70)
+    print("\n" + HEADER_LINE)
     print("🤖 CHAT RAG - Sistema de Busca Semântica com LangChain")
-    print("="*70)
+    print(HEADER_LINE)
     
     if num_chunks > 0:
         plural_files = "arquivos" if num_sources > 1 else "arquivo"
@@ -74,16 +78,16 @@ def display_welcome(counts: tuple[int, int]) -> None:
         print("💡 Dica: Use o comando 'add <caminho_pdf>' para adicionar documentos")
     
     print("\nDigite 'help' para ver os comandos disponíveis.")
-    print("="*70 + "\n")
+    print(HEADER_LINE + "\n")
 
 
 def display_help() -> None:
     """
     Exibe a lista de comandos disponíveis.
     """
-    print("\n" + "="*70)
+    print("\n" + HEADER_LINE)
     print("📚 COMANDOS DISPONÍVEIS")
-    print("="*70)
+    print(HEADER_LINE)
     print("\n🔍 FAZER PERGUNTAS:")
     print("   Digite sua pergunta diretamente (ex: 'Qual o faturamento?')")
     print("   O sistema buscará respostas baseadas nos PDFs ingeridos.")
@@ -111,7 +115,7 @@ def display_help() -> None:
     print("\n📊 ESTATÍSTICAS:")
     print("   stats                  Mostra estatísticas detalhadas do banco (atalho: 's')")
     
-    print("="*70 + "\n")
+    print(HEADER_LINE + "\n")
 
 
 def handle_add_command(
@@ -157,7 +161,7 @@ def handle_add_command(
     
     if not quiet:
         print(f"\n📄 Iniciando ingestão do PDF: {pdf_path}")
-        print("-" * 70)
+        print(SECTION_LINE)
     
     try:
         # 1. Inicializar Repositório para verificar existência
@@ -180,28 +184,28 @@ def handle_add_command(
         
         if success:
             if not quiet:
-                print("-" * 70)
+                print(SECTION_LINE)
                 print("✅ PDF adicionado com sucesso ao banco de dados!\n")
             return True
         else:
             if not quiet:
-                print("-" * 70)
+                print(SECTION_LINE)
                 print("❌ Falha ao adicionar PDF ao banco de dados.\n")
             return False
             
     except (IOError, OSError) as e:
         if not quiet:
-            print("-" * 70)
+            print(SECTION_LINE)
             print(f"❌ Erro de sistema/arquivo ao processar PDF: {e}\n")
         return False
     except SQLAlchemyError as e:
         if not quiet:
-            print("-" * 70)
+            print(SECTION_LINE)
             print(f"❌ Erro de banco de dados ao salvar PDF: {e}\n")
         return False
     except Exception as e:
         if not quiet:
-            print("-" * 70)
+            print(SECTION_LINE)
             print(f"❌ Erro inesperado ao processar PDF: {e}\n")
         logger.error(f"Erro inesperado na ingestão: {e}", exc_info=True)
         return False
@@ -346,9 +350,9 @@ def handle_stats_command() -> None:
     sources = repo.list_sources()
     num_sources = len(sources)
     
-    print("\n" + "="*70)
+    print("\n" + HEADER_LINE)
     print("📊 ESTATÍSTICAS DO BANCO DE DADOS")
-    print("="*70)
+    print(HEADER_LINE)
     
     if num_chunks == 0:
         print("A base de dados está vazia.")
@@ -363,7 +367,7 @@ def handle_stats_command() -> None:
                 filename = os.path.basename(src)
                 print(f"   {i}. {filename} ({src})")
     
-    print("="*70 + "\n")
+    print(HEADER_LINE + "\n")
 
 
 def handle_clear_command() -> bool:
@@ -441,13 +445,13 @@ def process_question(
             sources = []
         
         if not quiet:
-            print("-" * 70)
+            print(SECTION_LINE)
             print(f"PERGUNTA: {question}")
-            print("-" * 70)
+            print(SECTION_LINE)
             print(f"RESPOSTA: {response}")
             
             if verbose:
-                print("-" * 70)
+                print(SECTION_LINE)
                 print(f"📊 ESTATÍSTICAS DA RESPOSTA:")
                 print(f"⏱️  Tempo de execução: {elapsed_time:.2f}s")
                 if sources:
@@ -456,7 +460,7 @@ def process_question(
                         page_info = f", pág. {spec['page']}" if spec['page'] is not None else ""
                         print(f"   • {spec['filename']}{page_info}")
             
-            print("-" * 70 + "\n")
+            print(SECTION_LINE + "\n")
         else:
             # Em modo quieto, mostra apenas a resposta pura para facilitar automação
             print(response)

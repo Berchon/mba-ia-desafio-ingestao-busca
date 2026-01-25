@@ -15,6 +15,9 @@ import logging
 
 logger = get_logger(__name__)
 
+DISPLAY_WIDTH = 70
+DEFAULT_BATCH_SIZE = 16
+
 def ingest_pdf(
     pdf_path: Optional[str] = None,
     quiet: bool = False,
@@ -136,7 +139,7 @@ def ingest_pdf(
     repo.delete_by_source(target_pdf)
 
     # 7. Inserção ou Atualização no Banco (com barra de progresso e batching)
-    batch_size = 16  # Tamanho do lote para enviar ao banco/embedding
+    batch_size = DEFAULT_BATCH_SIZE  # Tamanho do lote para enviar ao banco/embedding
     
     # Forçar inicialização do vector_store fora do loop para não quebrar o visual da barra de progresso
     _ = repo.vector_store
@@ -154,16 +157,16 @@ def ingest_pdf(
     if not quiet:
         avg_chunk_size = sum(len(d.page_content) for d in enriched_docs) / total_chunks if total_chunks > 0 else 0
         
-        print("\n" + "="*70)
+        print("\n" + "=" * DISPLAY_WIDTH)
         print("📊 ESTATÍSTICAS DE INGESTÃO")
-        print("="*70)
+        print("=" * DISPLAY_WIDTH)
         print(f"📄 Arquivo:           {filename}")
         print(f"📑 Total de Páginas:   {len(docs)}")
         print(f"🧱 Total de Chunks:    {total_chunks}")
         print(f"📏 Tamanho Médio:      {avg_chunk_size:.1f} caracteres")
         print(f"🆔 Chunks IDs:         {filename}-0 até {filename}-{total_chunks-1}")
         print(f"🔗 Banco de Dados:     {Config.PG_VECTOR_COLLECTION_NAME}")
-        print("="*70 + "\n")
+        print("=" * DISPLAY_WIDTH + "\n")
     
     return True
 

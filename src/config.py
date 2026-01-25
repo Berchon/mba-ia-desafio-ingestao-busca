@@ -12,6 +12,9 @@ from typing import ClassVar, Optional
 
 from dotenv import load_dotenv
 
+# Largura padrão de exibição para separadores no terminal
+DISPLAY_WIDTH: int = 70
+
 # Carregar variáveis de ambiente do arquivo .env
 load_dotenv()
 
@@ -146,9 +149,9 @@ class Config:
         Exibe as configurações atuais (útil para debug).
         Oculta valores sensíveis como API keys.
         """
-        print("\n" + "="*70)
+        print("\n" + "=" * DISPLAY_WIDTH)
         print("⚙️  CONFIGURAÇÕES DO SISTEMA")
-        print("="*70)
+        print("=" * DISPLAY_WIDTH)
         print(f"Google Embedding Model: {cls.GOOGLE_EMBEDDING_MODEL}")
         print(f"Google LLM Model: {cls.GOOGLE_LLM_MODEL}")
         print(f"OpenAI Embedding Model: {cls.OPENAI_EMBEDDING_MODEL}")
@@ -160,4 +163,4 @@ class Config:
         print(f"Google API Key: {'✅ Configurada' if cls.GOOGLE_API_KEY else '❌ Ausente'}")
         print(f"OpenAI API Key: {'✅ Configurada' if cls.OPENAI_API_KEY else '❌ Ausente'}")
         print(f"Database URL: {'✅ Configurada' if cls.DATABASE_URL else '❌ Ausente'}")
-        print("="*70 + "\n")
+        print("=" * DISPLAY_WIDTH + "\n")
