@@ -47,6 +47,7 @@ def chat_loop(
     temperature: Optional[float] = None,
     chunk_size: Optional[int] = None,
     chunk_overlap: Optional[int] = None,
+    search_timeout: Optional[int] = None,
 ) -> None:
     """
     Loop principal do chat interativo.
@@ -124,7 +125,7 @@ def chat_loop(
                     continue
                 
                 # Processar como pergunta normal
-                process_question(chain, user_input, quiet=quiet, verbose=verbose, top_k=top_k, temperature=temperature)
+                process_question(chain, user_input, quiet=quiet, verbose=verbose, top_k=top_k, temperature=temperature, search_timeout=search_timeout)
 
     
     except KeyboardInterrupt:
@@ -170,6 +171,7 @@ def main() -> None:
     parser.add_argument('--temperature', type=float, help='Temperatura para geração (default: conforme Config)')
     parser.add_argument('--chunk-size', type=int, help=f'Tamanho do chunk para novas ingestões (default: {Config.CHUNK_SIZE})')
     parser.add_argument('--chunk-overlap', type=int, help=f'Sobreposição do chunk para novas ingestões (default: {Config.CHUNK_OVERLAP})')
+    parser.add_argument('--search-timeout', type=int, help=f'Timeout para buscas em segundos (default: {Config.SEARCH_TIMEOUT})')
     
     args = parser.parse_args()
     
@@ -218,7 +220,8 @@ def main() -> None:
         top_k=args.top_k, 
         temperature=args.temperature,
         chunk_size=args.chunk_size,
-        chunk_overlap=args.chunk_overlap
+        chunk_overlap=args.chunk_overlap,
+        search_timeout=args.search_timeout
     )
 
 

@@ -51,6 +51,7 @@ class Config:
     # === Configurações de Busca/Retrieval ===
     TOP_K: ClassVar[int] = int(os.getenv("TOP_K", "10"))
     RETRIEVAL_TEMPERATURE: ClassVar[float] = float(os.getenv("RETRIEVAL_TEMPERATURE", "0"))
+    SEARCH_TIMEOUT: ClassVar[int] = int(os.getenv("SEARCH_TIMEOUT", "30"))  # Timeout em segundos
     
     # === Propriedades Agnósticas ao Provedor ===
     # Estas propriedades retornam automaticamente os valores corretos

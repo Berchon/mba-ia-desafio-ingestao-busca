@@ -2,6 +2,8 @@ from __future__ import annotations
 import os
 import logging
 from typing import Any, Optional
+import signal
+from contextlib import contextmanager
 
 from sqlalchemy.exc import SQLAlchemyError
 from search import search_prompt, search_with_sources
@@ -11,6 +13,42 @@ from config import Config
 from cli.ui import SECTION_LINE, HEADER_LINE, display_help
 
 logger = logging.getLogger(__name__)
+
+
+class TimeoutError(Exception):
+    """Exceção lançada quando uma operação excede o tempo limite."""
+    pass
+
+
+@contextmanager
+def timeout(seconds: int):
+    """
+    Context manager para impor timeout em operações.
+    
+    Args:
+        seconds: Tempo limite em segundos
+        
+    Raises:
+        TimeoutError: Se a operação exceder o tempo limite
+        
+    Example:
+        >>> with timeout(30):
+        ...     long_running_operation()
+    """
+    def timeout_handler(signum, frame):
+        raise TimeoutError(f"Operação excedeu o tempo limite de {seconds} segundos")
+    
+    # Configurar o handler de sinal
+    old_handler = signal.signal(signal.SIGALRM, timeout_handler)
+    signal.alarm(seconds)
+    
+    try:
+        yield
+    finally:
+        # Restaurar handler anterior e cancelar alarme
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, old_handler)
+
 
 def check_database_status() -> tuple[int, int]:
     """
@@ -242,6 +280,7 @@ def process_question(
     verbose: bool = False,
     top_k: Optional[int] = None,
     temperature: Optional[float] = None,
+    search_timeout: Optional[int] = None,
 ) -> None:
     """
     Processa uma pergunta usando a chain do RAG.
@@ -253,7 +292,10 @@ def process_question(
         verbose: Se True, mostra estatísticas detalhadas da resposta
         top_k: Número de documentos a recuperar (opcional)
         temperature: Temperatura para geração (opcional)
+        search_timeout: Timeout em segundos (opcional, padrão: Config.SEARCH_TIMEOUT)
     """
+    timeout_seconds = search_timeout or Config.SEARCH_TIMEOUT
+    
     try:
         import time
         start_time = time.time()
@@ -263,23 +305,24 @@ def process_question(
             print("🔍 Recuperando informações relevantes...")
             print("🧠 Gerando resposta baseada nos documentos...\n")
         
-        if verbose:
-            # Usar search_with_sources para obter detalhes dos chunks
-            # Passar top_k e temperature se fornecidos, senão usar os do Config via default da função
-            kwargs: dict[str, Any] = {}
-            if top_k is not None: kwargs['top_k'] = top_k
-            if temperature is not None: kwargs['temperature'] = temperature
-            
-            result = search_with_sources(question, **kwargs)
-            response = result["answer"]
-            sources = result["sources"]
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-        else:
-            response = chain.invoke(question)
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-            sources = []
+        # Aplicar timeout à operação de busca
+        with timeout(timeout_seconds):
+            if verbose:
+                # Usar search_with_sources para obter detalhes dos chunks
+                kwargs: dict[str, Any] = {}
+                if top_k is not None: kwargs['top_k'] = top_k
+                if temperature is not None: kwargs['temperature'] = temperature
+                
+                result = search_with_sources(question, **kwargs)
+                response = result["answer"]
+                sources = result["sources"]
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+            else:
+                response = chain.invoke(question)
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+                sources = []
         
         if not quiet:
             print(SECTION_LINE)
@@ -304,7 +347,11 @@ def process_question(
             if verbose:
                 # Se for verbose E quiet, mostra estatísticas mínimas
                 print(f"--- Stats: {elapsed_time:.2f}s | {len(sources)} sources ---")
-        
+    
+    except TimeoutError as e:
+        print(f"\n⏱️  {e}")
+        print(f"💡 Dica: Tente uma pergunta mais específica ou aumente o timeout com --search-timeout\n")
+        logger.warning(f"Timeout na busca: {e}")
     except (KeyboardInterrupt, EOFError):
         # Captura interrupção voluntária (Ctrl+C ou Ctrl+D) sem explodir o log
         raise
