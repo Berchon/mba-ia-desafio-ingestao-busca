@@ -22,7 +22,9 @@ from cli.validators import (
     is_add_command,
     is_clear_command,
     is_stats_command,
-    is_remove_command
+    is_remove_command,
+    is_history_command,
+    parse_repeat_command
 )
 from cli.commands import (
     check_database_status,
@@ -32,6 +34,7 @@ from cli.commands import (
     handle_remove_command,
     process_question
 )
+from cli.history import ChatHistory
 
 logger = get_logger(__name__, level=logging.WARNING)
 
@@ -48,6 +51,8 @@ def chat_loop(
     """
     Loop principal do chat interativo.
     """
+    history_manager = ChatHistory()
+    
     try:
         first_prompt = True
         while True:
@@ -57,12 +62,32 @@ def chat_loop(
             else:
                 prompt_text = "Faça sua pergunta (ou 'help' para ajuda)\n> " if first_prompt else "> "
             
-            user_input = input(prompt_text).strip()
+            raw_input = input(prompt_text).strip()
             
             # Ignorar entradas vazias
-            if not user_input:
+            if not raw_input:
                 continue
             
+            # Processar comando de repetição (!N)
+            repeat_index = parse_repeat_command(raw_input)
+            if repeat_index is not None:
+                expanded_cmd = history_manager.get_by_index(repeat_index)
+                if expanded_cmd:
+                    print(f"🔄 Repetindo comando: {expanded_cmd}")
+                    user_input = expanded_cmd
+                else:
+                    print(f"❌ Erro: Comando #{repeat_index} não encontrado no histórico.")
+                    continue
+            else:
+                user_input = raw_input
+            
+            # Adicionar ao histórico (apenas se não for comando history ou repetição falha)
+            # Evitar adicionar o próprio comando 'history' ao histórico?
+            # Geralmente se adiciona tudo. Vamos adicionar tudo exceto repetição falha.
+            # Se foi expansão, adicionamos o expandido.
+            if not is_history_command(user_input):
+                 history_manager.add(user_input)
+
             first_prompt = False
             
             # Verificar comandos especiais
@@ -73,6 +98,9 @@ def chat_loop(
             
             elif is_help_command(user_input):
                 display_help()
+            
+            elif is_history_command(user_input):
+                history_manager.display()
             
             elif is_add_command(user_input):
                 handle_add_command(user_input, quiet=quiet, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
@@ -97,6 +125,7 @@ def chat_loop(
                 
                 # Processar como pergunta normal
                 process_question(chain, user_input, quiet=quiet, verbose=verbose, top_k=top_k, temperature=temperature)
+
     
     except KeyboardInterrupt:
         print("\n\n👋 Chat interrompido pelo usuário. Até logo!\n")

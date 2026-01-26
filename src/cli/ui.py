@@ -38,7 +38,7 @@ def display_help() -> None:
     print("📚 COMANDOS DISPONÍVEIS")
     print(HEADER_LINE)
     print("\n🔍 FAZER PERGUNTAS:")
-    print("   Digite sua pergunta diretamente (ex: 'Qual o faturamento?')")
+    print("   Digite sua pergunta diretamente (ex: 'Qual o faturamento da Empresa SuperTechIABrazil?')")
     print("   O sistema buscará respostas baseadas nos PDFs ingeridos.")
     
     print("\n📄 GERENCIAR DOCUMENTOS:")
@@ -63,5 +63,9 @@ def display_help() -> None:
     
     print("\n📊 ESTATÍSTICAS:")
     print("   stats                  Mostra estatísticas detalhadas do banco (atalho: 's')")
+
+    print("\n📜 HISTÓRICO:")
+    print("   history                Mostra últimos comandos (atalho: 'hist')")
+    print("   !N                     Repete o comando número N (ex: !3)")
     
     print(HEADER_LINE + "\n")

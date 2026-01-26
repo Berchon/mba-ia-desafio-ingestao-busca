@@ -15,6 +15,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   - `validators.py`: Logica de validação e parsing de comandos
   - `commands.py`: Handlers de execução de comandos
   - `chat.py`: Ponto de entrada simplificado
+- Implementado histórico de comandos no Chat CLI (`src/cli/history.py`) (Task K.2)
+  - Comando `history`: Lista os últimos comandos
+  - Comando `!N`: Repete o comando de índice N
+  - Integração no loop principal do chat
 - Type hints completos em todos os módulos de `src/` para melhorar legibilidade e manutenção (`85321ff`)
 - Docstrings completas (Args/Returns/Raises/Examples) nos principais módulos e funções (`882b63e`)
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)

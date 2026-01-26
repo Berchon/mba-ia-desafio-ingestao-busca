@@ -391,14 +391,14 @@
 - [x] fazer o Merge com main
 
 #### K.2 Histórico de Conversas (CHAT5)
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **K.2.1** Implementar histórico
-  - [ ] Comando history, !N para repetir
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add conversation history`
-- [ ] Atualizar o changelog com o ID do commit
-- [ ] Atualizar o TODOs.md
-- [ ] fazer o commit do changelog e do todos.md
-- [ ] fazer o Merge com main
+- [x] fazer o desenvolvimento em uma branch separada da main
+- [x] **K.2.1** Implementar histórico
+  - [x] Comando history, !N para repetir
+  - [x] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add conversation history`
+- [x] Atualizar o changelog com o ID do commit
+- [x] Atualizar o TODOs.md
+- [x] fazer o commit do changelog e do todos.md
+- [x] fazer o Merge com main
 
 #### K.3 Exemplos Contextuais (CHAT12)
 - [ ] fazer o desenvolvimento em uma branch separada da main
@@ -476,6 +476,15 @@
   - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add dynamic provider selection`
 - [ ] Merge com main
 
+#### L.2 Histórico de Conversas (CHAT5)
+- [ ] fazer o desenvolvimento em uma branch separada da main
+- [ ] **L.2.1** Implementar navegacao pelo histórico
+  - [ ] Permitir, no prompt, navegar pelo histórico de conversas com as setas para cima e para baixo
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar faça o commit
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 ---
 
