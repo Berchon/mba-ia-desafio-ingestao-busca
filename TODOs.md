@@ -401,24 +401,24 @@
 - [x] fazer o Merge com main
 
 #### K.3 Exemplos Contextuais (CHAT12)
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **K.3.1** Help com sugestões do PDF
-  - [ ] Analisar metadados
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add contextual help suggestions`
+- [x] ~~fazer o desenvolvimento em uma branch separada da main~~ (CANCELADO)
+- [x] ~~**K.3.1** Help com sugestões do PDF~~ (CANCELADO - Desnecessário)
+  - [ ] ~~Analisar metadados~~
+  - [ ] ~~**Faça o teste completo**~~
 - [ ] Atualizar o changelog com o ID do commit
 - [ ] Atualizar o TODOs.md
 - [ ] fazer o commit do changelog e do todos.md
 - [ ] fazer o Merge com main
 
 #### K.4 Timeout de Busca (CHAT11)
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **K.4.1** Implementar timeout
-  - [ ] signal + contextmanager
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add search timeout`
-- [ ] Atualizar o changelog com o ID do commit
-- [ ] Atualizar o TODOs.md
-- [ ] fazer o commit do changelog e do todos.md
-- [ ] fazer o Merge com main
+- [x] fazer o desenvolvimento em uma branch separada da main
+- [x] **K.4.1** Implementar timeout
+  - [x] signal + contextmanager
+  - [x] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add search timeout`
+- [x] Atualizar o changelog com o ID do commit
+- [x] Atualizar o TODOs.md
+- [x] fazer o commit do changelog e do todos.md
+- [x] fazer o Merge com main
 
 #### K.5 Recarregar Chain (CHAT19)
 - [ ] Avaliar se essa task realmente é necessária

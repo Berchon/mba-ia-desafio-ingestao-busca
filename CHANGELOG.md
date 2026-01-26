@@ -10,12 +10,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Alterado
-- Refatoração do Chat CLI em módulos isolados (`src/cli/`) para melhor organização e manutenibilidade (Task K.1)
+- Refatoração do Chat CLI em módulos isolados (`src/cli/`) para melhor organização e manutenibilidade (Task K.1) (`496480f`)
   - `ui.py`: Funções de interface e mensagens
   - `validators.py`: Logica de validação e parsing de comandos
   - `commands.py`: Handlers de execução de comandos
   - `chat.py`: Ponto de entrada simplificado
-- Implementado histórico de comandos no Chat CLI (`src/cli/history.py`) (Task K.2)
+- Implementado histórico de comandos no Chat CLI (`src/cli/history.py`) (Task K.2) (`253ad32`)
   - Comando `history`: Lista os últimos comandos
   - Comando `!N`: Repete o comando de índice N
   - Integração no loop principal do chat
@@ -24,6 +24,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
 
 ### Adicionado
+- Implementado sistema de timeout para buscas (Task K.4) (`dc7d3c3`)
+  - Context manager `timeout()` usando `signal.SIGALRM`
+  - Configuração `SEARCH_TIMEOUT` (default: 30s)
+  - Flag CLI `--search-timeout` para customização
+  - Mensagens de erro amigáveis quando timeout é atingido
 - Documentação técnica completa: `ANALISE_REQUISITOS.md`, `FUNCTIONAL_SPECIFICATION_AS_IS.md`, e `PRD.md` na pasta `docs/` (`1205463`)
 
 ### Corrigido
