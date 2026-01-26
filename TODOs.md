@@ -381,52 +381,87 @@
 **Branch**: `feature/advanced-refactoring`
 
 #### K.1 Separar Módulos CLI (CHAT1)
-- [ ] **K.1.1** Criar estrutura cli/
-  - [ ] commands.py, ui.py, validators.py
-  - [ ] Testar → Commit: `refactor: separate cli into modules`
-- [ ] **TESTE COMPLETO** → Merge com main
+- [x] fazer o desenvolvimento em uma branch separada da main
+- [x] **K.1.1** Criar estrutura cli/
+  - [x] commands.py, ui.py, validators.py
+  - [x] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `refactor: separate cli into modules`
+- [x] Atualizar o changelog com o ID do commit
+- [x] Atualizar o TODOs.md
+- [x] fazer o commit do changelog e do todos.md
+- [x] fazer o Merge com main
 
 #### K.2 Histórico de Conversas (CHAT5)
+- [ ] fazer o desenvolvimento em uma branch separada da main
 - [ ] **K.2.1** Implementar histórico
   - [ ] Comando history, !N para repetir
-  - [ ] Testar → Commit: `feat: add conversation history`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add conversation history`
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 #### K.3 Exemplos Contextuais (CHAT12)
+- [ ] fazer o desenvolvimento em uma branch separada da main
 - [ ] **K.3.1** Help com sugestões do PDF
   - [ ] Analisar metadados
-  - [ ] Testar → Commit: `feat: add contextual help suggestions`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add contextual help suggestions`
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 #### K.4 Timeout de Busca (CHAT11)
+- [ ] fazer o desenvolvimento em uma branch separada da main
 - [ ] **K.4.1** Implementar timeout
   - [ ] signal + contextmanager
-  - [ ] Testar → Commit: `feat: add search timeout`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add search timeout`
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 #### K.5 Recarregar Chain (CHAT19)
+- [ ] Avaliar se essa task realmente é necessária
+- [ ] fazer o desenvolvimento em uma branch separada da main
 - [ ] **K.5.1** Recriar chain após add
   - [ ] Atualizar chat_loop
-  - [ ] Testar → Commit: `feat: reload chain after ingestion`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: reload chain after ingestion`
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 #### K.6 Templates Customizáveis (SEARCH1)
+- [ ] **explicar essa task e discutir se realmente é necessária a implementacao.**
+- [ ] fazer o desenvolvimento em uma branch separada da main
 - [ ] **K.6.1** Suporte a templates externos
   - [ ] load_prompt_template()
-  - [ ] Testar → Commit: `feat: support custom prompt templates`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: support custom prompt templates`
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 #### K.7 Cache de Embeddings (SEARCH5)
+- [ ] **Não fazer essa task!**
+- [ ] fazer o desenvolvimento em uma branch separada da main
 - [ ] **K.7.1** LRU cache para perguntas repetidas
   - [ ] @lru_cache
-  - [ ] Testar → Commit: `feat: add embeddings cache`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add embeddings cache`
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 #### K.8 Fallback LLM (SEARCH7)
+- [ ] fazer o desenvolvimento em uma branch separada da main
 - [ ] **K.8.1** Retornar docs se LLM falhar
   - [ ] Try/except com fallback
-  - [ ] Testar → Commit: `feat: add llm fallback`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add llm fallback`
+- [ ] Atualizar o changelog com o ID do commit
+- [ ] Atualizar o TODOs.md
+- [ ] fazer o commit do changelog e do todos.md
+- [ ] fazer o Merge com main
 
 ---
 
@@ -438,8 +473,8 @@
   - [ ] Adicionar argumento `--provider` (google/openai)
   - [ ] Validar se as chaves do provedor escolhido existem no `.env`
   - [ ] Atualizar Singletons (Embeddings/LLM) para suportar "reset" e troca
-  - [ ] Testar → Commit: `feat: add dynamic provider selection`
-- [ ] **TESTE COMPLETO** → Merge com main
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add dynamic provider selection`
+- [ ] Merge com main
 
 
 ---

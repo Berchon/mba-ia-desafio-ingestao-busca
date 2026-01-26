@@ -5,15 +5,22 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+---
+
 ## [Não Lançado]
 
-### Adicionado
-- Documentação técnica completa: `ANALISE_REQUISITOS.md`, `FUNCTIONAL_SPECIFICATION_AS_IS.md`, e `PRD.md` na pasta `docs/` (`1205463`)
-
 ### Alterado
+- Refatoração do Chat CLI em módulos isolados (`src/cli/`) para melhor organização e manutenibilidade (Task K.1)
+  - `ui.py`: Funções de interface e mensagens
+  - `validators.py`: Logica de validação e parsing de comandos
+  - `commands.py`: Handlers de execução de comandos
+  - `chat.py`: Ponto de entrada simplificado
 - Type hints completos em todos os módulos de `src/` para melhorar legibilidade e manutenção (`85321ff`)
 - Docstrings completas (Args/Returns/Raises/Examples) nos principais módulos e funções (`882b63e`)
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
+
+### Adicionado
+- Documentação técnica completa: `ANALISE_REQUISITOS.md`, `FUNCTIONAL_SPECIFICATION_AS_IS.md`, e `PRD.md` na pasta `docs/` (`1205463`)
 
 ### Corrigido
 - Adicionado import faltante de `SQLAlchemyError` em `search.py` e `chat.py` para tratamento correto de exceções de banco de dados (`f9edd2b`)
