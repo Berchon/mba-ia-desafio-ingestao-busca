@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from typing import Any, Optional, TypedDict
 
 from langchain_core.prompts import PromptTemplate
@@ -15,8 +16,8 @@ from logger import get_logger
 
 logger = get_logger(__name__)
 
-# Template do Prompt (conforme requisitos.md)
-PROMPT_TEMPLATE: str = """
+# Template do Prompt padrão (conforme requisitos.md)
+DEFAULT_PROMPT_TEMPLATE: str = """
 CONTEXTO:
 {contexto}
 
@@ -43,6 +44,47 @@ PERGUNTA DO USUÁRIO:
 RESPONDA A "PERGUNTA DO USUÁRIO"
 """
 
+
+def load_prompt_template(template_path: Optional[str] = None) -> str:
+    """
+    Carrega um template de prompt de um arquivo externo ou retorna o padrão.
+    
+    Args:
+        template_path: Caminho para o arquivo de template (opcional)
+        
+    Returns:
+        String do template de prompt
+        
+    Raises:
+        FileNotFoundError: Se o arquivo especificado não existir
+        
+    Examples:
+        >>> template = load_prompt_template()  # Usa padrão
+        >>> template = load_prompt_template("prompts/custom.txt")  # Usa customizado
+    """
+    if template_path:
+        if not os.path.exists(template_path):
+            logger.error(f"Template não encontrado: {template_path}")
+            raise FileNotFoundError(f"Arquivo de template não encontrado: {template_path}")
+        
+        try:
+            with open(template_path, 'r', encoding='utf-8') as f:
+                template = f.read()
+                logger.info(f"Template customizado carregado: {template_path}")
+                
+                # Validar que o template contém as variáveis necessárias
+                if '{contexto}' not in template or '{pergunta}' not in template:
+                    logger.warning(f"Template pode estar incompleto. Certifique-se de incluir {{contexto}} e {{pergunta}}")
+                
+                return template
+        except (IOError, OSError) as e:
+            logger.error(f"Erro ao ler template: {e}")
+            raise
+    
+    logger.info("Usando template padrão")
+    return DEFAULT_PROMPT_TEMPLATE
+
+
 class SourceSpec(TypedDict):
     filename: Optional[str]
     page: Optional[int]
@@ -54,7 +96,11 @@ class SearchWithSourcesResult(TypedDict):
     sources: list[SourceSpec]
 
 
-def search_prompt(top_k: int = Config.TOP_K, temperature: Optional[float] = None) -> Optional[Any]:
+def search_prompt(
+    top_k: int = Config.TOP_K,
+    temperature: Optional[float] = None,
+    template_path: Optional[str] = None
+) -> Optional[Any]:
     """
     Cria e retorna uma chain LangChain configurada para realizar busca semântica 
     e responder perguntas baseadas no contexto recuperado do banco vetorial.
@@ -62,6 +108,7 @@ def search_prompt(top_k: int = Config.TOP_K, temperature: Optional[float] = None
     Args:
         top_k: Número de documentos a recuperar (default: Config.TOP_K)
         temperature: Temperatura para geração do LLM (opcional)
+        template_path: Caminho para template customizado (opcional)
         
     Returns:
         Chain configurada do LangChain (pronta para `.invoke()`), ou None em caso de erro.
@@ -89,18 +136,21 @@ def search_prompt(top_k: int = Config.TOP_K, temperature: Optional[float] = None
         # 4. Inicializar LLM
         llm = get_llm(temperature=temperature)
         
-        # 5. Criar o Prompt Template
+        # 5. Carregar template de prompt
+        prompt_template_str = load_prompt_template(template_path)
+        
+        # 6. Criar o Prompt Template
         prompt = PromptTemplate(
-            template=PROMPT_TEMPLATE,
+            template=prompt_template_str,
             input_variables=["contexto", "pergunta"]
         )
         
-        # 6. Função para formatar documentos recuperados
+        # 7. Função para formatar documentos recuperados
         def format_docs(docs: list[Document]) -> str:
             """Concatena o conteúdo dos documentos recuperados"""
             return "\n\n".join(doc.page_content for doc in docs)
         
-        # 7. Criar a Chain (Retriever → Format → Prompt → LLM → Parser)
+        # 8. Criar a Chain (Retriever → Format → Prompt → LLM → Parser)
         chain = (
             {
                 "contexto": retriever | format_docs,
@@ -113,7 +163,10 @@ def search_prompt(top_k: int = Config.TOP_K, temperature: Optional[float] = None
         
         logger.info("Chain de busca criada com sucesso!")
         return chain
-        
+    
+    except FileNotFoundError as e:
+        logger.error(f"Erro ao carregar template: {e}")
+        return None
     except ValueError as e:
         logger.error(f"Erro de configuração ou parâmetros na busca: {e}")
         return None
@@ -128,6 +181,7 @@ def search_with_sources(
     question: str,
     top_k: int = Config.TOP_K,
     temperature: Optional[float] = None,
+    template_path: Optional[str] = None,
 ) -> SearchWithSourcesResult:
     """
     Realiza a busca, gera a resposta e retorna também as fontes utilizadas.
@@ -136,6 +190,7 @@ def search_with_sources(
         question: Pergunta do usuário
         top_k: Número de documentos a recuperar
         temperature: Temperatura da LLM
+        template_path: Caminho para template customizado (opcional)
         
     Returns:
         Dicionário contendo:
@@ -168,17 +223,20 @@ def search_with_sources(
         # 5. Inicializar LLM
         llm = get_llm(temperature=temperature)
         
-        # 6. Criar o Prompt Template
+        # 6. Carregar template de prompt
+        prompt_template_str = load_prompt_template(template_path)
+        
+        # 7. Criar o Prompt Template
         prompt = PromptTemplate(
-            template=PROMPT_TEMPLATE,
+            template=prompt_template_str,
             input_variables=["contexto", "pergunta"]
         )
         
-        # 7. Gerar resposta
+        # 8. Gerar resposta
         chain = prompt | llm | StrOutputParser()
         answer = chain.invoke({"contexto": contexto, "pergunta": question})
         
-        # 8. Extrair fontes (metadados únicos)
+        # 9. Extrair fontes (metadados únicos)
         sources: list[SourceSpec] = []
         seen_sources: set[str] = set()
         for doc in docs:

@@ -172,6 +172,7 @@ def main() -> None:
     parser.add_argument('--chunk-size', type=int, help=f'Tamanho do chunk para novas ingestões (default: {Config.CHUNK_SIZE})')
     parser.add_argument('--chunk-overlap', type=int, help=f'Sobreposição do chunk para novas ingestões (default: {Config.CHUNK_OVERLAP})')
     parser.add_argument('--search-timeout', type=int, help=f'Timeout para buscas em segundos (default: {Config.SEARCH_TIMEOUT})')
+    parser.add_argument('--prompt-template', type=str, help='Caminho para arquivo de template de prompt customizado')
     
     args = parser.parse_args()
     
@@ -202,6 +203,7 @@ def main() -> None:
     search_kwargs: dict[str, Any] = {}
     if args.top_k is not None: search_kwargs['top_k'] = args.top_k
     if args.temperature is not None: search_kwargs['temperature'] = args.temperature
+    if args.prompt_template is not None: search_kwargs['template_path'] = args.prompt_template
     
     chain = search_prompt(**search_kwargs)
     
