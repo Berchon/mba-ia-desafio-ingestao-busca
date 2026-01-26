@@ -420,34 +420,34 @@
 - [x] fazer o commit do changelog e do todos.md
 - [x] fazer o Merge com main
 
-#### K.5 Recarregar Chain (CHAT19)
-- [ ] Avaliar se essa task realmente é necessária
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **K.5.1** Recriar chain após add
-  - [ ] Atualizar chat_loop
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: reload chain after ingestion`
+#### K.5 Recarregar Chain (CHAT19) (CANCELADO)
+- [x] ~~Avaliar se essa task realmente é necessária~~ (Desnecessária, retriever é dinâmico)
+- [x] ~~fazer o desenvolvimento em uma branch separada da main~~
+- [x] ~~**K.5.1** Recriar chain após add~~
+  - [ ] ~~Atualizar chat_loop~~
+  - [ ] ~~**Faça o teste completo**~~
 - [ ] Atualizar o changelog com o ID do commit
 - [ ] Atualizar o TODOs.md
 - [ ] fazer o commit do changelog e do todos.md
 - [ ] fazer o Merge com main
 
 #### K.6 Templates Customizáveis (SEARCH1)
-- [ ] **explicar essa task e discutir se realmente é necessária a implementacao.**
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **K.6.1** Suporte a templates externos
-  - [ ] load_prompt_template()
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: support custom prompt templates`
-- [ ] Atualizar o changelog com o ID do commit
-- [ ] Atualizar o TODOs.md
-- [ ] fazer o commit do changelog e do todos.md
-- [ ] fazer o Merge com main
+- [x] ~~**explicar essa task e discutir se realmente é necessária a implementacao.**~~ (Aprovada)
+- [x] fazer o desenvolvimento em uma branch separada da main
+- [x] **K.6.1** Suporte a templates externos
+  - [x] load_prompt_template()
+  - [x] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: support custom prompt templates`
+- [x] Atualizar o changelog com o ID do commit
+- [x] Atualizar o TODOs.md
+- [x] fazer o commit do changelog e do todos.md
+- [x] fazer o Merge com main
 
-#### K.7 Cache de Embeddings (SEARCH5)
-- [ ] **Não fazer essa task!**
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **K.7.1** LRU cache para perguntas repetidas
-  - [ ] @lru_cache
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add embeddings cache`
+#### K.7 Cache de Embeddings (SEARCH5) (CANCELADO)
+- [x] ~~**Não fazer essa task!**~~ (Cancelado pelo usuário)
+- [x] ~~fazer o desenvolvimento em uma branch separada da main~~
+- [x] ~~**K.7.1** LRU cache para perguntas repetidas~~
+  - [ ] ~~@lru_cache~~
+  - [ ] ~~**Faça o teste completo**~~
 - [ ] Atualizar o changelog com o ID do commit
 - [ ] Atualizar o TODOs.md
 - [ ] fazer o commit do changelog e do todos.md

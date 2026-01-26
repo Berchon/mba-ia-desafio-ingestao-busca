@@ -29,6 +29,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   - Configuração `SEARCH_TIMEOUT` (default: 30s)
   - Flag CLI `--search-timeout` para customização
   - Mensagens de erro amigáveis quando timeout é atingido
+- Implementado suporte a **Templates de Prompt Customizáveis** (Task K.6) (`399867e`)
+  - Argumento CLI `--prompt-template <caminho>`
+  - Função `load_prompt_template()` em `src/search.py`
+  - Template padrão externalizado em `prompts/default.txt`
+  - Exemplo de template invertido em `prompts/resposta_invertida.txt`
 - Documentação técnica completa: `ANALISE_REQUISITOS.md`, `FUNCTIONAL_SPECIFICATION_AS_IS.md`, e `PRD.md` na pasta `docs/` (`1205463`)
 
 ### Corrigido
