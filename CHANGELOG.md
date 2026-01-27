@@ -24,6 +24,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
 
 ### Adicionado
+- Implementado **Seleção Dinâmica de Provedor** (Task L.1) (`8a1f640`)
+  - Argumento CLI global `--provider` para forçar uso de 'google' ou 'openai'
+  - Reset dinâmico de conexões para permitir troca em tempo de execução
+  - Validação estrita: impede uso de provedor se a chave correspondente não existir
 - Implementado sistema de **Fallback para LLM** (Task K.8) (`f381d98`)
   - Retorno automático de trechos dos documentos (contexto bruto) quando a LLM falha ou está instável
   - Tratamento amigável de erros de Embeddings/API Key (evita tracebacks no terminal)

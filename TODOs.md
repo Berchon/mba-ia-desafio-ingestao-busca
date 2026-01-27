@@ -469,12 +469,12 @@
 **Branch**: `feature/dynamic-provider-selection`
 
 #### L.1 Flag --provider
-- [ ] **L.1.1** Implementar troca via CLI
-  - [ ] Adicionar argumento `--provider` (google/openai)
-  - [ ] Validar se as chaves do provedor escolhido existem no `.env`
-  - [ ] Atualizar Singletons (Embeddings/LLM) para suportar "reset" e troca
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar faça o Commit com a frase: `feat: add dynamic provider selection`
-- [ ] Merge com main
+- [x] **L.1.1** Implementar troca via CLI
+  - [x] Adicionar argumento `--provider` (google/openai)
+  - [x] Validar se as chaves do provedor escolhido existem no `.env`
+  - [x] Atualizar Singletons (Embeddings/LLM) para suportar "reset" e troca
+  - [x] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar faça o Commit com a frase: `feat: add dynamic provider selection`
+- [x] Merge com main
 
 #### L.2 Histórico de Conversas (CHAT5)
 - [ ] fazer o desenvolvimento em uma branch separada da main
