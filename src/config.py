@@ -53,20 +53,49 @@ class Config:
     RETRIEVAL_TEMPERATURE: ClassVar[float] = float(os.getenv("RETRIEVAL_TEMPERATURE", "0"))
     SEARCH_TIMEOUT: ClassVar[int] = int(os.getenv("SEARCH_TIMEOUT", "30"))  # Timeout em segundos
     
-    # === Propriedades Agnósticas ao Provedor ===
-    # Estas propriedades retornam automaticamente os valores corretos
-    # baseados em qual provedor (Google ou OpenAI) está configurado
-    
+    # === Controle de Provedor ===
+    _FORCED_PROVIDER: ClassVar[Optional[str]] = None
+
+    @classmethod
+    def set_provider(cls, provider: str) -> None:
+        """
+        Define forçadamente qual provedor usar ('google' ou 'openai').
+        
+        Args:
+            provider: Nome do provedor ('google' ou 'openai')
+        
+        Raises:
+            ValueError: Se o provedor for desconhecido ou se a chave dele não estiver configurada.
+        """
+        provider = provider.lower().strip()
+        if provider not in ['google', 'openai']:
+            raise ValueError(f"Provedor desconhecido: '{provider}'. Use 'google' ou 'openai'.")
+            
+        if provider == 'google' and not cls.GOOGLE_API_KEY:
+            raise ValueError("Provedor 'google' selecionado, mas GOOGLE_API_KEY não está configurada no .env.")
+            
+        if provider == 'openai' and not cls.OPENAI_API_KEY:
+            raise ValueError("Provedor 'openai' selecionado, mas OPENAI_API_KEY não está configurada no .env.")
+            
+        cls._FORCED_PROVIDER = provider
+
     @classmethod
     @property
     def API_KEY(cls) -> str:
         """
         Retorna a API key disponível (Google ou OpenAI).
-        Prioriza Google se ambas estiverem configuradas.
+        Prioriza provedor forçado via set_provider(), senão Google, senão OpenAI.
         
         Raises:
             ValueError: Se nenhuma API key estiver configurada.
         """
+        # 1. Verificar provedor forçado
+        if cls._FORCED_PROVIDER == 'google':
+            return cls.GOOGLE_API_KEY
+        if cls._FORCED_PROVIDER == 'openai':
+            return cls.OPENAI_API_KEY
+            
+        # 2. Detecção automática (Google > OpenAI)
         key = cls.GOOGLE_API_KEY or cls.OPENAI_API_KEY
         if not key:
             raise ValueError(
@@ -78,13 +107,15 @@ class Config:
     @property
     def EMBEDDING_MODEL(cls) -> str:
         """
-        Retorna o modelo de embedding apropriado baseado na API key disponível.
-        Se Google API key está configurada, retorna modelo Google.
-        Caso contrário, retorna modelo OpenAI.
-        
-        Raises:
-            ValueError: Se nenhuma API key estiver configurada.
+        Retorna o modelo de embedding apropriado.
         """
+        # 1. Verificar provedor forçado
+        if cls._FORCED_PROVIDER == 'google':
+            return cls.GOOGLE_EMBEDDING_MODEL
+        if cls._FORCED_PROVIDER == 'openai':
+            return cls.OPENAI_EMBEDDING_MODEL
+
+        # 2. Detecção automática
         if cls.GOOGLE_API_KEY:
             return cls.GOOGLE_EMBEDDING_MODEL
         elif cls.OPENAI_API_KEY:
@@ -98,13 +129,15 @@ class Config:
     @property
     def LLM_MODEL(cls) -> str:
         """
-        Retorna o modelo LLM apropriado baseado na API key disponível.
-        Se Google API key está configurada, retorna modelo Google.
-        Caso contrário, retorna modelo OpenAI.
-        
-        Raises:
-            ValueError: Se nenhuma API key estiver configurada.
+        Retorna o modelo LLM apropriado.
         """
+        # 1. Verificar provedor forçado
+        if cls._FORCED_PROVIDER == 'google':
+            return cls.GOOGLE_LLM_MODEL
+        if cls._FORCED_PROVIDER == 'openai':
+            return cls.OPENAI_LLM_MODEL
+            
+        # 2. Detecção automática
         if cls.GOOGLE_API_KEY:
             return cls.GOOGLE_LLM_MODEL
         elif cls.OPENAI_API_KEY:

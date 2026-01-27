@@ -21,6 +21,15 @@ class LLMManager:
     _instance: Optional[Any] = None
 
     @classmethod
+    def reset(cls) -> None:
+        """
+        Reseta a instância do singleton, forçando recreação na próxima chamada.
+        Útil quando há troca dinâmica de provedor.
+        """
+        logger.debug("Resetando instância de LLMManager")
+        cls._instance = None
+
+    @classmethod
     def get_llm(cls, temperature: Optional[float] = None) -> Any:
         """
         Retorna a instância do modelo LLM, criando-a se necessário.
@@ -52,8 +61,25 @@ class LLMManager:
                 cls._instance = None
 
         if cls._instance is None:
-            # Tentar Google primeiro (prioridade conforme Config.API_KEY)
-            if Config.GOOGLE_API_KEY:
+            # Determinar qual provedor usar
+            use_google = False
+            use_openai = False
+            
+            # 1. Verificar se há provedor forçado
+            if Config._FORCED_PROVIDER == 'google':
+                use_google = True
+            elif Config._FORCED_PROVIDER == 'openai':
+                use_openai = True
+            # 2. Detecção automática (Google > OpenAI)
+            else:
+                if Config.GOOGLE_API_KEY:
+                    use_google = True
+                elif Config.OPENAI_API_KEY:
+                    use_openai = True
+                else:
+                    raise ValueError("Nenhuma API Key configurada. Defina GOOGLE_API_KEY ou OPENAI_API_KEY no .env")
+
+            if use_google:
                 try:
                     from langchain_google_genai import ChatGoogleGenerativeAI
                     logger.info(f"Inicializando LLM Google: {Config.GOOGLE_LLM_MODEL} (temp={target_temp})")
@@ -66,8 +92,7 @@ class LLMManager:
                     logger.error(f"Erro ao inicializar LLM Google: {e}")
                     raise
             
-            # Senão, tentar OpenAI
-            elif Config.OPENAI_API_KEY:
+            elif use_openai:
                 try:
                     from langchain_openai import ChatOpenAI
                     logger.info(f"Inicializando LLM OpenAI: {Config.OPENAI_LLM_MODEL} (temp={target_temp})")
@@ -79,11 +104,6 @@ class LLMManager:
                 except Exception as e:
                     logger.error(f"Erro ao inicializar LLM OpenAI: {e}")
                     raise
-            
-            else:
-                raise ValueError(
-                    "Nenhuma API Key configurada. Defina GOOGLE_API_KEY ou OPENAI_API_KEY no .env"
-                )
                 
         return cls._instance
 

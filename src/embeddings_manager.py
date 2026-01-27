@@ -21,6 +21,15 @@ class EmbeddingsManager:
     _instance: Optional[Any] = None
 
     @classmethod
+    def reset(cls) -> None:
+        """
+        Reseta a instância do singleton, forçando recreação na próxima chamada.
+        Útil quando há troca dinâmica de provedor.
+        """
+        logger.debug("Resetando instância de EmbeddingsManager")
+        cls._instance = None
+
+    @classmethod
     def get_embeddings(cls) -> Any:
         """
         Retorna a instância do modelo de embeddings, criando-a se necessário.
@@ -40,8 +49,26 @@ class EmbeddingsManager:
             True
         """
         if cls._instance is None:
-            # Tentar Google primeiro (prioridade conforme Config.API_KEY)
-            if Config.GOOGLE_API_KEY:
+            # Determinar qual provedor usar
+            use_google = False
+            use_openai = False
+            
+            # 1. Verificar se há provedor forçado
+            if Config._FORCED_PROVIDER == 'google':
+                use_google = True
+            elif Config._FORCED_PROVIDER == 'openai':
+                use_openai = True
+            # 2. Detecção automática (Google > OpenAI)
+            else:
+                if Config.GOOGLE_API_KEY:
+                    use_google = True
+                elif Config.OPENAI_API_KEY:
+                    use_openai = True
+                else:
+                    raise ValueError("Nenhuma API Key configurada. Defina GOOGLE_API_KEY ou OPENAI_API_KEY no .env")
+
+            # Inicialização baseada na decisão acima
+            if use_google:
                 try:
                     from langchain_google_genai import GoogleGenerativeAIEmbeddings
                     logger.info(f"Inicializando embeddings Google: {Config.GOOGLE_EMBEDDING_MODEL}")
@@ -53,8 +80,7 @@ class EmbeddingsManager:
                     logger.error(f"Erro ao inicializar embeddings Google: {e}")
                     raise
             
-            # Senão, tentar OpenAI
-            elif Config.OPENAI_API_KEY:
+            elif use_openai:
                 try:
                     from langchain_openai import OpenAIEmbeddings
                     logger.info(f"Inicializando embeddings OpenAI: {Config.OPENAI_EMBEDDING_MODEL}")
@@ -65,11 +91,6 @@ class EmbeddingsManager:
                 except Exception as e:
                     logger.error(f"Erro ao inicializar embeddings OpenAI: {e}")
                     raise
-            
-            else:
-                raise ValueError(
-                    "Nenhuma API Key configurada. Defina GOOGLE_API_KEY ou OPENAI_API_KEY no .env"
-                )
                 
         return cls._instance
 

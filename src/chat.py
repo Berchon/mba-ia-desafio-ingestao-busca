@@ -139,14 +139,7 @@ def main() -> None:
     """
     Função principal do CLI.
     """
-    # Validar configuração
-    try:
-        Config.validate_config()
-    except ValueError as e:
-        print(f"\n❌ Erro de configuração: {e}\n")
-        sys.exit(1)
-    
-    # Parser de argumentos
+    # Parser de argumentos (Configurar antes para pegar o provider)
     parser = argparse.ArgumentParser(
         description='Chat RAG - Sistema de busca semântica em PDFs',
         epilog='Exemplo: python src/chat.py'
@@ -156,6 +149,14 @@ def main() -> None:
         type=str,
         help='Caminho do PDF para usar como referência (opcional)',
         metavar='PDF_PATH'
+    )
+    # Novo argumento
+    parser.add_argument(
+        '--provider',
+        type=str,
+        choices=['google', 'openai'],
+        help='Forçar provedor de IA (google/openai)',
+        default=None
     )
     parser.add_argument(
         '-q', '--quiet',
@@ -179,6 +180,28 @@ def main() -> None:
     # Se modo silencioso, ajustar nível de log globalmente
     if args.quiet:
         set_global_log_level(logging.WARNING)
+
+    # Configurar Provedor Forçado se solicitado
+    if args.provider:
+        try:
+            Config.set_provider(args.provider)
+            # Resetar managers para garantir que usem o novo provedor
+            from embeddings_manager import EmbeddingsManager
+            from llm_manager import LLMManager
+            EmbeddingsManager.reset()
+            LLMManager.reset()
+            if not args.quiet:
+                print(f"🔧 Provedor configurado manualmente: {args.provider.upper()}")
+        except ValueError as e:
+            print(f"\n❌ Erro ao configurar provedor: {e}\n")
+            sys.exit(1)
+
+    # Validar configuração
+    try:
+        Config.validate_config()
+    except ValueError as e:
+        print(f"\n❌ Erro de configuração: {e}\n")
+        sys.exit(1)
     
     # Se foi especificado um arquivo, processar ingestão primeiro
     if args.file:
