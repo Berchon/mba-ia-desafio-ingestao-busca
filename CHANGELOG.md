@@ -24,6 +24,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
 
 ### Adicionado
+- Implementado **Navegação Persistente no Histórico** (Task L.2) (`7191513`)
+  - Suporte a setas (↑/↓) para navegar em comandos anteriores
+  - Persistência automática do histórico em arquivo `.chat_history` entre sessões
 - Implementado **Seleção Dinâmica de Provedor** (Task L.1) (`8a1f640`)
   - Argumento CLI global `--provider` para forçar uso de 'google' ou 'openai'
   - Reset dinâmico de conexões para permitir troca em tempo de execução

@@ -477,14 +477,14 @@
 - [x] Merge com main
 
 #### L.2 Histórico de Conversas (CHAT5)
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **L.2.1** Implementar navegacao pelo histórico
-  - [ ] Permitir, no prompt, navegar pelo histórico de conversas com as setas para cima e para baixo
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar faça o commit
-- [ ] Atualizar o changelog com o ID do commit
-- [ ] Atualizar o TODOs.md
-- [ ] fazer o commit do changelog e do todos.md
-- [ ] fazer o Merge com main
+- [x] fazer o desenvolvimento em uma branch separada da main
+- [x] **L.2.1** Implementar navegacao pelo histórico
+  - [x] Permitir, no prompt, navegar pelo histórico de conversas com as setas para cima e para baixo
+  - [x] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar faça o commit
+- [x] Atualizar o changelog com o ID do commit
+- [x] Atualizar o TODOs.md
+- [x] fazer o commit do changelog e do todos.md
+- [x] fazer o Merge com main
 
 ---
 
