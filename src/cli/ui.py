@@ -67,5 +67,6 @@ def display_help() -> None:
     print("\n📜 HISTÓRICO:")
     print("   history                Mostra últimos comandos (atalho: 'hist')")
     print("   !N                     Repete o comando número N (ex: !3)")
+    print("   (Use as setas ↑ / ↓ para navegar nos comandos anteriores)")
     
     print(HEADER_LINE + "\n")
