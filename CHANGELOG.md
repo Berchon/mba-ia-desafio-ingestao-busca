@@ -24,6 +24,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
 
 ### Adicionado
+- Implementado sistema de **Fallback para LLM** (Task K.8) (`f381d98`)
+  - Retorno automático de trechos dos documentos (contexto bruto) quando a LLM falha ou está instável
+  - Tratamento amigável de erros de Embeddings/API Key (evita tracebacks no terminal)
+  - Integração robusta no CLI, garantindo que o usuário nunca fique sem resposta se a busca funcionar
 - Implementado sistema de timeout para buscas (Task K.4) (`dc7d3c3`)
   - Context manager `timeout()` usando `signal.SIGALRM`
   - Configuração `SEARCH_TIMEOUT` (default: 30s)

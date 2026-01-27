@@ -454,14 +454,14 @@
 - [ ] fazer o Merge com main
 
 #### K.8 Fallback LLM (SEARCH7)
-- [ ] fazer o desenvolvimento em uma branch separada da main
-- [ ] **K.8.1** Retornar docs se LLM falhar
-  - [ ] Try/except com fallback
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add llm fallback`
-- [ ] Atualizar o changelog com o ID do commit
-- [ ] Atualizar o TODOs.md
-- [ ] fazer o commit do changelog e do todos.md
-- [ ] fazer o Merge com main
+- [x] fazer o desenvolvimento em uma branch separada da main
+- [x] **K.8.1** Retornar docs se LLM falhar
+  - [x] Try/except com fallback
+  - [x] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar faça o Commit com a frase: `feat: add llm fallback`
+- [x] Atualizar o changelog com o ID do commit
+- [x] Atualizar o TODOs.md
+- [x] fazer o commit do changelog e do todos.md
+- [x] fazer o Merge com main
 
 ---
 
@@ -473,7 +473,7 @@
   - [ ] Adicionar argumento `--provider` (google/openai)
   - [ ] Validar se as chaves do provedor escolhido existem no `.env`
   - [ ] Atualizar Singletons (Embeddings/LLM) para suportar "reset" e troca
-  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar Commit com a frase: `feat: add dynamic provider selection`
+  - [ ] **Faça o teste completo** → me passe o controle para eu testar manualmente → quando eu aprovar faça o Commit com a frase: `feat: add dynamic provider selection`
 - [ ] Merge com main
 
 #### L.2 Histórico de Conversas (CHAT5)
