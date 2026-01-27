@@ -212,7 +212,21 @@ def search_with_sources(
         repo = VectorStoreRepository(embeddings)
         
         # 3. Recuperar documentos
-        docs: list[Document] = repo.vector_store.similarity_search(question, k=top_k)
+        # 3. Recuperar documentos
+        try:
+            docs: list[Document] = repo.vector_store.similarity_search(question, k=top_k)
+        except Exception as e:
+            # Se falhar na busca (ex: API key inválida para embeddings), não há documentos para fallback.
+            error_str = str(e)
+            if "API key not valid" in error_str or "400" in error_str:
+                logger.warning(f"Falha de autenticação na busca: {e}")  # Warning em vez de Error para não alarmar no console
+                return {
+                    "answer": "❌ **Erro de Autenticação**: Sua API KEY parece inválida ou expirada. Verifique seu arquivo .env.",
+                    "sources": []
+                }
+            
+            logger.error(f"Erro na etapa de busca (Retrieval): {e}")
+            raise e # Relança outros erros para o except geral abaixo
         
         # 4. Formatar contexto
         def format_docs(docs: list[Document]) -> str:
@@ -220,21 +234,34 @@ def search_with_sources(
         
         contexto = format_docs(docs)
         
-        # 5. Inicializar LLM
-        llm = get_llm(temperature=temperature)
-        
-        # 6. Carregar template de prompt
-        prompt_template_str = load_prompt_template(template_path)
-        
-        # 7. Criar o Prompt Template
-        prompt = PromptTemplate(
-            template=prompt_template_str,
-            input_variables=["contexto", "pergunta"]
-        )
-        
-        # 8. Gerar resposta
-        chain = prompt | llm | StrOutputParser()
-        answer = chain.invoke({"contexto": contexto, "pergunta": question})
+        # 5. Tentar Gerar resposta com LLM (com Fallback)
+        try:
+            # Inicializar LLM
+            llm = get_llm(temperature=temperature)
+            
+            # Carregar template de prompt
+            prompt_template_str = load_prompt_template(template_path)
+            
+            # Criar o Prompt Template
+            prompt = PromptTemplate(
+                template=prompt_template_str,
+                input_variables=["contexto", "pergunta"]
+            )
+            
+            # Gerar resposta
+            chain = prompt | llm | StrOutputParser()
+            answer = chain.invoke({"contexto": contexto, "pergunta": question})
+            
+        except Exception as e:
+            logger.warning(f"Falha na execução da LLM: {e}. Ativando Fallback.")
+            
+            # Construir resposta de fallback
+            answer = (
+                "⚠️ **Aviso: O serviço de IA está instável ou indisponível no momento.**\n\n"
+                "Abaixo estão os trechos mais relevantes encontrados nos documentos que podem ajudar:\n\n"
+                "--- Contexto Recuperado ---\n\n"
+            )
+            answer += contexto
         
         # 9. Extrair fontes (metadados únicos)
         sources: list[SourceSpec] = []

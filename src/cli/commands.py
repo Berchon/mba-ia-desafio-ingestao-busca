@@ -303,26 +303,30 @@ def process_question(
         if not quiet:
             # Mostrar etapas do processo
             print("🔍 Recuperando informações relevantes...")
-            print("🧠 Gerando resposta baseada nos documentos...\n")
+            if verbose:
+                print("🧠 Gerando resposta baseada nos documentos (modo detalhado)...\n")
+            else:
+                print("🧠 Gerando resposta baseada nos documentos...\n")
         
         # Aplicar timeout à operação de busca
         with timeout(timeout_seconds):
+            # Sempre usar search_with_sources para garantir resiliência/fallback
+            # A função retorna dict com keys 'answer' e 'sources'
+            kwargs: dict[str, Any] = {}
+            if top_k is not None: kwargs['top_k'] = top_k
+            if temperature is not None: kwargs['temperature'] = temperature
+            
+            result = search_with_sources(question, **kwargs)
+            response = result["answer"]
+            
+            # Se verbose, pega as sources; senão lista vazia
             if verbose:
-                # Usar search_with_sources para obter detalhes dos chunks
-                kwargs: dict[str, Any] = {}
-                if top_k is not None: kwargs['top_k'] = top_k
-                if temperature is not None: kwargs['temperature'] = temperature
-                
-                result = search_with_sources(question, **kwargs)
-                response = result["answer"]
                 sources = result["sources"]
-                end_time = time.time()
-                elapsed_time = end_time - start_time
             else:
-                response = chain.invoke(question)
-                end_time = time.time()
-                elapsed_time = end_time - start_time
                 sources = []
+            
+            end_time = time.time()
+            elapsed_time = end_time - start_time
         
         if not quiet:
             print(SECTION_LINE)
