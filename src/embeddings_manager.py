@@ -71,13 +71,20 @@ class EmbeddingsManager:
             if use_google:
                 try:
                     from langchain_google_genai import GoogleGenerativeAIEmbeddings
-                    logger.info(f"Inicializando embeddings Google: {Config.GOOGLE_EMBEDDING_MODEL}")
+                    model_name = Config.GOOGLE_EMBEDDING_MODEL
+                    # Garantir o prefixo models/ se não estiver presente
+                    if not model_name.startswith("models/"):
+                        model_name = f"models/{model_name}"
+                        
+                    logger.info(f"Inicializando embeddings Google: {model_name}")
                     cls._instance = GoogleGenerativeAIEmbeddings(
-                        model=Config.GOOGLE_EMBEDDING_MODEL,
+                        model=model_name,
                         google_api_key=Config.GOOGLE_API_KEY
                     )
                 except Exception as e:
                     logger.error(f"Erro ao inicializar embeddings Google: {e}")
+                    if "429" in str(e):
+                        logger.error("DICA: Erro 429 indica que sua cota da API foi atingida ou o limite de requisições por minuto foi excedido.")
                     raise
             
             elif use_openai:
