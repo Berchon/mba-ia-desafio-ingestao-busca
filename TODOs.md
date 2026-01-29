@@ -501,7 +501,7 @@
     7. Faça o commit do changelog e do todos.md (Commit: `47bb258`)
     8. Faça o merge com main
 
-- [ ] **1.5.2** Em uma branch separada da main Atualizar /tests/README.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
+- [x] **1.5.2** Em uma branch separada da main Atualizar /tests/README.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main (Commit: `e1bc939`)
 
 - [ ] **1.5.3** Em uma branch separada da main Atualizar docs/ANALISE_REQUISITOS.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
 
