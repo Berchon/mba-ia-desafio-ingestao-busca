@@ -1,428 +1,218 @@
-# 🤖 Sistema RAG - Ingestão e Busca Semântica com LangChain
+# 🤖 Sistema RAG - Ingestão e Busca Semântica
 
 ![GitHub release](https://img.shields.io/github/v/release/Berchon/mba-ia-desafio-ingestao-busca)
+![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)
+![License](https://img.shields.io/badge/license-MBA--IA-green)
 
-Sistema de Recuperação e Geração Aumentada (RAG) que permite fazer perguntas sobre documentos PDF usando busca semântica e LLMs.
+Sistema profissional de **Retrieval-Augmented Generation (RAG)** desenvolvido como desafio técnico para o MBA em IA da Full Cycle. O software permite a ingestão inteligente de documentos PDF em um banco de dados vetorial e a realização de consultas em linguagem natural via terminal.
+
+---
 
 ## 📋 Índice
 
-- [Sobre o Projeto](#-sobre-o-projeto)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
-- [Pré-requisitos](#-pré-requisitos)
-- [Instalação](#-instalação)
-- [Configuração](#-configuração)
-- [Uso](#-uso)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Como Funciona](#-como-funciona)
-- [Comandos Disponíveis](#-comandos-disponíveis)
-- [Troubleshooting](#-troubleshooting)
+- [🎯 Objetivo do Projeto](#-objetivo-do-projeto)
+- [🛠 Tecnologias Obrigatórias](#-tecnologias-obrigatórias)
+- [🚀 Guia de Início Rápido](#-guia-de-início-rápido)
+  - [1. Clonar o Projeto](#1-clonar-o-projeto)
+  - [2. Ambiente Virtual](#2-ambiente-virtual)
+  - [3. Instalação de Dependências](#3-instalação-de-dependências)
+  - [4. Configuração do Ambiente (.env)](#4-configuração-do-ambiente-env)
+  - [5. Infraestrutura (Docker)](#5-infraestrutura-docker)
+- [💻 Ordem de Execução](#-ordem-de-execução)
+  - [Passo 1: Ingestão do PDF](#passo-1-ingestão-do-pdf)
+  - [Passo 2: Chat Interativo](#passo-2-chat-interativo)
+- [📂 Estrutura do Projeto](#-estrutura-do-projeto)
+- [⚙️ Configurações Avançadas](#-configurações-avançadas)
+- [🔍 Detalhes Técnicos](#-detalhes-técnicos)
+- [🎮 Comandos do Chat](#-comandos-do-chat)
 
-## 🎯 Sobre o Projeto
+---
 
-Este sistema permite:
+## 🎯 Objetivo do Projeto
 
-1. **Ingestão de PDFs**: Carrega documentos PDF, divide em chunks e armazena embeddings em banco vetorial
-2. **Busca Semântica**: Realiza buscas semânticas usando similaridade de vetores
-3. **Respostas Contextualizadas**: Usa LLMs para gerar respostas baseadas apenas no conteúdo dos documentos
-4. **Interface CLI**: Interação via linha de comando com comandos especiais
+O sistema é capaz de processar documentos PDF, dividi-los em fragmentos (chunks), gerar representações vetoriais (embeddings) e armazená-los em um banco de dados **PostgreSQL** com a extensão **pgVector**. O usuário interage via CLI, recebendo respostas baseadas **estritamente** no contexto dos documentos fornecidos, evitando alucinações.
 
-### Características Principais
+---
 
-- ✅ Barra de progresso visual durante a ingestão (`tqdm`)
-- ✅ Sistema de IDs determinísticos baseados em arquivo
-- ✅ Confirmação de segurança antes de sobrescrever documentos
-- ✅ Exibição de estatísticas detalhadas pós-ingestão
-- ✅ Amostragem de fontes (arquivo e página) nas respostas da IA
-- ✅ Interface CLI interativa com comandos especiais (`add`, `clear`, `help`)
-- ✅ Suporte completo a Google Gemini e OpenAI com abstração de provedor
-- ✅ Banco de dados vetorial PostgreSQL com pgVector via Repository Pattern
+## 🛠 Tecnologias Obrigatórias
 
-## 🛠 Tecnologias Utilizadas
+Conforme os requisitos do projeto, as seguintes tecnologias são fundamentais:
 
-### Core
-- **Python 3.x**: Linguagem principal
-- **LangChain**: Framework para aplicações com LLMs
-- **PostgreSQL + pgVector**: Banco de dados vetorial
+- **Linguagem**: Python 3.10+
+- **Framework**: LangChain
+- **Banco de Dados**: PostgreSQL + pgVector
+- **Infraestrutura**: Docker & Docker Compose
+- **Modelos de IA**:
+  - **Google Gemini**: `models/embedding-001` e `gemini-2.5-flash-lite`
+  - **OpenAI**: `text-embedding-3-small` e `gpt-5-nano` (configurável)
 
-### Bibliotecas Principais
-- `langchain-google-genai`: Integração com Google Gemini
-- `langchain-openai`: Integração com OpenAI
-- `langchain-postgres`: Integração com PGVector
-- `pypdf`: Leitura de arquivos PDF
-- `python-dotenv`: Gerenciamento de variáveis de ambiente
-- `psycopg`: Driver PostgreSQL
+---
 
-### Infraestrutura
-- **Docker & Docker Compose**: Containerização do banco de dados
-- **pgVector**: Extensão PostgreSQL para busca vetorial
+## 🚀 Guia de Início Rápido
 
-## 📦 Pré-requisitos
+Siga os passos abaixo para configurar o sistema em seu ambiente local do zero.
 
-- Python 3.10 ou superior
-- Docker e Docker Compose
-- Chave de API do Google Gemini OU OpenAI
+### 1. Clonar o Projeto
 
-### Obter Chaves de API
-
-**Google Gemini:**
-1. Acesse [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Crie uma nova API Key
-3. Copie a chave gerada
-
-**OpenAI (opcional):**
-1. Acesse [OpenAI Platform](https://platform.openai.com/api-keys)
-2. Crie uma nova API Key
-3. Copie a chave gerada
-
-## 🚀 Instalação
-
-### 1. Clone o Repositório
+Primeiro, faça o download do código-fonte para sua máquina:
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/Berchon/mba-ia-desafio-ingestao-busca.git
 cd mba-ia-desafio-ingestao-busca
 ```
 
-### 2. Crie o Ambiente Virtual
+### 2. Ambiente Virtual
+
+Crie e ative um ambiente virtual para isolar as dependências do projeto:
 
 ```bash
+# Criar o ambiente
 python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# ou
-venv\Scripts\activate  # Windows
+
+# Ativar (Linux/macOS)
+source venv/bin/activate
+
+# Ativar (Windows)
+venv\Scripts\activate
 ```
 
-### 3. Instale as Dependências
+### 3. Instalação de Dependências
+
+Instale todos os pacotes necessários:
 
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Suba o Banco de Dados
+### 4. Configuração do Ambiente (.env)
 
-O projeto usa Docker Compose para gerenciar o PostgreSQL com pgVector:
+O sistema utiliza um arquivo `.env` para carregar chaves de API e configurações de banco de dados.
+
+1.  Crie o arquivo `.env` a partir do template:
+    ```bash
+    cp .env.example .env
+    ```
+2.  Abra o arquivo `.env` e insira sua **API Key** (Google ou OpenAI):
+
+```env
+# Exemplo de configuração mínima
+GOOGLE_API_KEY='sua-chave-aqui'
+DATABASE_URL='postgresql://postgres:postgres@localhost:5432/rag'
+PG_VECTOR_COLLECTION_NAME='documentos'
+```
+
+### 5. Infraestrutura (Docker)
+
+Suba o container do banco de dados PostgreSQL com suporte a vetores:
 
 ```bash
 docker compose up -d
 ```
 
-**O que este comando faz:**
-- Cria um container PostgreSQL com a extensão pgVector habilitada
-- Expõe a porta 5432 para conexões
-- Cria um volume persistente para os dados
-- Configura health checks automáticos
-- Inicializa a extensão vector automaticamente
+> **Dica**: Utilize `docker compose ps` para garantir que o container está saudável.
 
-**Verificar se está rodando:**
-```bash
-docker compose ps
-```
+---
 
-**Parar o banco:**
-```bash
-docker compose down
-```
+## 💻 Ordem de Execução
 
-**Parar e remover dados:**
-```bash
-docker compose down -v
-```
+Após a configuração do ambiente, siga esta ordem para rodar o sistema:
 
-## ⚙️ Configuração
+### Passo 1: Ingestão do PDF
 
-### 1. Crie o Arquivo `.env`
-
-Copie o arquivo de exemplo:
-
-```bash
-cp .env.example .env
-```
-
-### 2. Configure as Variáveis de Ambiente
-
-Edite o arquivo `.env` com suas configurações:
-
-```bash
-# === API Keys (configure pelo menos uma) ===
-
-# Google Gemini (recomendado)
-GOOGLE_API_KEY=sua_chave_google_aqui
-GOOGLE_EMBEDDING_MODEL='models/embedding-001'
-GOOGLE_LLM_MODEL='gemini-2.5-flash-lite'
-
-# OpenAI (opcional)
-OPENAI_API_KEY=sua_chave_openai_aqui
-OPENAI_EMBEDDING_MODEL='text-embedding-3-small'
-OPENAI_LLM_MODEL='gpt-5-nano'
-
-# === Configuração do Banco de Dados ===
-DATABASE_URL='postgresql://postgres:postgres@localhost:5432/rag'
-PG_VECTOR_COLLECTION_NAME='pdf_embeddings'
-
-# === Configuração de Documentos ===
-PDF_PATH=document.pdf
-```
-
-### Descrição das Variáveis
-
-#### API Keys
-- **GOOGLE_API_KEY**: Chave de API do Google Gemini (obtenha em https://aistudio.google.com)
-- **GOOGLE_EMBEDDING_MODEL**: Modelo de embeddings do Google (padrão: `models/embedding-001`)
-- **GOOGLE_LLM_MODEL**: Modelo de LLM do Google (padrão: `gemini-2.5-flash-lite`)
-- **OPENAI_API_KEY**: Chave de API da OpenAI (opcional, obtenha em https://platform.openai.com)
-- **OPENAI_EMBEDDING_MODEL**: Modelo de embeddings da OpenAI (padrão: `text-embedding-3-small`)
-- **OPENAI_LLM_MODEL**: Modelo de LLM da OpenAI (padrão: `gpt-5-nano`)
-
-> **Nota**: O sistema detecta automaticamente qual provedor usar baseado nas chaves configuradas. Se ambas estiverem configuradas, o Google Gemini terá prioridade.
-
-#### Banco de Dados
-- **DATABASE_URL**: URL de conexão com PostgreSQL
-  - Formato: `postgresql://usuario:senha@host:porta/database`
-  - Para desenvolvimento local com Docker Compose: `postgresql://postgres:postgres@localhost:5432/rag`
-  - **Nota de Segurança**: As credenciais `postgres:postgres` são as padrão do `docker-compose.yml` fornecido. Para ambientes de produção, altere usuário e senha tanto no `docker-compose.yml` quanto no `.env`
-- **PG_VECTOR_COLLECTION_NAME**: Nome da coleção/tabela no banco vetorial (padrão: `pdf_embeddings`)
-
-#### Documentos
-- **PDF_PATH**: Caminho para o arquivo PDF padrão a ser ingerido (padrão: `document.pdf`)
-
-## 💻 Uso
-
-### Fluxo Completo de Uso
-
-#### 1. Ingerir um Documento PDF
-
-**Importante**: Certifique-se de que a variável `PDF_PATH` está configurada no arquivo `.env` apontando para o PDF que deseja ingerir.
+O sistema processará o arquivo `document.pdf` (ou o que estiver configurado no `.env`). O texto será dividido em **chunks de 1000 caracteres** com **overlap de 150**.
 
 ```bash
 python src/ingest.py
 ```
 
-**O que acontece:**
-- Carrega o PDF especificado em `PDF_PATH` (ou `document.pdf` por padrão)
-- Divide o texto em chunks de 1000 caracteres com overlap de 150
-- Gera embeddings para cada chunk
-- Armazena os vetores no PostgreSQL com pgVector
-- Exibe progresso e estatísticas
+**O que o script faz?**
+- Lê o PDF e divide em blocos de texto.
+- Gera os embeddings vetoriais.
+- Salva tudo no PGVector.
+- Exibe estatísticas (páginas, chunks, tempo).
 
-**Exemplo de saída:**
-```
-INFO - Iniciando ingestão do PDF: document.pdf
-INFO - PDF carregado: 34 páginas
-INFO - Texto dividido em 67 chunks
-INFO - Gerando embeddings e armazenando no banco de dados...
-INFO - ✓ Ingestão concluída com sucesso!
-INFO - Total de documentos no banco: 67
-```
+### Passo 2: Chat Interativo
 
-#### 2. Iniciar o Chat Interativo
+Inicie o terminal de chat para fazer perguntas sobre o conteúdo do PDF:
 
 ```bash
 python src/chat.py
 ```
 
 **Exemplo de interação:**
-```
-=== Sistema RAG - Chat Interativo ===
-✓ Banco de dados conectado e populado
-✓ Sistema pronto para responder perguntas
-
-Digite 'help' para ver comandos disponíveis ou 'sair' para encerrar.
-
-Faça sua pergunta:
-> Qual o faturamento da empresa SuperTechIABrazil?
-
-🔍 Buscando informações...
-💡 Gerando resposta...
-
-RESPOSTA:
-O faturamento da empresa SuperTechIABrazil foi de 10 milhões de reais.
-
-FONTES:
-- document.pdf (pág 26)
-- document.pdf (pág 2)
-
----
-Faça sua pergunta:
-> sair
-
-👋 Até logo! Chat encerrado.
-```
-
-#### 3. Ingerir PDF via CLI
-
-Você também pode ingerir um PDF específico diretamente pelo chat:
-
 ```bash
-python src/chat.py -file caminho/para/documento.pdf
+> Qual o faturamento da Empresa SuperTechIABrazil?
+🔍 Recuperando informações...
+🧠 Gerando melhor resposta...
+
+RESPOSTA: O faturamento foi de 10 milhões de reais.
 ```
-
-Ou durante o chat:
-```
-Faça sua pergunta:
-> add novo_documento.pdf
-
-📄 Iniciando ingestão de: novo_documento.pdf
-✓ Ingestão concluída!
-```
-
-## 📁 Estrutura do Projeto
-
-```
-mba-ia-desafio-ingestao-busca/
-├── .agent/
-│   └── workflows/
-│       └── development-workflow.md    # Workflow de desenvolvimento
-├── src/
-│   ├── chat.py                        # CLI de interação
-│   ├── config.py                      # Configuração centralizada
-│   ├── database.py                    # Conexão com PGVector
-│   ├── embeddings_manager.py          # Singleton Manager de Embeddings
-│   ├── ingest.py                      # Script de ingestão
-│   ├── llm_manager.py                 # Singleton Manager de LLM
-│   ├── logger.py                      # Sistema de logging centralizado
-│   └── search.py                      # Módulo de busca semântica
-├── .env                               # Variáveis de ambiente (não versionado)
-├── .env.example                       # Template de configuração
-├── .gitignore                         # Arquivos ignorados pelo Git
-├── CHANGELOG.md                       # Histórico de mudanças
-├── docker-compose.yml                 # Configuração do PostgreSQL
-├── document.pdf                       # PDF de exemplo
-├── README.md                          # Este arquivo
-├── requirements.txt                   # Dependências Python
-├── requisitos.md                      # Requisitos do projeto
-└── TODOs.md                           # Checklist de melhorias
-```
-
-## 🔍 Como Funciona
-
-### 1. Ingestão (ingest.py)
-
-```
-PDF → Carregamento → Chunking → Embeddings → PGVector
-```
-
-1. **Carregamento**: `PyPDFLoader` extrai texto do PDF
-2. **Chunking**: `RecursiveCharacterTextSplitter` divide em chunks de 1000 caracteres (overlap 150)
-3. **Embeddings**: Modelo de embeddings converte texto em vetores
-4. **Armazenamento**: Vetores salvos no PostgreSQL com pgVector
-
-### 2. Busca (search.py)
-
-```
-Pergunta → Embedding → Busca Vetorial → Top 10 → Contexto → LLM → Resposta
-```
-
-1. **Vetorização**: Pergunta convertida em embedding
-2. **Busca**: Similarity search retorna 10 chunks mais relevantes (k=10)
-3. **Contexto**: Chunks concatenados formam o contexto
-4. **Prompt**: Template com contexto + regras + pergunta
-5. **LLM**: Modelo gera resposta baseada apenas no contexto
-
-### 3. Prompt Template
-
-O sistema usa um prompt rigoroso para evitar alucinações:
-
-```
-CONTEXTO:
-{chunks recuperados do banco}
-
-REGRAS:
-- Responda somente com base no CONTEXTO
-- Se a informação não estiver no CONTEXTO, responda:
-  "Não tenho informações necessárias para responder sua pergunta."
-- Nunca invente ou use conhecimento externo
-
-PERGUNTA DO USUÁRIO:
-{pergunta}
-```
-
-## 🎮 Comandos Disponíveis
-
-No chat interativo, você pode usar:
-
-| Comando | Descrição |
-|---------|-----------|
-| `help` | Exibe lista de comandos disponíveis |
-| `add <caminho>` ou `ingest <caminho>` | Ingere um novo PDF |
-| `sair`, `exit`, `quit`, `q` | Encerra o chat |
-
-## 🐛 Troubleshooting
-
-### Erro: "Database connection failed"
-
-**Problema**: Não consegue conectar ao PostgreSQL
-
-**Soluções**:
-1. Verifique se o Docker está rodando: `docker compose ps`
-2. Suba o banco: `docker compose up -d`
-3. Verifique a `DATABASE_URL` no `.env`
-4. Teste a conexão: `docker exec -it postgres_rag psql -U postgres -d rag`
-
-### Erro: "API key not found"
-
-**Problema**: Chave de API não configurada
-
-**Soluções**:
-1. Verifique se o arquivo `.env` existe
-2. Confirme que `GOOGLE_API_KEY` ou `OPENAI_API_KEY` está preenchida
-3. Não use aspas ao redor da chave no `.env`
-
-### Erro: "No documents in database"
-
-**Problema**: Banco de dados vazio
-
-**Soluções**:
-1. Execute a ingestão: `python src/ingest.py`
-2. Ou use o comando `add` no chat: `add document.pdf`
-
-### Erro: "PDF not found"
-
-**Problema**: Arquivo PDF não encontrado
-
-**Soluções**:
-1. Verifique se o arquivo existe no caminho especificado
-2. Use caminho absoluto ou relativo correto
-3. Atualize `PDF_PATH` no `.env` se necessário
-
-### Performance lenta
-
-**Problema**: Respostas demoram muito
-
-**Soluções**:
-1. Use modelos mais rápidos (ex: `gemini-2.5-flash-lite`)
-2. Reduza o valor de `k` (número de chunks recuperados)
-3. Verifique sua conexão com a internet
-
-## 📝 Próximos Passos
-
-Consulte o arquivo [TODOs.md](TODOs.md) para ver as melhorias planejadas, incluindo:
-
-- **Fase E: Melhorias Técnicas do Chat** (Argumentos CLI padrão, tratamento de banco vazio)
-- **Fase F: Comandos Estendidos** (Comandos `stats` e `remove <arquivo>`)
-- **Fase G: Melhorias de UX** (Simplificação de prompt, atalhos de comando, modo silencioso)
-- **Fase H: Parâmetros Configuráveis** (Controle de chunks, temperatura e top-k via CLI)
-- **Fase I: Tratamento de Erros** (Exceções específicas e robustez)
-- **Fase K: Refatorações Avançadas** (Histórico de conversas, cache de embeddings)
-
-## 🤖 Desenvolvido com Antigravity
-
-Este projeto foi inteiramente desenvolvido utilizando o **Antigravity**, o assistente de IA da Google para desenvolvimento de código. A escolha de usar o Antigravity como ferramenta principal teve como objetivo:
-
-- **Aprendizado Prático**: Explorar as capacidades de um agente de IA moderno no desenvolvimento de software completo
-- **Produtividade**: Acelerar o desenvolvimento mantendo qualidade e boas práticas
-- **Experimentação**: Testar os limites da colaboração humano-IA em projetos reais
-- **Documentação**: Criar um caso de uso real e bem documentado do uso de IA no desenvolvimento
-
-Todo o código, desde a arquitetura inicial até a implementação de features, refatorações e esta documentação, foi criado em colaboração com o Antigravity. Este projeto serve como exemplo prático de como ferramentas de IA podem auxiliar no desenvolvimento de aplicações complexas envolvendo LLMs, bancos vetoriais e processamento de documentos.
-
-## 📄 Licença
-
-Este projeto foi desenvolvido como parte do MBA em Inteligência Artificial da Full Cycle.
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Siga o workflow definido em `.agent/workflows/development-workflow.md`.
 
 ---
 
-**Desenvolvido com ❤️ usando LangChain e Google Gemini**
+## 📂 Estrutura do Projeto
+
+O projeto segue a estrutura obrigatória e organizada para escalabilidade:
+
+```text
+├── src/
+│   ├── chat.py           # CLI principal de interação
+│   ├── ingest.py         # Script ETL (Extração, Transformação, Carga)
+│   ├── search.py         # Lógica de busca e chain RAG
+│   ├── database.py       # Gerenciamento de conexão e repositório
+│   ├── config.py         # Centralização de variáveis de ambiente
+│   ├── cli/              # Módulos auxiliares da interface CLI
+│   └── *_manager.py      # Gestores de Singletons (LLM/Embeddings)
+├── docs/                 # Documentação (PRD, Spec, Requisitos)
+├── prompts/              # Templates de prompt customizáveis
+├── tests/                # Suite de testes E2E completa
+├── docker-compose.yml    # Configuração do banco vetorial
+├── requirements.txt      # Lista de dependências
+├── .env.example          # Template de ambiente
+└── document.pdf          # PDF padrão para teste
+```
+
+---
+
+## ⚙️ Configurações Avançadas
+
+Você pode customizar o comportamento do sistema via flags de linha de comando:
+
+- **Mudar Provedor**: `python src/chat.py --provider openai`
+- **Modo Silencioso**: `python src/chat.py --quiet`
+- **Modo Verboso (Fontes)**: `python src/chat.py --verbose`
+- **Customizar Parâmetros**: `python src/chat.py --top-k 5 --temperature 0.2`
+
+---
+
+## 🔍 Detalhes Técnicos
+
+### Estratégia de RAG
+- **Recuperação**: Busca por similaridade de cosseno buscando os **10 resultados mais relevantes (k=10)**.
+- **Robustez**: Caso a LLM falhe, o sistema possui um **fallback** que exibe os trechos de texto brutos recuperados do banco.
+- **Determinismo**: IDs de chunks baseados no nome do arquivo para evitar duplicidade em re-ingestões.
+
+### Prompt de Segurança
+O prompt utilizado (conforme `requisitos.md`) proíbe o uso de conhecimento externo, garantindo que a resposta venha **estritamente do CONTEXTO**.
+
+---
+
+## 🎮 Comandos do Chat
+
+Dentro do ambiente interativo, você pode usar os seguintes comandos:
+
+| Comando | Atalho | Ação |
+| :--- | :--- | :--- |
+| `help` | `h` | Exibe o menu de ajuda |
+| `add <path>` | `a` | Adiciona um novo PDF à base |
+| `stats` | `s` | Mostra estatísticas do banco de dados |
+| `remove <nome>` | `r` | Remove um documento específico da base |
+| `clear` | `c` | Limpa toda a base de dados vetorial |
+| `history` | `hist` | Mostra o histórico de comandos digitados |
+| `sair` | `q` | Encerra a aplicação graciosamente |
+
+---
+
+**Desenvolvido como projeto educacional por [Berchon]**  
+*MBA em IA para Desenvolvedores - Full Cycle*
