@@ -15,8 +15,11 @@ from dotenv import load_dotenv
 # Largura padrão de exibição para separadores no terminal
 DISPLAY_WIDTH: int = 70
 
+# Caminho raiz do projeto (onde está o .env e o src/)
+PROJECT_ROOT: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Carregar variáveis de ambiente do arquivo .env
-load_dotenv()
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 
 class Config:
@@ -26,6 +29,9 @@ class Config:
     Todas as variáveis de ambiente são carregadas como atributos de classe,
     permitindo acesso consistente em todo o projeto via Config.NOME_VARIAVEL.
     """
+    
+    # === Caminhos ===
+    PROJECT_ROOT: ClassVar[str] = PROJECT_ROOT
     
     # === API Keys ===
     GOOGLE_API_KEY: ClassVar[Optional[str]] = os.getenv("GOOGLE_API_KEY")

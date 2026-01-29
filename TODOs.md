@@ -490,7 +490,30 @@
 
 ### 1.5 Testes e Validação
 - [ ] **1.5.1** Testar fluxo completo
-- [ ] **1.5.2** Atualizar README.md
+  - [ ] Criar uma branch separada da main
+  - [ ] **Faça o teste completo**
+    1. Testar fluxo completo
+    2. Se algum teste falhar, pare e espere por orientacoes
+    3. Quando todos os testes passarem, me passe o controle para eu testar manualmente
+    4. Quando eu aprovar, faça o commit
+    5. Atualize o changelog com o ID do commit
+    6. Atualize o TODOs.md
+    7. Faça o commit do changelog e do todos.md
+    8. Faça o merge com main
+
+- [ ] **1.5.2** Em uma branch separada da main Atualizar /tests/README.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
+
+- [ ] **1.5.3** Em uma branch separada da main Atualizar docs/ANALISE_REQUISITOS.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
+
+- [ ] **1.5.4** Em uma branch separada da main Atualizar docs/ -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com mainFUNCTIONAL_SPECIFICATION_AS_IS.md
+
+- [ ] **1.5.5** Em uma branch separada da main Atualizar docs/PRD.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
+
+- [ ] **1.5.6** Em uma branch separada da main Atualizar CHANGELOG.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
+
+- [ ] **1.5.7** Em uma branch separada da main Atualizar README.md do projeto -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
+
+
 
 ---
 

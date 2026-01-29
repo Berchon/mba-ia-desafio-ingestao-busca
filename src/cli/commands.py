@@ -104,7 +104,8 @@ def handle_add_command(
             print("   Exemplo: add document.pdf\n")
         return False
     
-    pdf_path = parts[1].strip()
+    from ingest import normalize_pdf_path
+    pdf_path = normalize_pdf_path(parts[1].strip())
     
     # Validar se arquivo existe
     if not os.path.exists(pdf_path):

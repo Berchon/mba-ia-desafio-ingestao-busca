@@ -18,6 +18,29 @@ logger = get_logger(__name__)
 DISPLAY_WIDTH = 70
 DEFAULT_BATCH_SIZE = 16
 
+def normalize_pdf_path(path: str) -> str:
+    """
+    Normaliza o caminho do PDF para persistência consistente no banco.
+    Favoriza caminhos relativos à raiz do projeto se o arquivo estiver dentro dele.
+    """
+    if not path:
+        return path
+    
+    # Obter caminho absoluto real (resolve symlinks e ..)
+    abs_path = os.path.realpath(path)
+    
+    try:
+        # Tentar calcular caminho relativo à raiz do projeto
+        rel_path = os.path.relpath(abs_path, Config.PROJECT_ROOT)
+        
+        # Se não subir níveis (não começar com ..), usamos o relativo
+        if not rel_path.startswith('..'):
+            return rel_path
+    except (ValueError, AttributeError):
+        pass
+    
+    return abs_path
+
 def ingest_pdf(
     pdf_path: Optional[str] = None,
     quiet: bool = False,
@@ -61,6 +84,17 @@ def ingest_pdf(
     """
     # Validar configuração
     Config.validate_config()
+
+    # Validar parâmetros de chunking
+    c_size = chunk_size or Config.CHUNK_SIZE
+    c_overlap = chunk_overlap or Config.CHUNK_OVERLAP
+
+    if c_size <= 0:
+        raise ValueError(f"Tamanho do chunk inválido: {c_size}. Deve ser maior que 0.")
+    if c_overlap < 0:
+        raise ValueError(f"Sobreposição do chunk inválida: {c_overlap}. Não pode ser negativa.")
+    if c_overlap >= c_size:
+        raise ValueError(f"Sobreposição ({c_overlap}) deve ser menor que o tamanho do chunk ({c_size}).")
     
     # Se modo silencioso, ajustar nível de log globalmente
     if quiet:
@@ -68,17 +102,27 @@ def ingest_pdf(
         set_global_log_level(logging.WARNING)
     
     # Fallback para variável de ambiente se não for passado parâmetro
-    target_pdf = pdf_path or Config.PDF_PATH
+    input_pdf = pdf_path or Config.PDF_PATH
     
-    if not target_pdf:
+    if not input_pdf:
         raise ValueError("Caminho do PDF não especificado. Passe como parâmetro ou configure PDF_PATH no .env")
 
+    # Caminho absoluto para todas as operações de arquivo
+    abs_pdf_path = os.path.abspath(input_pdf)
+    
+    # Caminho normalizado (preferencialmente relativo ao projeto) para metadados e logs
+    storage_pdf_path = normalize_pdf_path(abs_pdf_path)
+
     # 1. Carregamento do PDF
-    logger.info(f"Iniciando carregamento do PDF: {target_pdf}")
-    if not os.path.exists(target_pdf):
-        raise FileNotFoundError(f"Arquivo PDF não encontrado: {target_pdf}")
+    logger.info(f"Iniciando carregamento do PDF: {storage_pdf_path}")
+    if not os.path.exists(abs_pdf_path):
+        raise FileNotFoundError(f"Arquivo PDF não encontrado: {storage_pdf_path}")
+    
+    # Validar extensão
+    if not abs_pdf_path.lower().endswith('.pdf'):
+        raise TypeError(f"O arquivo deve ter extensão .pdf: {storage_pdf_path}")
         
-    loader = PyPDFLoader(target_pdf)
+    loader = PyPDFLoader(abs_pdf_path)
     docs: list[Document] = loader.load()
     logger.info(f"PDF carregado com sucesso. Total de páginas: {len(docs)}")
 
@@ -96,7 +140,7 @@ def ingest_pdf(
     logger.info(f"Texto dividido em {len(splits)} fragmentos.")
 
     # 3. Enriquecimento e Limpeza de Metadados
-    filename = os.path.basename(target_pdf)
+    filename = os.path.basename(abs_pdf_path)
     total_chunks = len(splits)
     logger.info(f"Enriquecendo metadados para {total_chunks} fragmentos...")
     
@@ -116,6 +160,7 @@ def ingest_pdf(
         meta["chunk_index"] = i
         meta["total_chunks"] = total_chunks
         meta["filename"] = filename
+        meta["source"] = storage_pdf_path
         
         # Criar novo objeto documento com metadados enriquecidos
         enriched_docs.append(type(doc)(
@@ -135,8 +180,8 @@ def ingest_pdf(
     repo = VectorStoreRepository(embeddings)
 
     # 6. Limpeza de dados antigos para esta fonte (Evita chunks órfãos se o número de chunks mudar)
-    logger.info(f"Limpando dados antigos da fonte: {target_pdf}...")
-    repo.delete_by_source(target_pdf)
+    logger.info(f"Limpando dados antigos da fonte: {storage_pdf_path}...")
+    repo.delete_by_source(storage_pdf_path)
 
     # 7. Inserção ou Atualização no Banco (com barra de progresso e batching)
     batch_size = DEFAULT_BATCH_SIZE  # Tamanho do lote para enviar ao banco/embedding
@@ -184,22 +229,35 @@ if __name__ == "__main__":
     
     pdf_to_ingest = args.pdf_path
     
-    if pdf_to_ingest:
-        from database import VectorStoreRepository
-        repo = VectorStoreRepository()
+    try:
+        if pdf_to_ingest:
+            from database import VectorStoreRepository
+            repo = VectorStoreRepository()
+            
+            # Normalizar apenas para a busca de existência no banco
+            pdf_normalized = normalize_pdf_path(pdf_to_ingest)
+            
+            if repo.source_exists(pdf_normalized):
+                if not args.quiet:
+                    print(f"\n⚠️  O arquivo '{pdf_normalized}' já existe na base de dados.")
+                    try:
+                        confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
+                        if confirm != 'sim':
+                            print("Operação cancelada pelo usuário.")
+                            sys.exit(0)
+                    except EOFError:
+                        pass
         
-        if repo.source_exists(pdf_to_ingest):
-            if not args.quiet:
-                print(f"\n⚠️  O arquivo '{pdf_to_ingest}' já existe na base de dados.")
-                try:
-                    confirm = input("Deseja sobrescrever os dados existentes? (sim/n): ").strip().lower()
-                    if confirm != 'sim':
-                        print("Operação cancelada pelo usuário.")
-                        sys.exit(0)
-                except EOFError:
-                    pass
-            # Se for quiet, assumimos que ele quer processar? 
-            # Ou deveriamos pedir um --yes/--force? 
-            # Por enquanto, mantivemos a confirmação apenas se NOT quiet.
-                
-    ingest_pdf(pdf_to_ingest, quiet=args.quiet, chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap)
+        ingest_pdf(pdf_to_ingest, quiet=args.quiet, chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap)
+    except FileNotFoundError as e:
+        print(f"❌ Erro: {e}")
+        sys.exit(2)
+    except ValueError as e:
+        print(f"❌ Erro de validação: {e}")
+        sys.exit(2)
+    except TypeError as e:
+        print(f"❌ Erro de formato: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Erro inesperado: {e}")
+        sys.exit(1)
