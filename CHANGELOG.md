@@ -19,6 +19,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   - Documentação de todas as queries SQL, mensagens de erro e estados
   - Manual de referência completo para CLI e configurações
   - Análise profunda de fluxos felizes e de exceção
+- Atualização completa do `README.md` do projeto (Task 1.5.6) (`d1ee268`)
+  - Guia didático passo a passo: clonagem, venv, dependências e .env
+  - Instruções claras de infraestrutura (Docker) e ordem de execução
+  - Detalhamento de comandos interativos e novas funcionalidades avançadas
+  - Alinhamento total com os requisitos técnicos obrigatórios de `requisitos.md`
 - Reescrita completa do PRD (Product Requirements Document) para versão 2.0 (Task 1.5.5) (`0fd887b`)
   - Atualização do contexto atual refletindo estado v0.5.0 com todas as capacidades implementadas
   - Proposta de evolução realista para v0.6.0 com 5 requisitos funcionais principais

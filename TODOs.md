@@ -509,7 +509,7 @@
 
 - [x] **1.5.5** Em uma branch separada da main Atualizar docs/PRD.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main (`0fd887b`)
 
-- [ ] **1.5.6** Em uma branch separada da main Atualizar README.md do projeto -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
+- [x] **1.5.6** Em uma branch separada da main Atualizar README.md do projeto -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main (`d1ee268`)
 
 
 
