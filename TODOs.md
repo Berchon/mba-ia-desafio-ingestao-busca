@@ -505,7 +505,7 @@
 
 - [x] **1.5.3** Em uma branch separada da main Atualizar docs/ANALISE_REQUISITOS.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main (`34109e7`, `40798e2`)
 
-- [ ] **1.5.4** Em uma branch separada da main Atualizar docs/ -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com mainFUNCTIONAL_SPECIFICATION_AS_IS.md
+- [x] **1.5.4** Em uma branch separada da main Atualizar docs/FUNCTIONAL_SPECIFICATION_AS_IS.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main (`e7355ac`)
 
 - [ ] **1.5.5** Em uma branch separada da main Atualizar docs/PRD.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main
 

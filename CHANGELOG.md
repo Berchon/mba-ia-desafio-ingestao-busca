@@ -14,6 +14,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   - Matriz de rastreabilidade 100% conforme `requisitos.md`
   - Detalhamento de funcionalidades extras de nível profissional
   - Correção de inconsistências no `README.md` relacionadas ao modelo padrão OpenAI
+- Reescrita completa do documento de especificação funcional (`docs/FUNCTIONAL_SPECIFICATION_AS_IS.md`) para versão 2.0 (Task 1.5.4) (`e7355ac`)
+  - Detalhamento exaustivo de cada módulo, função e classe do sistema
+  - Documentação de todas as queries SQL, mensagens de erro e estados
+  - Manual de referência completo para CLI e configurações
+  - Análise profunda de fluxos felizes e de exceção
 - Refatoração do Chat CLI em módulos isolados (`src/cli/`) para melhor organização e manutenibilidade (Task K.1) (`496480f`)
   - `ui.py`: Funções de interface e mensagens
   - `validators.py`: Logica de validação e parsing de comandos
