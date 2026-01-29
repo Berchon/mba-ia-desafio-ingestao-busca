@@ -489,16 +489,16 @@
 ---
 
 ### 1.5 Testes e Validação
-- [ ] **1.5.1** Testar fluxo completo
-  - [ ] Criar uma branch separada da main
-  - [ ] **Faça o teste completo**
+- [x] **1.5.1** Testar fluxo completo
+  - [x] Criar uma branch separada da main
+  - [x] **Faça o teste completo**
     1. Testar fluxo completo
     2. Se algum teste falhar, pare e espere por orientacoes
     3. Quando todos os testes passarem, me passe o controle para eu testar manualmente
     4. Quando eu aprovar, faça o commit
     5. Atualize o changelog com o ID do commit
     6. Atualize o TODOs.md
-    7. Faça o commit do changelog e do todos.md
+    7. Faça o commit do changelog e do todos.md (Commit: `47bb258`)
     8. Faça o merge com main
 
 - [ ] **1.5.2** Em uma branch separada da main Atualizar /tests/README.md -> quando eu aprovar faça o commit -> Atualize o changelog com o ID do commit -> Atualize o TODOs.md -> faça o commit do changelog e do todos.md -> faça o merge com main

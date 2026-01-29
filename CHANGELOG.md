@@ -24,6 +24,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
 
 ### Adicionado
+- Implementado suite completa de testes End-to-End (E2E) (Task 1.5.1) (`47bb258`)
+  - 88 casos de teste cobrindo ingestão, busca, comandos e robustez
+  - Script principal `tests/test_e2e_complete.sh` com suporte a fases e relatórios
+  - Documentação detalhada em `tests/README.md`
 - Implementado **Navegação Persistente no Histórico** (Task L.2) (`7191513`)
   - Suporte a setas (↑/↓) para navegar em comandos anteriores
   - Persistência automática do histórico em arquivo `.chat_history` entre sessões
@@ -51,6 +55,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Adicionado import faltante de `SQLAlchemyError` em `search.py` e `chat.py` para tratamento correto de exceções de banco de dados (`f9edd2b`)
 - Corrigido modelo padrão OpenAI LLM de `gpt-4o-mini` para `gpt-5-nano` conforme requisitos (`f9edd2b`)
 - Corrigido modelo padrão Google Embedding em `.env.example` para `models/embedding-001` conforme requisitos (`f9edd2b`)
+- Ajustes na manipulação de caminhos de arquivos para garantir consistência entre ingestão e busca (`47bb258`)
 
 ---
 
