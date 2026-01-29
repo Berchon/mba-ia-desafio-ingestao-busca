@@ -9,6 +9,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+---
+
+## [0.5.0] - 2026-01-29
+
 ### Alterado
 - Atualização completa do documento de análise de requisitos (`docs/ANALISE_REQUISITOS.md`) para refletir o estado final do projeto (Task 1.5.3) (`34109e7`)
   - Matriz de rastreabilidade 100% conforme `requisitos.md`
