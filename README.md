@@ -153,7 +153,7 @@ GOOGLE_LLM_MODEL='gemini-2.5-flash-lite'
 # OpenAI (opcional)
 OPENAI_API_KEY=sua_chave_openai_aqui
 OPENAI_EMBEDDING_MODEL='text-embedding-3-small'
-OPENAI_LLM_MODEL='gpt-4o-mini'
+OPENAI_LLM_MODEL='gpt-5-nano'
 
 # === Configuração do Banco de Dados ===
 DATABASE_URL='postgresql://postgres:postgres@localhost:5432/rag'
@@ -171,7 +171,7 @@ PDF_PATH=document.pdf
 - **GOOGLE_LLM_MODEL**: Modelo de LLM do Google (padrão: `gemini-2.5-flash-lite`)
 - **OPENAI_API_KEY**: Chave de API da OpenAI (opcional, obtenha em https://platform.openai.com)
 - **OPENAI_EMBEDDING_MODEL**: Modelo de embeddings da OpenAI (padrão: `text-embedding-3-small`)
-- **OPENAI_LLM_MODEL**: Modelo de LLM da OpenAI (padrão: `gpt-4o-mini`)
+- **OPENAI_LLM_MODEL**: Modelo de LLM da OpenAI (padrão: `gpt-5-nano`)
 
 > **Nota**: O sistema detecta automaticamente qual provedor usar baseado nas chaves configuradas. Se ambas estiverem configuradas, o Google Gemini terá prioridade.
 
