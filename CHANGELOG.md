@@ -19,6 +19,17 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   - Documentação de todas as queries SQL, mensagens de erro e estados
   - Manual de referência completo para CLI e configurações
   - Análise profunda de fluxos felizes e de exceção
+- Reescrita completa do PRD (Product Requirements Document) para versão 2.0 (Task 1.5.5) (`0fd887b`)
+  - Atualização do contexto atual refletindo estado v0.5.0 com todas as capacidades implementadas
+  - Proposta de evolução realista para v0.6.0 com 5 requisitos funcionais principais
+  - RF-001: Histórico Conversacional (chat memory)
+  - RF-002: Suporte a Múltiplos Formatos (DOCX, TXT, MD, HTML)
+  - RF-003: Observabilidade Profissional (logs JSON, métricas, rastreamento)
+  - RF-004: Cache Inteligente de Embeddings
+  - RF-005: API REST (FastAPI)
+  - Critérios de aceitação em formato Given/When/Then
+  - Análise de riscos e mitigações
+  - Plano de implementação detalhado (6 fases, 7-9 semanas)
 - Refatoração do Chat CLI em módulos isolados (`src/cli/`) para melhor organização e manutenibilidade (Task K.1) (`496480f`)
   - `ui.py`: Funções de interface e mensagens
   - `validators.py`: Logica de validação e parsing de comandos
