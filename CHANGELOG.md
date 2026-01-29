@@ -22,6 +22,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Type hints completos em todos os módulos de `src/` para melhorar legibilidade e manutenção (`85321ff`)
 - Docstrings completas (Args/Returns/Raises/Examples) nos principais módulos e funções (`882b63e`)
 - Substituição de magic numbers por constantes nomeadas em módulos de CLI e ingestão (`b64cd4c`)
+- Atualização completa da documentação de testes (`tests/README.md`) (Task 1.5.2) (`e1bc939`)
+  - Documentação abrangente das 14 fases de teste e 88+ casos de teste
+  - Índice navegável e estrutura organizada
+  - Instruções detalhadas de execução (todos os testes, fases específicas, modo verboso)
+  - Tabela de cobertura de funcionalidades mostrando 100% de cobertura de todos os módulos
+  - Seção de troubleshooting com soluções para problemas comuns
+  - Requisitos técnicos e configuração do ambiente
+  - Links para documentação adicional
 
 ### Adicionado
 - Implementado suite completa de testes End-to-End (E2E) (Task 1.5.1) (`47bb258`)
