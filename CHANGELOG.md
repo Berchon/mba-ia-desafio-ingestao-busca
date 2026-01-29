@@ -10,6 +10,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [Não Lançado]
 
 ### Alterado
+- Atualização completa do documento de análise de requisitos (`docs/ANALISE_REQUISITOS.md`) para refletir o estado final do projeto (Task 1.5.3) (`34109e7`)
+  - Matriz de rastreabilidade 100% conforme `requisitos.md`
+  - Detalhamento de funcionalidades extras de nível profissional
+  - Correção de inconsistências no `README.md` relacionadas ao modelo padrão OpenAI
 - Refatoração do Chat CLI em módulos isolados (`src/cli/`) para melhor organização e manutenibilidade (Task K.1) (`496480f`)
   - `ui.py`: Funções de interface e mensagens
   - `validators.py`: Logica de validação e parsing de comandos
